@@ -46,7 +46,7 @@ struct MenuView: View {
                         .font(.headline)
                 }
             }.padding(.top, 5)
-            NavigationLink(destination: TestView() ){
+            NavigationLink(destination: UtilisateurListView() ){
                 HStack {
                     Text("Liste des utilisateurs")
                         .foregroundColor(.black)

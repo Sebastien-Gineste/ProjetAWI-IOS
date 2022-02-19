@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 
 @main
 struct ProjetAWI_IOSApp: App {
@@ -13,5 +14,9 @@ struct ProjetAWI_IOSApp: App {
         WindowGroup {
             MainView()
         }
+    }
+    
+    init(){
+        FirebaseApp.configure()
     }
 }
