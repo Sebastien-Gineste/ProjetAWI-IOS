@@ -17,16 +17,22 @@ struct UtilisateurListView : View {
     var body : some View {
         VStack{
            List {
+               
+               HStack(spacing:0){
+                   Text("Nom").frame(maxWidth:.infinity)
+                   Text("Prénom").bold().frame(maxWidth:.infinity)
+                   Text("Type").italic().frame(maxWidth:.infinity)
+               }.frame(minWidth : 0, maxWidth: .infinity)
+               
                ForEach(utilisateurModel.utilisateurs.indices, id: \.self){ indice in
-                   HStack{
-                       VStack(alignment: .leading){
-                           Text(self.utilisateurModel.utilisateurs[indice].nom)
-                           Text("\(self.utilisateurModel.utilisateurs[indice].prenom)").bold()
-                           Text("\(self.utilisateurModel.utilisateurs[indice].estAdmin ? "Admin" : "User")").italic()
-                           //NavigationLink(destination: TrackView(vm: self.items, indice: indice)){
-                           //}.navigationTitle("Apple Music Tracks")
-                       }
-                   }
+                   HStack(spacing:0){
+                       Text(self.utilisateurModel.utilisateurs[indice].nom).frame(maxWidth:.infinity)
+                       Text("\(self.utilisateurModel.utilisateurs[indice].prenom)").bold().frame(maxWidth:.infinity)
+                       Text("\(self.utilisateurModel.utilisateurs[indice].estAdmin ? "Admin" : "User")").italic().frame(maxWidth:.infinity)
+                       NavigationLink(destination: UtilisateurDetailView()){
+                       }.navigationTitle("Détails de l'utilisateur").frame(maxWidth:0)
+                   
+                   }.frame(minWidth : 0, maxWidth: .infinity)
                }
                .onDelete{ indexSet in
                    utilisateurModel.utilisateurs.remove(atOffsets: indexSet)

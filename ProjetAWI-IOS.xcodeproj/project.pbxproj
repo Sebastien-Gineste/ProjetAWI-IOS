@@ -26,7 +26,7 @@
 		6F3B82C827C1196700428123 /* UtilisateurIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82C727C1196700428123 /* UtilisateurIntent.swift */; };
 		6F3B82CB27C11B1100428123 /* UtilisateurViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82CA27C11B1100428123 /* UtilisateurViewModel.swift */; };
 		6F3B82CF27C11D9C00428123 /* UtilisateurListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82CE27C11D9C00428123 /* UtilisateurListView.swift */; };
-		6F3B82D427C11E9500428123 /* UtilisateurService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82D327C11E9500428123 /* UtilisateurService.swift */; };
+		6F3B82D627C12A7500428123 /* UtilisateurDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82D527C12A7500428123 /* UtilisateurDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,7 +48,7 @@
 		6F3B82C727C1196700428123 /* UtilisateurIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilisateurIntent.swift; sourceTree = "<group>"; };
 		6F3B82CA27C11B1100428123 /* UtilisateurViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilisateurViewModel.swift; sourceTree = "<group>"; };
 		6F3B82CE27C11D9C00428123 /* UtilisateurListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilisateurListView.swift; sourceTree = "<group>"; };
-		6F3B82D327C11E9500428123 /* UtilisateurService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilisateurService.swift; sourceTree = "<group>"; };
+		6F3B82D527C12A7500428123 /* UtilisateurDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilisateurDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,7 +127,6 @@
 		6F3B82A427BE7CA200428123 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				6F3B82D227C11E8400428123 /* Request */,
 				6F3B82D027C11E5100428123 /* Design */,
 			);
 			path = Helpers;
@@ -195,6 +194,7 @@
 			isa = PBXGroup;
 			children = (
 				6F3B82CE27C11D9C00428123 /* UtilisateurListView.swift */,
+				6F3B82D527C12A7500428123 /* UtilisateurDetailView.swift */,
 			);
 			path = Utilisateur;
 			sourceTree = "<group>";
@@ -207,14 +207,6 @@
 				6F3B82AB27BFB98200428123 /* UIColor.swift */,
 			);
 			path = Design;
-			sourceTree = "<group>";
-		};
-		6F3B82D227C11E8400428123 /* Request */ = {
-			isa = PBXGroup;
-			children = (
-				6F3B82D327C11E9500428123 /* UtilisateurService.swift */,
-			);
-			path = Request;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -303,9 +295,9 @@
 				6F3B82A827BE8F4E00428123 /* FicheTechniqueListView.swift in Sources */,
 				6F3B82AE27BFBB0C00428123 /* Theme.swift in Sources */,
 				6F3B82B327BFC47600428123 /* Color.swift in Sources */,
-				6F3B82D427C11E9500428123 /* UtilisateurService.swift in Sources */,
 				6F3B82C827C1196700428123 /* UtilisateurIntent.swift in Sources */,
 				6F3B82BF27C10F8400428123 /* UtilisateurDTO.swift in Sources */,
+				6F3B82D627C12A7500428123 /* UtilisateurDetailView.swift in Sources */,
 				6F3B829527BE7B6D00428123 /* ProjetAWI_IOSApp.swift in Sources */,
 				6F3B82C227C1102700428123 /* Utilisateur.swift in Sources */,
 				6F3B82CF27C11D9C00428123 /* UtilisateurListView.swift in Sources */,
