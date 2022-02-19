@@ -12,10 +12,14 @@ import SwiftUI
 struct UtilisateurListView : View {
     
     @StateObject var utilisateurModel : UtilisateurListViewModel = UtilisateurListViewModel()
+    @State var searchText : String = " "
     
     
     var body : some View {
         VStack{
+            
+           SearchBarView(searchText)
+            
            List {
                
                HStack(spacing:0){
