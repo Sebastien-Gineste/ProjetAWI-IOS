@@ -12,29 +12,33 @@ import SwiftUI
 struct UtilisateurListView : View {
     
     @StateObject var utilisateurModel : UtilisateurListViewModel = UtilisateurListViewModel()
-    @State var searchText : String = " "
+    @State private var searchText : String = ""
     
+    var utilisateursFiltre: [Utilisateur] {
+        if searchText.isEmpty {
+            return utilisateurModel.utilisateurs
+        } else {
+            return utilisateurModel.utilisateurs.filter{ $0.nom.uppercased().contains(searchText.uppercased()) || $0.prenom.uppercased().contains(searchText.uppercased()) }
+        }
+    }
     
     var body : some View {
         VStack{
-            
-           SearchBarView(searchText)
-            
-           List {
-               
+            List {
                HStack(spacing:0){
                    Text("Nom").frame(maxWidth:.infinity)
                    Text("Prénom").bold().frame(maxWidth:.infinity)
                    Text("Type").italic().frame(maxWidth:.infinity)
                }.frame(minWidth : 0, maxWidth: .infinity)
                
-               ForEach(utilisateurModel.utilisateurs.indices, id: \.self){ indice in
+                ForEach(Array(utilisateursFiltre.enumerated()), id: \.offset){index,utilisateur in
                    HStack(spacing:0){
-                       Text(self.utilisateurModel.utilisateurs[indice].nom).frame(maxWidth:.infinity)
-                       Text("\(self.utilisateurModel.utilisateurs[indice].prenom)").bold().frame(maxWidth:.infinity)
-                       Text("\(self.utilisateurModel.utilisateurs[indice].estAdmin ? "Admin" : "User")").italic().frame(maxWidth:.infinity)
-                       NavigationLink(destination: UtilisateurDetailView()){
-                       }.navigationTitle("Détails de l'utilisateur").frame(maxWidth:0)
+                       Text(utilisateur.nom).frame(maxWidth:.infinity)
+                       Text("\(utilisateur.prenom)").bold().frame(maxWidth:.infinity)
+                       Text("\(utilisateur.estAdmin.rawValue)").italic().frame(maxWidth:.infinity)
+                       NavigationLink(destination: UtilisateurDetailView(vm: utilisateurModel, indice: index)){
+                           
+                       }.frame(maxWidth:0)
                    
                    }.frame(minWidth : 0, maxWidth: .infinity)
                }
@@ -43,7 +47,10 @@ struct UtilisateurListView : View {
                }
                .onMove{ indexSet, index in
                    utilisateurModel.utilisateurs.move(fromOffsets: indexSet, toOffset: index)
-               } }
+               }
+            }.searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+                .navigationTitle("Liste des utilisateurs")
+            
            EditButton()
        }.padding()
     }

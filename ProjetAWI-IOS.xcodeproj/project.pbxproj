@@ -27,7 +27,6 @@
 		6F3B82CB27C11B1100428123 /* UtilisateurViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82CA27C11B1100428123 /* UtilisateurViewModel.swift */; };
 		6F3B82CF27C11D9C00428123 /* UtilisateurListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82CE27C11D9C00428123 /* UtilisateurListView.swift */; };
 		6F3B82D627C12A7500428123 /* UtilisateurDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82D527C12A7500428123 /* UtilisateurDetailView.swift */; };
-		6F3B82D927C12D1400428123 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82D827C12D1400428123 /* SearchBarView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,7 +49,6 @@
 		6F3B82CA27C11B1100428123 /* UtilisateurViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilisateurViewModel.swift; sourceTree = "<group>"; };
 		6F3B82CE27C11D9C00428123 /* UtilisateurListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilisateurListView.swift; sourceTree = "<group>"; };
 		6F3B82D527C12A7500428123 /* UtilisateurDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilisateurDetailView.swift; sourceTree = "<group>"; };
-		6F3B82D827C12D1400428123 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,7 +117,6 @@
 		6F3B82A327BE7C7E00428123 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				6F3B82D727C12CFA00428123 /* SearchBar */,
 				6F3B82CC27C11D7800428123 /* Utilisateur */,
 				6F3B82B427BFC52800428123 /* Fiche-Technique */,
 				6F3B82AF27BFBD2E00428123 /* Menu */,
@@ -212,14 +209,6 @@
 			path = Design;
 			sourceTree = "<group>";
 		};
-		6F3B82D727C12CFA00428123 /* SearchBar */ = {
-			isa = PBXGroup;
-			children = (
-				6F3B82D827C12D1400428123 /* SearchBarView.swift */,
-			);
-			path = SearchBar;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -303,7 +292,6 @@
 				6F3B82AA27BE916400428123 /* MenuView.swift in Sources */,
 				6F3B82CB27C11B1100428123 /* UtilisateurViewModel.swift in Sources */,
 				6F3B82C627C118AE00428123 /* UtilisateurListViewModel.swift in Sources */,
-				6F3B82D927C12D1400428123 /* SearchBarView.swift in Sources */,
 				6F3B82A827BE8F4E00428123 /* FicheTechniqueListView.swift in Sources */,
 				6F3B82AE27BFBB0C00428123 /* Theme.swift in Sources */,
 				6F3B82B327BFC47600428123 /* Color.swift in Sources */,

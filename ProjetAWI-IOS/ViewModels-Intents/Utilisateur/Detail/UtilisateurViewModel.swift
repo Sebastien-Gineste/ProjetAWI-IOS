@@ -30,7 +30,7 @@ class UtilisateurViewModel : ObservableObject, UtilisateurObserver, Subscriber{
     @Published var nom : String
     @Published var prenom : String
     @Published var email : String
-    @Published var estAdmin : Bool
+    @Published var estAdmin : TypeUtilisateur
     @Published var motDePasse : String = ""
 
     @Published var error : UserError = .noError
@@ -54,7 +54,7 @@ class UtilisateurViewModel : ObservableObject, UtilisateurObserver, Subscriber{
         self.prenom = prenom
     }
     
-    func changed(estAdmin : Bool) {
+    func changed(estAdmin : TypeUtilisateur) {
         self.estAdmin = estAdmin
     }
     

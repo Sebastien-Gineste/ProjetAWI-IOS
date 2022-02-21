@@ -10,7 +10,12 @@ import Foundation
 protocol UtilisateurObserver {
     func changed(nom : String)
     func changed(prenom : String)
-    func changed(estAdmin : Bool)
+    func changed(estAdmin : TypeUtilisateur)
+}
+
+enum TypeUtilisateur : String, CaseIterable, Identifiable{
+    case User, Admin
+    var id: Self {self}
 }
 
 class Utilisateur {
@@ -27,13 +32,13 @@ class Utilisateur {
             self.observer?.changed(prenom: self.prenom)
         }
     }
-    var estAdmin : Bool{
+    var estAdmin : TypeUtilisateur{
         didSet{
             self.observer?.changed(estAdmin : self.estAdmin)
         }
     }
     
-    init(email : String, nom : String, prenom : String, estAdmin : Bool, id : String?){
+    init(email : String, nom : String, prenom : String, estAdmin : TypeUtilisateur, id : String?){
         self.email = email
         self.nom = nom
         self.prenom = prenom

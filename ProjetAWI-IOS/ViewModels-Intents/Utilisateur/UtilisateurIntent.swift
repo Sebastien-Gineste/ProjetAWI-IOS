@@ -12,12 +12,12 @@ enum UtilisateurIntentState : CustomStringConvertible, Equatable {
     case ready
     case changingName(String)
     case changingFirstName(String)
-    case changingIsAdmin(Bool)
+    case changingIsAdmin(TypeUtilisateur)
     var description: String {
         switch self {
         case .ready : return "ready"
         case .changingFirstName(let prenom) : return "Va changer son prénom : \(prenom)"
-        case .changingIsAdmin(let bool) : return "Va changer son statue : \(bool)"
+        case .changingIsAdmin(let typeUtilisateur) : return "Va changer son statue : \(typeUtilisateur)"
         case .changingName(let nom) : return "Va changer son nom : \(nom)"
         }
     }
@@ -42,7 +42,7 @@ struct UtilisateurIntent  {
         self.updateList()
     }
     
-    func intentToChange(isAdmin : Bool){
+    func intentToChange(isAdmin : TypeUtilisateur){
         self.stateElement.send(UtilisateurIntentState.changingIsAdmin(isAdmin))
         self.updateList()
     }

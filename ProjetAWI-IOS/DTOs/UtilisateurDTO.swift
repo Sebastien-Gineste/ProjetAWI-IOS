@@ -19,7 +19,7 @@ struct UtilisateurDTO : Identifiable{
         return Utilisateur(email: utilisateurDTO.email,
                            nom: utilisateurDTO.nom,
                            prenom: utilisateurDTO.prenom,
-                           estAdmin: utilisateurDTO.estAdmin,
+                           estAdmin: utilisateurDTO.estAdmin ? TypeUtilisateur.Admin : TypeUtilisateur.User,
                            id: utilisateurDTO.id)
     }
 }
