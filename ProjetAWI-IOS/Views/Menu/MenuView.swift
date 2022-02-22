@@ -17,7 +17,7 @@ struct MenuView: View {
         TabView {
             FicheTechniqueListView()
                 .tabItem {
-                    Image(systemName: "list.dash")
+                    Image(systemName: "list.bullet.below.rectangle")
                     Text("Fiche")
                 }
             
@@ -25,31 +25,39 @@ struct MenuView: View {
                 
                 FicheTechniqueListView()
                     .tabItem {
-                        Image(systemName: "house")
+                        Image(systemName: "list.bullet.rectangle.portrait.fill")
                         Text("Ingrédient")
                     }
                 
                 FicheTechniqueListView()
                     .tabItem {
-                        Image(systemName: "house")
+                        Image(systemName: "list.bullet.rectangle.portrait.fill")
                         Text("Allergènes")
                     }
                 
                 UtilisateurListView()
                     .tabItem {
-                        Image(systemName: "person")
+                        Image(systemName: "person.fill")
                         Text("Comptes")
                     }
+                
+                if user.currentUtilisateur.estAdmin() {
+                    FicheTechniqueListView()
+                        .tabItem{
+                            Image(systemName: "gearshape.2.fill")
+                            Text("Paramètre")
+                        }
+                }
             }
             else{
                 ConnexionView()
                     .tabItem{
-                        Image(systemName: "house")
+                        Image(systemName: "person.fill")
                         Text("Connexion")
                     }
                 
             }
             
-        }.accentColor(Color.green)
+        }.accentColor(Color.specialGreen)
     }
 }

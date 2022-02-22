@@ -16,23 +16,18 @@ struct ConnexionView : View{
     
     var body: some View{
         
-        VStack{
+        VStack(alignment:.center){
             Spacer()
-            HStack(alignment:.center){
-                Text("E-mail : ")
-                TextField("",text: $email).background(Color.pink).autocapitalization(.none)
-            }
-            
-            HStack(alignment:.center){
-                Text("mot de passe :")
-                TextField("", text: $motDePasse).background(Color.pink).autocapitalization(.none)
-            }
+            Text("E-mail : ")
+            TextField("",text: $email).background(Color.pink).autocapitalization(.none)
+            Text("Mot de passe :")
+            SecureField("", text: $motDePasse).background(Color.pink).autocapitalization(.none)
             
             Button("Connexion"){
                 UtilisateurService.instance.connexion(email: email, mdp: motDePasse)
             }
             Spacer()
-        }
+        }.padding()
         
     }
     
