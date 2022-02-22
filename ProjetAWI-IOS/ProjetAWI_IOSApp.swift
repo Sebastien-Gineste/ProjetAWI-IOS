@@ -12,7 +12,7 @@ import Firebase
 struct ProjetAWI_IOSApp: App {
     var body: some Scene {
         WindowGroup {
-            MainView()
+            MenuView()
         }
     }
     

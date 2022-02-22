@@ -10,70 +10,46 @@ import SwiftUI
 // TAB VIEW 
 
 struct MenuView: View {
+    
+    @StateObject var user : UtilisateurService = UtilisateurService.instance
+    
     var body: some View {
-        VStack(alignment: .leading) {
-            NavigationLink(destination: TestView() ){
-                HStack {
-                    Text("Ingredients")
-                        .foregroundColor(.black)
-                        .font(.headline)
+        TabView {
+            FicheTechniqueListView()
+                .tabItem {
+                    Image(systemName: "list.dash")
+                    Text("Fiche")
                 }
-            } .padding(.top, 70)
-            NavigationLink(destination: TestView() ){
-                HStack {
-                    Text("Allergènes")
-                        .foregroundColor(.black)
-                        .font(.headline)
-                }
-            }.padding(.top, 5)
-            NavigationLink(destination: TestView() ){
-                HStack {
-                    Text("Préférences de calculs")
-                        .foregroundColor(.black)
-                        .font(.headline)
-                }
-            }.padding(.top, 5)
-            Divider().padding(.top,10)
-            NavigationLink(destination: TestView() ){
-                HStack {
-                    Text("Connexion")
-                        .foregroundColor(.black)
-                        .font(.headline)
-                }
-            }.padding(.top, 10)
-            NavigationLink(destination: TestView() ){
-                HStack {
-                    Text("Deconnexion")
-                        .foregroundColor(.black)
-                        .font(.headline)
-                }
-            }.padding(.top, 5)
-            NavigationLink(destination: UtilisateurListView() ){
-                HStack {
-                    Text("Liste des utilisateurs")
-                        .foregroundColor(.black)
-                        .font(.headline)
-                }
-            }.padding(.top, 5)
-            NavigationLink(destination: TestView() ){
-                HStack {
-                    Text("Mon Profil")
-                        .foregroundColor(.black)
-                        .font(.headline)
-                }
-            }.padding(.top, 5)
-            NavigationLink(destination: TestView() ){
-                HStack {
-                    Text("Créer un compte")
-                        .foregroundColor(.black)
-                        .font(.headline)
-                }
-            }.padding(.top, 5)
-            Spacer()
-        }
-        .padding()
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.specialWhite)
-        .edgesIgnoringSafeArea(.all)
+            
+            if user.currentUtilisateur.estConnecte() {
+                
+                FicheTechniqueListView()
+                    .tabItem {
+                        Image(systemName: "house")
+                        Text("Ingrédient")
+                    }
+                
+                FicheTechniqueListView()
+                    .tabItem {
+                        Image(systemName: "house")
+                        Text("Allergènes")
+                    }
+                
+                UtilisateurListView()
+                    .tabItem {
+                        Image(systemName: "person")
+                        Text("Comptes")
+                    }
+            }
+            else{
+                ConnexionView()
+                    .tabItem{
+                        Image(systemName: "house")
+                        Text("Connexion")
+                    }
+                
+            }
+            
+        }.accentColor(Color.green)
     }
 }

@@ -15,8 +15,9 @@ struct ConnexionView : View{
     
     
     var body: some View{
-        Spacer()
+        
         VStack{
+            Spacer()
             HStack(alignment:.center){
                 Text("E-mail : ")
                 TextField("",text: $email).background(Color.pink).autocapitalization(.none)
@@ -30,8 +31,9 @@ struct ConnexionView : View{
             Button("Connexion"){
                 UtilisateurService.instance.connexion(email: email, mdp: motDePasse)
             }
+            Spacer()
         }
-        Spacer()
+        
     }
     
 }
