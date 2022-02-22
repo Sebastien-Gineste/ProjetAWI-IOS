@@ -7,36 +7,21 @@
 
 import Foundation
 import Combine
-import FirebaseFirestore
-import FirebaseFirestoreSwift
 
-class UtilisateurListViewModel : ObservableObject, Subscriber{
+
+class UtilisateurListViewModel : ObservableObject, Subscriber, UserServiceObserver{
     @Published var utilisateurs : [Utilisateur]
-    private let firestore = Firestore.firestore()
+    private var userService : UtilisateurService = UtilisateurService.instance
+    
+    func emit(to: [Utilisateur]){
+        self.utilisateurs = to
+    }
     
     init(){
         self.utilisateurs = []
-        self.getListUtilisateurs()
-    }
-    
-    func getListUtilisateurs(){
-        firestore.collection("users")
-            .addSnapshotListener{
-                (data,error) in
-                guard (data?.documents) != nil else{
-                    return
-                }
-                self.utilisateurs = data!.documents.map{
-                    (doc) -> Utilisateur in
-                    return UtilisateurDTO.transformDTO(
-                        UtilisateurDTO( id : doc.documentID,
-                                        email: doc["email"] as? String ?? "",
-                                        estAdmin: doc["estAdmin"] as? Bool ?? false,
-                                        motDePasse: "",
-                                        nom: doc["nom"] as? String ?? "",
-                                        prenom: doc["prenom"] as? String ?? ""))
-                }
-            }
+        self.userService.setObserverList(obs: self)
+        self.userService.getListUtilisateurs()
+
     }
     
     typealias Input = UtilisateurListIntentState
