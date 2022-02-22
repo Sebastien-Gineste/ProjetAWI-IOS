@@ -27,6 +27,7 @@
 		6F3B82CB27C11B1100428123 /* UtilisateurViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82CA27C11B1100428123 /* UtilisateurViewModel.swift */; };
 		6F3B82CF27C11D9C00428123 /* UtilisateurListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82CE27C11D9C00428123 /* UtilisateurListView.swift */; };
 		6F3B82D627C12A7500428123 /* UtilisateurDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82D527C12A7500428123 /* UtilisateurDetailView.swift */; };
+		6F3B82DD27C4C45600428123 /* UtilisateurService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82DC27C4C45600428123 /* UtilisateurService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,7 @@
 		6F3B82CA27C11B1100428123 /* UtilisateurViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilisateurViewModel.swift; sourceTree = "<group>"; };
 		6F3B82CE27C11D9C00428123 /* UtilisateurListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilisateurListView.swift; sourceTree = "<group>"; };
 		6F3B82D527C12A7500428123 /* UtilisateurDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilisateurDetailView.swift; sourceTree = "<group>"; };
+		6F3B82DC27C4C45600428123 /* UtilisateurService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilisateurService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 		6F3B829327BE7B6D00428123 /* ProjetAWI-IOS */ = {
 			isa = PBXGroup;
 			children = (
+				6F3B82DA27C4C3F900428123 /* Services */,
 				6F3B82B727C10DCC00428123 /* GoogleService-Info.plist */,
 				6F3B82A627BE7D8E00428123 /* ViewModels-Intents */,
 				6F3B82A527BE7CB300428123 /* DTOs */,
@@ -209,6 +212,22 @@
 			path = Design;
 			sourceTree = "<group>";
 		};
+		6F3B82DA27C4C3F900428123 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				6F3B82DB27C4C44200428123 /* Utilisateur */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		6F3B82DB27C4C44200428123 /* Utilisateur */ = {
+			isa = PBXGroup;
+			children = (
+				6F3B82DC27C4C45600428123 /* UtilisateurService.swift */,
+			);
+			path = Utilisateur;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -302,6 +321,7 @@
 				6F3B82C227C1102700428123 /* Utilisateur.swift in Sources */,
 				6F3B82CF27C11D9C00428123 /* UtilisateurListView.swift in Sources */,
 				6F3B82AC27BFB98200428123 /* UIColor.swift in Sources */,
+				6F3B82DD27C4C45600428123 /* UtilisateurService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
