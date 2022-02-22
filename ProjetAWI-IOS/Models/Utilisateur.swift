@@ -18,7 +18,7 @@ enum TypeUtilisateur : String, CaseIterable, Identifiable{
     var id: Self {self}
 }
 
-class Utilisateur {
+class Utilisateur : ObservableObject {
     var observer : UtilisateurObserver?
     var id : String?
     var email : String

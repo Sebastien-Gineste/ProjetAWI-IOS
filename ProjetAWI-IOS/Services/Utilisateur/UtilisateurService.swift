@@ -15,11 +15,24 @@ protocol UserServiceObserver{
     func emit(to : [Utilisateur])
 }
 
-class UtilisateurService{
+protocol CurrentUserServiceObserver{
+    func emit(to : Utilisateur)
+}
+
+public class UtilisateurService{
+    public static let instance = UtilisateurService()
     
     private let firestore = Firestore.firestore()
     private var tabObservers : [UserServiceObserver] = []
+    private var tabObserversCurrentUser : [CurrentUserServiceObserver] = []
     
+    @Published var currentUtilisateur : Utilisateur{ // regarde si déconnexion ou connexion
+        didSet{
+            for obs in self.tabObserversCurrentUser{
+                obs.emit(to: currentUtilisateur)
+            }
+        }
+    }
     
     @Published var utilisateurs : [Utilisateur]{
         didSet{
@@ -29,14 +42,20 @@ class UtilisateurService{
         }
     }
     
-    func setObserver(obs : UserServiceObserver){
+    func setObserverList(obs : UserServiceObserver){
         self.tabObservers.append(obs)
         obs.emit(to: utilisateurs)
     }
     
-    init(){
+    func setObserverCurrent(obs : CurrentUserServiceObserver){
+        self.tabObserversCurrentUser.append(obs)
+        obs.emit(to: currentUtilisateur)
+    }
+    
+    private init(){
         self.utilisateurs = []
-        self.getListUtilisateurs()
+        self.currentUtilisateur = Utilisateur(
+            email: "", nom: "", prenom: "", estAdmin: .User, id: "")
     }
     
     func getListUtilisateurs(){

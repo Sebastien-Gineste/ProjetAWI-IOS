@@ -8,48 +8,37 @@
 import SwiftUI
 
 struct MainView: View {
-    @State var showMenu = false
-    init(){
-        Theme.loadNavigationBarTitleStyle()
-    }
+
+    @ObservedObject var currentUser : Utilisateur = UtilisateurService.instance.currentUtilisateur
+    
+    
     var body: some View {
-        let drag = DragGesture()
-                    .onEnded {
-                       if $0.translation.width < -100 {
-                           withAnimation {
-                               self.showMenu = false
-                           }
-                       }
-                    }
-        NavigationView {
-            GeometryReader {
-                geometry in
-                ZStack(alignment: .leading){
-                    FicheTechniqueListView()
-                        .frame(width: geometry.size.width, height: geometry.size.height)
-                        .offset(x: self.showMenu ? 2*geometry.size.width/3 : 0)
-                        .disabled(self.showMenu ? true : false)
-                    if self.showMenu {
-                        MenuView()
-                            .frame(width: 2*geometry.size.width/3)
-                            .transition(.move(edge: .leading))
-                    }
+        TabView {
+            FicheTechniqueListView()
+                .tabItem {
+                    Image(systemName: "house")
+                    Text("Fiche")
                 }
-                .gesture(drag)
-            }
-            .navigationBarTitle("Site Recettes", displayMode: .inline)
-            .navigationBarItems(leading: (
-                Button(action: {
-                    withAnimation {
-                        self.showMenu.toggle()
-                    }
-                }) {
-                    Image(systemName: "line.horizontal.3")
-                        .imageScale(.large)
-                        .foregroundColor(.white)
+            
+            FicheTechniqueListView()
+                .tabItem {
+                    Image(systemName: "house")
+                    Text("Ingrédient")
                 }
-            ))
+            
+            FicheTechniqueListView()
+                .tabItem {
+                    Image(systemName: "house")
+                    Text("Allergènes")
+                }
+            
+            UtilisateurListView()
+                .tabItem {
+                    Image(systemName: "house")
+                    Text("compte")
+                }
         }
+        
     }
 }
 

@@ -11,7 +11,7 @@ import Combine
 
 class UtilisateurListViewModel : ObservableObject, Subscriber, UserServiceObserver{
     @Published var utilisateurs : [Utilisateur]
-    private var userService : UtilisateurService = UtilisateurService()
+    private var userService : UtilisateurService = UtilisateurService.instance
     
     func emit(to: [Utilisateur]){
         self.utilisateurs = to
@@ -19,7 +19,8 @@ class UtilisateurListViewModel : ObservableObject, Subscriber, UserServiceObserv
     
     init(){
         self.utilisateurs = []
-        self.userService.setObserver(obs: self)
+        self.userService.setObserverList(obs: self)
+        self.userService.getListUtilisateurs()
 
     }
     
