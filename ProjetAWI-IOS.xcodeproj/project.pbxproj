@@ -27,12 +27,6 @@
 		6F3B82CB27C11B1100428123 /* UtilisateurViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82CA27C11B1100428123 /* UtilisateurViewModel.swift */; };
 		6F3B82CF27C11D9C00428123 /* UtilisateurListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82CE27C11D9C00428123 /* UtilisateurListView.swift */; };
 		6F3B82D627C12A7500428123 /* UtilisateurDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82D527C12A7500428123 /* UtilisateurDetailView.swift */; };
-		B76D84F227C4CD0100C8BCFC /* PreferenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76D84F127C4CD0100C8BCFC /* PreferenceView.swift */; };
-		B76D84F427C4CE2200C8BCFC /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76D84F327C4CE2200C8BCFC /* Store.swift */; };
-		B76D84F727C4D09600C8BCFC /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76D84F627C4D09600C8BCFC /* StoreService.swift */; };
-		B76D84F927C4D60D00C8BCFC /* StoreDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76D84F827C4D60D00C8BCFC /* StoreDTO.swift */; };
-		B76D84FC27C4E10C00C8BCFC /* StoreIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76D84FB27C4E10C00C8BCFC /* StoreIntent.swift */; };
-		B76D84FE27C4EAD500C8BCFC /* StoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76D84FD27C4EAD500C8BCFC /* StoreViewModel.swift */; };
 		6F3B82DD27C4C45600428123 /* UtilisateurService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82DC27C4C45600428123 /* UtilisateurService.swift */; };
 /* End PBXBuildFile section */
 
@@ -56,12 +50,6 @@
 		6F3B82CA27C11B1100428123 /* UtilisateurViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilisateurViewModel.swift; sourceTree = "<group>"; };
 		6F3B82CE27C11D9C00428123 /* UtilisateurListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilisateurListView.swift; sourceTree = "<group>"; };
 		6F3B82D527C12A7500428123 /* UtilisateurDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilisateurDetailView.swift; sourceTree = "<group>"; };
-		B76D84F127C4CD0100C8BCFC /* PreferenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceView.swift; sourceTree = "<group>"; };
-		B76D84F327C4CE2200C8BCFC /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
-		B76D84F627C4D09600C8BCFC /* StoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
-		B76D84F827C4D60D00C8BCFC /* StoreDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreDTO.swift; sourceTree = "<group>"; };
-		B76D84FB27C4E10C00C8BCFC /* StoreIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreIntent.swift; sourceTree = "<group>"; };
-		B76D84FD27C4EAD500C8BCFC /* StoreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreViewModel.swift; sourceTree = "<group>"; };
 		6F3B82DC27C4C45600428123 /* UtilisateurService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilisateurService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -125,7 +113,6 @@
 			isa = PBXGroup;
 			children = (
 				6F3B82C127C1102700428123 /* Utilisateur.swift */,
-				B76D84F327C4CE2200C8BCFC /* Store.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -133,7 +120,6 @@
 		6F3B82A327BE7C7E00428123 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B76D84F027C4CCD300C8BCFC /* Preference */,
 				6F3B82CC27C11D7800428123 /* Utilisateur */,
 				6F3B82B427BFC52800428123 /* Fiche-Technique */,
 				6F3B82AF27BFBD2E00428123 /* Menu */,
@@ -153,7 +139,6 @@
 			isa = PBXGroup;
 			children = (
 				6F3B82BE27C10F8300428123 /* UtilisateurDTO.swift */,
-				B76D84F827C4D60D00C8BCFC /* StoreDTO.swift */,
 			);
 			path = DTOs;
 			sourceTree = "<group>";
@@ -161,7 +146,6 @@
 		6F3B82A627BE7D8E00428123 /* ViewModels-Intents */ = {
 			isa = PBXGroup;
 			children = (
-				B76D84FA27C4E0FA00C8BCFC /* Store */,
 				6F3B82C327C117C500428123 /* Utilisateur */,
 			);
 			path = "ViewModels-Intents";
@@ -232,18 +216,10 @@
 			isa = PBXGroup;
 			children = (
 				6F3B82DB27C4C44200428123 /* Utilisateur */,
-        B76D84F627C4D09600C8BCFC /* StoreService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
 		};
-		B76D84FA27C4E0FA00C8BCFC /* Store */ = {
-			isa = PBXGroup;
-			children = (
-				B76D84FB27C4E10C00C8BCFC /* StoreIntent.swift */,
-				B76D84FD27C4EAD500C8BCFC /* StoreViewModel.swift */,
-			);
-			path = Store;
 		6F3B82DB27C4C44200428123 /* Utilisateur */ = {
 			isa = PBXGroup;
 			children = (
@@ -331,24 +307,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				6F3B82B127BFBE8D00428123 /* TestView.swift in Sources */,
-				B76D84FE27C4EAD500C8BCFC /* StoreViewModel.swift in Sources */,
 				6F3B829727BE7B6D00428123 /* MainView.swift in Sources */,
 				6F3B82AA27BE916400428123 /* MenuView.swift in Sources */,
 				6F3B82CB27C11B1100428123 /* UtilisateurViewModel.swift in Sources */,
 				6F3B82C627C118AE00428123 /* UtilisateurListViewModel.swift in Sources */,
-				B76D84F727C4D09600C8BCFC /* StoreService.swift in Sources */,
 				6F3B82A827BE8F4E00428123 /* FicheTechniqueListView.swift in Sources */,
 				6F3B82AE27BFBB0C00428123 /* Theme.swift in Sources */,
 				6F3B82B327BFC47600428123 /* Color.swift in Sources */,
 				6F3B82C827C1196700428123 /* UtilisateurIntent.swift in Sources */,
-				B76D84F227C4CD0100C8BCFC /* PreferenceView.swift in Sources */,
-				B76D84FC27C4E10C00C8BCFC /* StoreIntent.swift in Sources */,
-				B76D84F427C4CE2200C8BCFC /* Store.swift in Sources */,
 				6F3B82BF27C10F8400428123 /* UtilisateurDTO.swift in Sources */,
 				6F3B82D627C12A7500428123 /* UtilisateurDetailView.swift in Sources */,
 				6F3B829527BE7B6D00428123 /* ProjetAWI_IOSApp.swift in Sources */,
 				6F3B82C227C1102700428123 /* Utilisateur.swift in Sources */,
-				B76D84F927C4D60D00C8BCFC /* StoreDTO.swift in Sources */,
 				6F3B82CF27C11D9C00428123 /* UtilisateurListView.swift in Sources */,
 				6F3B82AC27BFB98200428123 /* UIColor.swift in Sources */,
 				6F3B82DD27C4C45600428123 /* UtilisateurService.swift in Sources */,
