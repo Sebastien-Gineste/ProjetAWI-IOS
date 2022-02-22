@@ -39,7 +39,7 @@ struct UtilisateurDetailView : View {
             }
             HStack{
                 Text("Type : ")
-                Picker("Rôle", selection : $utilisateurVM.utilisateurs[indice].estAdmin){
+                Picker("Rôle", selection : $utilisateurVM.utilisateurs[indice].type){
                     Text("User").tag(TypeUtilisateur.User)
                     Text("Admin").tag(TypeUtilisateur.Admin)
                 }

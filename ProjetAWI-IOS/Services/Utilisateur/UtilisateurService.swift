@@ -19,7 +19,7 @@ protocol CurrentUserServiceObserver{
     func emit(to : Utilisateur)
 }
 
-public class UtilisateurService{
+public class UtilisateurService : ObservableObject{
     public static let instance = UtilisateurService()
     
     private let firestore = Firestore.firestore()
@@ -28,17 +28,33 @@ public class UtilisateurService{
     
     @Published var currentUtilisateur : Utilisateur{ // regarde si déconnexion ou connexion
         didSet{
-            for obs in self.tabObserversCurrentUser{
-                obs.emit(to: currentUtilisateur)
-            }
+            print("new value : \(currentUtilisateur.email)")
+            emitCurrentUser()
+        }
+        willSet{
+            print("old value : \(currentUtilisateur.email)")
         }
     }
     
     @Published var utilisateurs : [Utilisateur]{
         didSet{
-            for obs in self.tabObservers{
-                obs.emit(to: utilisateurs)
-            }
+            emitListUser()
+            print("new value : \(utilisateurs.count)")
+        }
+        willSet{
+            print("old value : \(utilisateurs.count)")
+        }
+    }
+    
+    func emitCurrentUser(){
+        for obs in self.tabObserversCurrentUser{
+            obs.emit(to: self.currentUtilisateur)
+        }
+    }
+    
+    func emitListUser(){
+        for obs in self.tabObservers{
+            obs.emit(to: self.utilisateurs)
         }
     }
     
@@ -55,7 +71,48 @@ public class UtilisateurService{
     private init(){
         self.utilisateurs = []
         self.currentUtilisateur = Utilisateur(
-            email: "", nom: "", prenom: "", estAdmin: .User, id: "")
+            email: "", nom: "", prenom: "", type: .User, id: "")
+    }
+    
+    func connexion(email : String, mdp : String){
+        firestore.collection("users").whereField("email", isEqualTo: email)
+            .getDocuments(){
+                (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting document : \(err)")
+                }
+                else{
+                    print("gogogo")
+                    if querySnapshot!.documents.count == 1 {
+                        print("good")
+                        let user = querySnapshot!.documents[0].data()
+                        if user["email"]  as? String ?? "" == email && user["motdepasse"] as? String ?? "" == mdp {
+                            // good credential
+                            self.currentUtilisateur = UtilisateurDTO.transformDTO(UtilisateurDTO(
+                               id : querySnapshot!.documents[0].documentID,
+                               email: user["email"] as? String ?? "",
+                               estAdmin: user["estAdmin"] as? Bool ?? false,
+                               motDePasse: "",
+                               nom: user["nom"] as? String ?? "",
+                               prenom: user["prenom"] as? String ?? ""))
+                            self.emitCurrentUser()
+                        }
+                        else{
+                            print("bad password")
+                        }
+                       
+                    }
+                    else{
+                        print("no response")
+                    }
+                }
+            }
+    }
+    
+    func createUtilisateur(util : Utilisateur){
+        self.utilisateurs.append(util)
+        emitListUser()
+        
     }
     
     func getListUtilisateurs(){

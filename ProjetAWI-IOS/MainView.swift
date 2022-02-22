@@ -7,38 +7,9 @@
 
 import SwiftUI
 
-struct MainView: View {
-
-    @ObservedObject var currentUser : Utilisateur = UtilisateurService.instance.currentUtilisateur
-    
-    
+struct MainView: View{
     var body: some View {
-        TabView {
-            FicheTechniqueListView()
-                .tabItem {
-                    Image(systemName: "house")
-                    Text("Fiche")
-                }
-            
-            FicheTechniqueListView()
-                .tabItem {
-                    Image(systemName: "house")
-                    Text("Ingrédient")
-                }
-            
-            FicheTechniqueListView()
-                .tabItem {
-                    Image(systemName: "house")
-                    Text("Allergènes")
-                }
-            
-            UtilisateurListView()
-                .tabItem {
-                    Image(systemName: "house")
-                    Text("compte")
-                }
-        }
-        
+         MenuView()
     }
 }
 

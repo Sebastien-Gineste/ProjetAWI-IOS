@@ -30,7 +30,7 @@ class UtilisateurViewModel : ObservableObject, UtilisateurObserver, Subscriber{
     @Published var nom : String
     @Published var prenom : String
     @Published var email : String
-    @Published var estAdmin : TypeUtilisateur
+    @Published var type : TypeUtilisateur
     @Published var motDePasse : String = ""
 
     @Published var error : UserError = .noError
@@ -40,7 +40,7 @@ class UtilisateurViewModel : ObservableObject, UtilisateurObserver, Subscriber{
         self.email = model.utilisateurs[indice].email
         self.nom = model.utilisateurs[indice].nom
         self.prenom = model.utilisateurs[indice].prenom
-        self.estAdmin = model.utilisateurs[indice].estAdmin
+        self.type = model.utilisateurs[indice].type
         self.indice = indice
         self.model.utilisateurs[indice].observer = self
         
@@ -54,8 +54,8 @@ class UtilisateurViewModel : ObservableObject, UtilisateurObserver, Subscriber{
         self.prenom = prenom
     }
     
-    func changed(estAdmin : TypeUtilisateur) {
-        self.estAdmin = estAdmin
+    func changed(type : TypeUtilisateur) {
+        self.type = type
     }
     
     typealias Input = UtilisateurIntentState
@@ -80,8 +80,8 @@ class UtilisateurViewModel : ObservableObject, UtilisateurObserver, Subscriber{
                 }
             case .changingFirstName(let prenom):
                 self.model.utilisateurs[self.indice].prenom = prenom
-            case .changingIsAdmin(let estAdmin):
-                self.model.utilisateurs[self.indice].estAdmin = estAdmin
+            case .changingType(let type):
+                self.model.utilisateurs[self.indice].type = type
             
         }
         return .none
