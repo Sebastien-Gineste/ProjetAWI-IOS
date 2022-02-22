@@ -10,28 +10,42 @@ import Combine
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
+protocol StoreServiceObserver{
+    func emit( to : Store)
+}
+
 class StoreService {
     private let firestore = Firestore.firestore()
-    @Published var store : Store
+    private var tabObserver : [StoreServiceObserver] = []
+    @Published var store : Store {
+        didSet {
+            for observer in tabObserver {
+                observer.emit(to: store)
+            }
+        }
+    }
+    
     init(){
         self.store = Store(coefCoûtProduction: 0, coefPrixDeVente: 0, coûtForfaitaire: 0, coûtMoyen: 0)
     }
+    
+    func addObserver(observer : StoreServiceObserver){
+        self.tabObserver.append(observer)
+        observer.emit(to: store)
+    }
+    
     func getStore(){
-        firestore.collection("preferences")
+        firestore.collection("preferences").document("store")
             .addSnapshotListener{
                 (data,error) in
-                guard (data?.documents) != nil else{
+                guard (data) != nil else{
                     return
                 }
-                let storeTemp : [Store] = data!.documents.map{
-                    (doc) -> Store in
-                    return StoreDTO.transformDTO(
-                        StoreDTO(coefCoûtProduction: doc["coefCoûtProduction"] as? Double ?? 0 ,
-                                 coefPrixDeVente: doc["coefPrixDeVente"] as? Double ?? 0,
-                                 coûtForfaitaire: doc["coûtForfaitaire"] as? Double ?? 0,
-                                 coûtMoyen: doc["coûtMoyen"] as? Double ?? 0))
-                }
-                self.store = storeTemp[0]
+                self.store = StoreDTO.transformDTO(
+                    StoreDTO(coefCoûtProduction: data?.data()!["coefCoûtProduction"] as? Double ?? 0 ,
+                             coefPrixDeVente: data?.data()!["coefPrixDeVente"] as? Double ?? 0,
+                             coûtForfaitaire: data?.data()!["coûtForfaitaire"] as? Double ?? 0,
+                             coûtMoyen: data?.data()!["coûtMoyen"] as? Double ?? 0))
             }
     }
 }
