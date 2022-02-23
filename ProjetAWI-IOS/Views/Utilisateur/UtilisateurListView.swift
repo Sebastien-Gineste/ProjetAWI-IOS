@@ -25,10 +25,10 @@ struct UtilisateurListView : View {
     var body : some View {
         NavigationView{
             VStack{
-                Button("Mon compte"){}
+               /* Button("Mon compte"){}
                 NavigationLink(
                     destination: UtilisateurDetailView(model:UtilisateurService.instance.currentUtilisateur)) {
-                }
+                }*/
                 
                 Text("Ajoute un compte")
                 NavigationLink(

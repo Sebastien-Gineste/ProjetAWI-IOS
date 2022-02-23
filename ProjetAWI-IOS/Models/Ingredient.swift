@@ -1,0 +1,82 @@
+//
+//  Ingredient.swift
+//  ProjetAWI-IOS
+//
+//  Created by etud on 23/02/2022.
+//
+protocol IngredientObserver {
+    func changed(nomIngredient: String)
+    func changed(prixUnitaire: Double)
+    func changed(qteIngredient: Double)
+    func changed(unite: String)
+    func changed(categorie: String)
+}
+
+class Ingredient {
+    var observer : IngredientObserver?
+    var id : String?
+    var nomIngredient : String {
+        didSet {
+            if self.nomIngredient != oldValue {
+                if self.nomIngredient.count >= 1 {
+                    self.observer?.changed(nomIngredient: self.nomIngredient)
+                } else {
+                    self.nomIngredient = oldValue
+                }
+            }
+        }
+    }
+    var prixUnitaire : Double {
+        didSet {
+            if self.prixUnitaire != oldValue {
+                if self.prixUnitaire >= 0 {
+                    self.observer?.changed(prixUnitaire: self.prixUnitaire)
+                } else {
+                    self.prixUnitaire = oldValue
+                }
+            }
+        }
+    }
+    var qteIngredient : Double {
+        didSet {
+            if self.qteIngredient != oldValue {
+                if self.qteIngredient >= 0 {
+                    self.observer?.changed(qteIngredient: self.qteIngredient)
+                } else {
+                    self.qteIngredient = oldValue
+                }
+            }
+        }
+    }
+    var unite : String {
+        didSet {
+            if self.unite != oldValue {
+                if self.unite.count >= 1 {
+                    self.observer?.changed(unite: self.unite)
+                } else {
+                    self.unite = oldValue
+                }
+            }
+        }
+    }
+    var categorie : String {
+        didSet {
+            if self.categorie != oldValue {
+                if self.categorie != oldValue {
+                    self.observer?.changed(categorie: self.categorie)
+                } else {
+                    self.categorie = oldValue
+                }
+            }
+        }
+    }
+    init(nomIngredient: String, prixUnitaire : Double, qteIngredient : Double, unite : String, categorie : String, id : String?){
+        self.id = id
+        self.nomIngredient = nomIngredient
+        self.prixUnitaire = prixUnitaire
+        self.qteIngredient = qteIngredient
+        self.unite = unite
+        self.categorie = categorie
+    }
+    
+}

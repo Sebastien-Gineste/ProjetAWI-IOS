@@ -8,14 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		6F3B829527BE7B6D00428123 /* ProjetAWI_IOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B829427BE7B6D00428123 /* ProjetAWI_IOSApp.swift */; };
-		6F3B829727BE7B6D00428123 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B829627BE7B6D00428123 /* MainView.swift */; };
 		6F3B829927BE7B6E00428123 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F3B829827BE7B6E00428123 /* Assets.xcassets */; };
 		6F3B829C27BE7B6E00428123 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F3B829B27BE7B6E00428123 /* Preview Assets.xcassets */; };
 		6F3B82A827BE8F4E00428123 /* FicheTechniqueListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82A727BE8F4E00428123 /* FicheTechniqueListView.swift */; };
 		6F3B82AA27BE916400428123 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82A927BE916400428123 /* MenuView.swift */; };
 		6F3B82AC27BFB98200428123 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82AB27BFB98200428123 /* UIColor.swift */; };
 		6F3B82AE27BFBB0C00428123 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82AD27BFBB0C00428123 /* Theme.swift */; };
-		6F3B82B127BFBE8D00428123 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82B027BFBE8D00428123 /* TestView.swift */; };
 		6F3B82B327BFC47600428123 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82B227BFC47600428123 /* Color.swift */; };
 		6F3B82B827C10DCC00428123 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F3B82B727C10DCC00428123 /* GoogleService-Info.plist */; };
 		6F3B82BB27C10F0F00428123 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 6F3B82BA27C10F0F00428123 /* FirebaseFirestore */; };
@@ -29,19 +27,31 @@
 		6F3B82D627C12A7500428123 /* UtilisateurDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82D527C12A7500428123 /* UtilisateurDetailView.swift */; };
 		6F3B82DD27C4C45600428123 /* UtilisateurService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82DC27C4C45600428123 /* UtilisateurService.swift */; };
 		6FB6532427C51D720074EC91 /* ConnexionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6532327C51D720074EC91 /* ConnexionView.swift */; };
+		6FB6532627C675480074EC91 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6532527C675480074EC91 /* Store.swift */; };
+		6FB6532827C675810074EC91 /* StoreDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6532727C675810074EC91 /* StoreDTO.swift */; };
+		6FB6532A27C675C30074EC91 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6532927C675C30074EC91 /* StoreService.swift */; };
+		6FB6532D27C676010074EC91 /* StoreIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6532C27C676010074EC91 /* StoreIntent.swift */; };
+		6FB6532F27C676210074EC91 /* StoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6532E27C676210074EC91 /* StoreViewModel.swift */; };
+		6FB6533227C676510074EC91 /* PreferenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6533127C676510074EC91 /* PreferenceView.swift */; };
+		6FB6533427C678010074EC91 /* Ingredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6533327C678010074EC91 /* Ingredient.swift */; };
+		6FB6533627C678230074EC91 /* Allergène.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6533527C678230074EC91 /* Allergène.swift */; };
+		6FB6533827C679080074EC91 /* IngredientDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6533727C679080074EC91 /* IngredientDTO.swift */; };
+		6FB6533A27C6794F0074EC91 /* AllergèneDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6533927C6794F0074EC91 /* AllergèneDTO.swift */; };
+		6FB6533C27C6798C0074EC91 /* IngredientService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6533B27C6798C0074EC91 /* IngredientService.swift */; };
+		6FB6533F27C67A090074EC91 /* IngredientListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6533E27C67A090074EC91 /* IngredientListViewModel.swift */; };
+		6FB6534127C67BA00074EC91 /* IngredientIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6534027C67BA00074EC91 /* IngredientIntent.swift */; };
+		6FB6534427C67CE90074EC91 /* IngredientListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6534327C67CE90074EC91 /* IngredientListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		6F3B829127BE7B6D00428123 /* ProjetAWI-IOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ProjetAWI-IOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F3B829427BE7B6D00428123 /* ProjetAWI_IOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjetAWI_IOSApp.swift; sourceTree = "<group>"; };
-		6F3B829627BE7B6D00428123 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		6F3B829827BE7B6E00428123 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6F3B829B27BE7B6E00428123 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		6F3B82A727BE8F4E00428123 /* FicheTechniqueListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FicheTechniqueListView.swift; sourceTree = "<group>"; };
 		6F3B82A927BE916400428123 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		6F3B82AB27BFB98200428123 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		6F3B82AD27BFBB0C00428123 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
-		6F3B82B027BFBE8D00428123 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		6F3B82B227BFC47600428123 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		6F3B82B727C10DCC00428123 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6F3B82BE27C10F8300428123 /* UtilisateurDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilisateurDTO.swift; sourceTree = "<group>"; };
@@ -53,6 +63,20 @@
 		6F3B82D527C12A7500428123 /* UtilisateurDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilisateurDetailView.swift; sourceTree = "<group>"; };
 		6F3B82DC27C4C45600428123 /* UtilisateurService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilisateurService.swift; sourceTree = "<group>"; };
 		6FB6532327C51D720074EC91 /* ConnexionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnexionView.swift; sourceTree = "<group>"; };
+		6FB6532527C675480074EC91 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		6FB6532727C675810074EC91 /* StoreDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreDTO.swift; sourceTree = "<group>"; };
+		6FB6532927C675C30074EC91 /* StoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
+		6FB6532C27C676010074EC91 /* StoreIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreIntent.swift; sourceTree = "<group>"; };
+		6FB6532E27C676210074EC91 /* StoreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreViewModel.swift; sourceTree = "<group>"; };
+		6FB6533127C676510074EC91 /* PreferenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceView.swift; sourceTree = "<group>"; };
+		6FB6533327C678010074EC91 /* Ingredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ingredient.swift; sourceTree = "<group>"; };
+		6FB6533527C678230074EC91 /* Allergène.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Allergène.swift"; sourceTree = "<group>"; };
+		6FB6533727C679080074EC91 /* IngredientDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientDTO.swift; sourceTree = "<group>"; };
+		6FB6533927C6794F0074EC91 /* AllergèneDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AllergèneDTO.swift"; sourceTree = "<group>"; };
+		6FB6533B27C6798C0074EC91 /* IngredientService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientService.swift; sourceTree = "<group>"; };
+		6FB6533E27C67A090074EC91 /* IngredientListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientListViewModel.swift; sourceTree = "<group>"; };
+		6FB6534027C67BA00074EC91 /* IngredientIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientIntent.swift; sourceTree = "<group>"; };
+		6FB6534327C67CE90074EC91 /* IngredientListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,10 +119,8 @@
 				6F3B82A327BE7C7E00428123 /* Views */,
 				6F3B82A227BE7C6800428123 /* Models */,
 				6F3B829427BE7B6D00428123 /* ProjetAWI_IOSApp.swift */,
-				6F3B829627BE7B6D00428123 /* MainView.swift */,
 				6F3B829827BE7B6E00428123 /* Assets.xcassets */,
 				6F3B829A27BE7B6E00428123 /* Preview Content */,
-				6F3B82B027BFBE8D00428123 /* TestView.swift */,
 			);
 			path = "ProjetAWI-IOS";
 			sourceTree = "<group>";
@@ -115,6 +137,9 @@
 			isa = PBXGroup;
 			children = (
 				6F3B82C127C1102700428123 /* Utilisateur.swift */,
+				6FB6532527C675480074EC91 /* Store.swift */,
+				6FB6533327C678010074EC91 /* Ingredient.swift */,
+				6FB6533527C678230074EC91 /* Allergène.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -122,6 +147,8 @@
 		6F3B82A327BE7C7E00428123 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				6FB6534227C67CCD0074EC91 /* Ingredient */,
+				6FB6533027C676370074EC91 /* Preference */,
 				6F3B82CC27C11D7800428123 /* Utilisateur */,
 				6F3B82B427BFC52800428123 /* Fiche-Technique */,
 				6F3B82AF27BFBD2E00428123 /* Menu */,
@@ -141,6 +168,9 @@
 			isa = PBXGroup;
 			children = (
 				6F3B82BE27C10F8300428123 /* UtilisateurDTO.swift */,
+				6FB6532727C675810074EC91 /* StoreDTO.swift */,
+				6FB6533727C679080074EC91 /* IngredientDTO.swift */,
+				6FB6533927C6794F0074EC91 /* AllergèneDTO.swift */,
 			);
 			path = DTOs;
 			sourceTree = "<group>";
@@ -148,6 +178,8 @@
 		6F3B82A627BE7D8E00428123 /* ViewModels-Intents */ = {
 			isa = PBXGroup;
 			children = (
+				6FB6533D27C679DE0074EC91 /* Ingredient */,
+				6FB6532B27C675F10074EC91 /* Store */,
 				6F3B82C327C117C500428123 /* Utilisateur */,
 			);
 			path = "ViewModels-Intents";
@@ -219,6 +251,8 @@
 			isa = PBXGroup;
 			children = (
 				6F3B82DB27C4C44200428123 /* Utilisateur */,
+				6FB6532927C675C30074EC91 /* StoreService.swift */,
+				6FB6533B27C6798C0074EC91 /* IngredientService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -229,6 +263,40 @@
 				6F3B82DC27C4C45600428123 /* UtilisateurService.swift */,
 			);
 			path = Utilisateur;
+			sourceTree = "<group>";
+		};
+		6FB6532B27C675F10074EC91 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				6FB6532C27C676010074EC91 /* StoreIntent.swift */,
+				6FB6532E27C676210074EC91 /* StoreViewModel.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
+		6FB6533027C676370074EC91 /* Preference */ = {
+			isa = PBXGroup;
+			children = (
+				6FB6533127C676510074EC91 /* PreferenceView.swift */,
+			);
+			path = Preference;
+			sourceTree = "<group>";
+		};
+		6FB6533D27C679DE0074EC91 /* Ingredient */ = {
+			isa = PBXGroup;
+			children = (
+				6FB6533E27C67A090074EC91 /* IngredientListViewModel.swift */,
+				6FB6534027C67BA00074EC91 /* IngredientIntent.swift */,
+			);
+			path = Ingredient;
+			sourceTree = "<group>";
+		};
+		6FB6534227C67CCD0074EC91 /* Ingredient */ = {
+			isa = PBXGroup;
+			children = (
+				6FB6534327C67CE90074EC91 /* IngredientListView.swift */,
+			);
+			path = Ingredient;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -309,23 +377,35 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6F3B82B127BFBE8D00428123 /* TestView.swift in Sources */,
-				6F3B829727BE7B6D00428123 /* MainView.swift in Sources */,
 				6F3B82AA27BE916400428123 /* MenuView.swift in Sources */,
+				6FB6533A27C6794F0074EC91 /* AllergèneDTO.swift in Sources */,
+				6FB6532627C675480074EC91 /* Store.swift in Sources */,
 				6F3B82CB27C11B1100428123 /* UtilisateurViewModel.swift in Sources */,
 				6F3B82C627C118AE00428123 /* UtilisateurListViewModel.swift in Sources */,
 				6F3B82A827BE8F4E00428123 /* FicheTechniqueListView.swift in Sources */,
+				6FB6533C27C6798C0074EC91 /* IngredientService.swift in Sources */,
 				6F3B82AE27BFBB0C00428123 /* Theme.swift in Sources */,
 				6F3B82B327BFC47600428123 /* Color.swift in Sources */,
 				6F3B82C827C1196700428123 /* UtilisateurIntent.swift in Sources */,
 				6F3B82BF27C10F8400428123 /* UtilisateurDTO.swift in Sources */,
 				6F3B82D627C12A7500428123 /* UtilisateurDetailView.swift in Sources */,
+				6FB6534427C67CE90074EC91 /* IngredientListView.swift in Sources */,
+				6FB6532D27C676010074EC91 /* StoreIntent.swift in Sources */,
+				6FB6533227C676510074EC91 /* PreferenceView.swift in Sources */,
 				6FB6532427C51D720074EC91 /* ConnexionView.swift in Sources */,
 				6F3B829527BE7B6D00428123 /* ProjetAWI_IOSApp.swift in Sources */,
+				6FB6534127C67BA00074EC91 /* IngredientIntent.swift in Sources */,
+				6FB6533827C679080074EC91 /* IngredientDTO.swift in Sources */,
 				6F3B82C227C1102700428123 /* Utilisateur.swift in Sources */,
 				6F3B82CF27C11D9C00428123 /* UtilisateurListView.swift in Sources */,
+				6FB6532827C675810074EC91 /* StoreDTO.swift in Sources */,
 				6F3B82AC27BFB98200428123 /* UIColor.swift in Sources */,
+				6FB6533627C678230074EC91 /* Allergène.swift in Sources */,
+				6FB6533427C678010074EC91 /* Ingredient.swift in Sources */,
+				6FB6533F27C67A090074EC91 /* IngredientListViewModel.swift in Sources */,
 				6F3B82DD27C4C45600428123 /* UtilisateurService.swift in Sources */,
+				6FB6532F27C676210074EC91 /* StoreViewModel.swift in Sources */,
+				6FB6532A27C675C30074EC91 /* StoreService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

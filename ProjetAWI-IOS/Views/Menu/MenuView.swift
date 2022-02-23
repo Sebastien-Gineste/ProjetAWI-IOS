@@ -23,7 +23,7 @@ struct MenuView: View {
             
             if user.currentUtilisateur.estConnecte() {
                 
-                FicheTechniqueListView()
+                IngredientListView(vm:IngredientListViewModel())
                     .tabItem {
                         Image(systemName: "list.bullet.rectangle.portrait.fill")
                         Text("Ingrédient")
@@ -42,10 +42,10 @@ struct MenuView: View {
                     }
                 
                 if user.currentUtilisateur.estAdmin() {
-                    FicheTechniqueListView()
+                    PreferenceView(vm:StoreViewModel())
                         .tabItem{
                             Image(systemName: "gearshape.2.fill")
-                            Text("Paramètre")
+                            Text("Préférences")
                         }
                 }
             }
