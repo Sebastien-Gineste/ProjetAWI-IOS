@@ -25,6 +25,20 @@ struct UtilisateurListView : View {
     var body : some View {
         NavigationView{
             VStack{
+                Button("Mon compte"){}
+                NavigationLink(
+                    destination: UtilisateurDetailView(model:UtilisateurService.instance.currentUtilisateur)) {
+                }
+                
+                Text("Ajoute un compte")
+                NavigationLink(
+                    destination: UtilisateurDetailView(model: Utilisateur(email: "", nom: "", prenom: "", type: .User, id: ""))) {
+                    
+                }
+                
+                
+                
+                
                 List {
                    HStack(spacing:0){
                        Text("Nom").frame(maxWidth:.infinity)
@@ -37,8 +51,7 @@ struct UtilisateurListView : View {
                            Text(utilisateur.nom).frame(maxWidth:.infinity)
                            Text("\(utilisateur.prenom)").bold().frame(maxWidth:.infinity)
                            Text("\(utilisateur.type.rawValue)").italic().frame(maxWidth:.infinity)
-                           NavigationLink(destination: UtilisateurDetailView(vm: utilisateurModel, indice: index)){
-                               
+                           NavigationLink(destination: UtilisateurDetailView(model: utilisateur, modelList: utilisateurModel)){
                            }.frame(maxWidth:0)
                        
                        }.frame(minWidth : 0, maxWidth: .infinity)

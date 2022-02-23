@@ -19,12 +19,17 @@ protocol CurrentUserServiceObserver{
     func emit(to : Utilisateur)
 }
 
+protocol UserServiceResultObserver{
+    func emit(to : Result<String, UserError>)
+}
+
 public class UtilisateurService : ObservableObject{
     public static let instance = UtilisateurService()
     
     private let firestore = Firestore.firestore()
     private var tabObservers : [UserServiceObserver] = []
     private var tabObserversCurrentUser : [CurrentUserServiceObserver] = []
+    private var tabObserversResult : [UserServiceResultObserver] = []
     
     @Published var currentUtilisateur : Utilisateur{ // regarde si déconnexion ou connexion
         didSet{
@@ -51,6 +56,7 @@ public class UtilisateurService : ObservableObject{
             obs.emit(to: self.currentUtilisateur)
         }
     }
+
     
     func emitListUser(){
         for obs in self.tabObservers{
@@ -71,7 +77,7 @@ public class UtilisateurService : ObservableObject{
     private init(){
         self.utilisateurs = []
         self.currentUtilisateur = Utilisateur(
-            email: "", nom: "", prenom: "", type: .User, id: "")
+            email: "admin@gmail.com", nom: "admin", prenom: "admin", type: .Admin, id: "")
     }
     
     func connexion(email : String, mdp : String){
@@ -110,9 +116,50 @@ public class UtilisateurService : ObservableObject{
     }
     
     func createUtilisateur(util : Utilisateur){
-        self.utilisateurs.append(util)
-        emitListUser()
-        
+        firestore.collection("users").addDocument(data: UtilisateurDTO.transformToDTO(util)){
+            (error) in if let _ = error {
+                self.sendResult(result: .failure(.createError))
+            } else {
+                self.sendResult(result: .success("Création effectué"))
+            }
+        }
+    }
+    
+    func deconnexion(){
+        self.currentUtilisateur = Utilisateur(email: "", nom: "", prenom: "", type: .User, id: "")
+    }
+    
+    func deleteUtilisateur(id : String){
+        firestore.collection("users").document("\(id)").delete() {
+            (error) in if let _ = error {
+                self.sendResult(result: .failure(.deleteError))
+            } else{
+                self.sendResult(result: .success("Suppresion effectué !"))
+                if id == self.currentUtilisateur.id {
+                    self.deconnexion()
+                }
+            }
+        }
+    }
+    
+    func updateUtilisateur(util : Utilisateur){
+        print("updat efirestore, id : \(util.id)")
+        firestore.collection("users").document("\(util.id)").updateData(
+            UtilisateurDTO.transformToDTO(util)
+        ) {
+            (error) in if let _ = error {
+                self.sendResult(result: .failure(.updateError))
+            } else {
+                self.sendResult(result: .success("Mise à jour effectué du compte"))
+            }
+        }
+    }
+    
+    private func sendResult(result : Result<String, UserError>){
+        for obs in self.tabObserversResult{
+            obs.emit(to: result)
+        }
+
     }
     
     func getListUtilisateurs(){

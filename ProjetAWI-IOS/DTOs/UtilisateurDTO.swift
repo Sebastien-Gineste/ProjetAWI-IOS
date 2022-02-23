@@ -8,7 +8,7 @@
 import Foundation
 
 struct UtilisateurDTO : Identifiable{
-    var id : String? = UUID().uuidString
+    var id : String = UUID().uuidString
     var email : String
     var estAdmin : Bool
     var motDePasse : String
@@ -21,5 +21,20 @@ struct UtilisateurDTO : Identifiable{
                            prenom: utilisateurDTO.prenom,
                            type: utilisateurDTO.estAdmin ? TypeUtilisateur.Admin : TypeUtilisateur.User,
                            id: utilisateurDTO.id)
+    }
+    
+    static func transformToDTO(_ user : Utilisateur) -> [String : Any]{
+        var tab : [String : Any] = [
+            "email" : user.email,
+            "estAdmin" : (user.type == .Admin) ? true : false,
+            "nom" : user.nom,
+            "prenom" : user.prenom
+        ]
+        
+        if user.motDePasse != "" {
+            tab["motdepasse"] = user.motDePasse
+        }
+        
+        return tab
     }
 }

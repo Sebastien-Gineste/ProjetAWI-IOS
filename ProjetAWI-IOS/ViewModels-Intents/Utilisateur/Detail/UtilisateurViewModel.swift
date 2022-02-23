@@ -14,8 +14,20 @@ enum UserError : Error, Equatable, CustomStringConvertible {
     case emailError(String)
     case mdpError(String)
     case noError
+    case updateError
+    case createError
+    case deleteError
     var description: String {
         switch self {
+        case .updateError:
+            return "Erreur de modification"
+            
+        case .deleteError:
+            return "Erreur lors de la suppresion"
+            
+        case .createError:
+            return "Erreir durant la création du compte"
+
         case .errorName(let name):
             return "Erreur avec le nom : \(name)"
         default :
@@ -25,25 +37,25 @@ enum UserError : Error, Equatable, CustomStringConvertible {
 }
 
 class UtilisateurViewModel : ObservableObject, UtilisateurObserver, Subscriber{
-    private var model : UtilisateurListViewModel
-    private var indice : Int
+    private var model : Utilisateur
+    private var userService : UtilisateurService = UtilisateurService.instance
     @Published var nom : String
     @Published var prenom : String
     @Published var email : String
     @Published var type : TypeUtilisateur
     @Published var motDePasse : String = ""
 
-    @Published var error : UserError = .noError
+    @Published var result : Result<String, UserError> = .success("")
     
-    init(model : UtilisateurListViewModel, indice : Int){
+    
+    
+    init(from model : Utilisateur){
         self.model = model
-        self.email = model.utilisateurs[indice].email
-        self.nom = model.utilisateurs[indice].nom
-        self.prenom = model.utilisateurs[indice].prenom
-        self.type = model.utilisateurs[indice].type
-        self.indice = indice
-        self.model.utilisateurs[indice].observer = self
-        
+        self.email = model.email
+        self.nom = model.nom
+        self.prenom = model.prenom
+        self.type = model.type
+        self.model.observer = self
     }
     
     func changed(nom: String) {
@@ -73,15 +85,28 @@ class UtilisateurViewModel : ObservableObject, UtilisateurObserver, Subscriber{
         switch input {
             case .ready: break
             case .changingName(let nom):
-                self.model.utilisateurs[self.indice].nom = nom
-                if nom != self.model.utilisateurs[self.indice].nom {
-                    self.error = .errorName(nom)
-                    self.nom = nom
-                }
+           
+            self.model.nom = nom
+            if nom != self.model.nom {
+                self.result = .failure(.errorName(nom))
+                self.nom = nom
+            }
+               
             case .changingFirstName(let prenom):
-                self.model.utilisateurs[self.indice].prenom = prenom
+            self.model.prenom = prenom
+                
             case .changingType(let type):
-                self.model.utilisateurs[self.indice].type = type
+            self.model.type = type
+            
+            case .updateDatabase:
+            print("update database receive")
+            self.userService.updateUtilisateur(util: self.model)
+            
+            case .deleteUser:
+            self.userService.deleteUtilisateur(id: self.model.id)
+            
+            case .createUser:
+            self.userService.createUtilisateur(util: self.model)
             
         }
         return .none

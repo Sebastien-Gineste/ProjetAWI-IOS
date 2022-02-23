@@ -20,7 +20,7 @@ enum TypeUtilisateur : String, CaseIterable, Identifiable{
 
 class Utilisateur : ObservableObject{
     var observer : UtilisateurObserver?
-    var id : String?
+    var id : String = UUID().uuidString
     var email : String
     var nom : String {
         didSet {
@@ -38,6 +38,8 @@ class Utilisateur : ObservableObject{
         }
     }
     
+    var motDePasse : String = ""
+    
     func estConnecte() -> Bool{
         return self.email.count > 3 
     }
@@ -46,12 +48,13 @@ class Utilisateur : ObservableObject{
         return self.type == .Admin && self.estConnecte()
     }
     
-    init(email : String, nom : String, prenom : String, type : TypeUtilisateur, id : String?){
+    init(email : String, nom : String, prenom : String, type : TypeUtilisateur, id : String, mdp : String = ""){
         self.email = email
         self.nom = nom
         self.prenom = prenom
         self.type = type
         self.id = id
+        self.motDePasse = mdp
     }
     
 }
