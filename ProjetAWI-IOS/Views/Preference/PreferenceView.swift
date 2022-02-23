@@ -13,7 +13,7 @@ struct PreferenceView : View {
     @ObservedObject var storeModel : StoreViewModel = StoreViewModel()
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
-    let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
+    let columns : [GridItem] = [GridItem(.flexible()),GridItem(.fixed(50))]
     let formatter : NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
