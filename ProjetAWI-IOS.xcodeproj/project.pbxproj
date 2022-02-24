@@ -48,6 +48,7 @@
 		6FB6535027C76DAD0074EC91 /* AllergèneListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6534F27C76DAD0074EC91 /* AllergèneListView.swift */; };
 		6FB6535227C7BC9C0074EC91 /* AllergèneDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6535127C7BC9C0074EC91 /* AllergèneDetailView.swift */; };
 		6FB6535427C7BDCA0074EC91 /* AllergèneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6535327C7BDCA0074EC91 /* AllergèneViewModel.swift */; };
+		6FB6535627C80F880074EC91 /* AllergèneCreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6535527C80F880074EC91 /* AllergèneCreateView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -91,6 +92,7 @@
 		6FB6534F27C76DAD0074EC91 /* AllergèneListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AllergèneListView.swift"; sourceTree = "<group>"; };
 		6FB6535127C7BC9C0074EC91 /* AllergèneDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AllergèneDetailView.swift"; sourceTree = "<group>"; };
 		6FB6535327C7BDCA0074EC91 /* AllergèneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AllergèneViewModel.swift"; sourceTree = "<group>"; };
+		6FB6535527C80F880074EC91 /* AllergèneCreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AllergèneCreateView.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -333,6 +335,7 @@
 			children = (
 				6FB6534F27C76DAD0074EC91 /* AllergèneListView.swift */,
 				6FB6535127C7BC9C0074EC91 /* AllergèneDetailView.swift */,
+				6FB6535527C80F880074EC91 /* AllergèneCreateView.swift */,
 			);
 			name = "Allergène";
 			path = "Allergène";
@@ -422,6 +425,7 @@
 				6FB6534827C767B20074EC91 /* AllergèneService.swift in Sources */,
 				6F3B82CB27C11B1100428123 /* UtilisateurViewModel.swift in Sources */,
 				6F3B82C627C118AE00428123 /* UtilisateurListViewModel.swift in Sources */,
+				6FB6535627C80F880074EC91 /* AllergèneCreateView.swift in Sources */,
 				6F3B82A827BE8F4E00428123 /* FicheTechniqueListView.swift in Sources */,
 				6FB6533C27C6798C0074EC91 /* IngredientService.swift in Sources */,
 				6F3B82AE27BFBB0C00428123 /* Theme.swift in Sources */,

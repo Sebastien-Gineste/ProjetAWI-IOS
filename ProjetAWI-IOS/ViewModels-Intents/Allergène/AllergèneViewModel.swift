@@ -12,20 +12,22 @@ import Combine
 enum AllergèneViewModelError : Error, Equatable, CustomStringConvertible {
     case noError
     case updateError
+    case createError
     var description: String {
         switch self {
         case .noError : return "Aucune erreur"
         case .updateError : return "Erreur de mise à jour"
+        case .createError : return "Erreur de création"
         }
     }
 }
 
 class AllergèneViewModel : ObservableObject, Subscriber, AllergèneServiceObserver, AllergèneObserver {
 
-    private var allergèneService : AllergèneService = AllergèneService.instance
+    private var allergèneService : AllergèneService = AllergèneService()
     private var allergène : Allergène
     @Published var nom : String
-    @Published var result : Result<String, AllergèneViewModelError> = .success("")
+    @Published var result : Result<String, AllergèneViewModelError> = .failure(.noError)
     
     init(allergèneListViewModel : AllergèneListViewModel? = nil, indice : Int? = nil) {
         if let indice = indice , let allergèneListViewModel = allergèneListViewModel{
@@ -36,6 +38,7 @@ class AllergèneViewModel : ObservableObject, Subscriber, AllergèneServiceObser
             self.nom = ""
         }
         self.allergèneService.addObserver(observer: self)
+        self.allergène.observer = self
     }
     
     func emit(to: Result<String, AllergèneViewModelError>) {
@@ -64,6 +67,8 @@ class AllergèneViewModel : ObservableObject, Subscriber, AllergèneServiceObser
             }
         case .updateDatabase:
            self.allergèneService.updateAllergène(allergène: self.allergène)
+        case .addAllergène:
+            self.allergèneService.addAllergène(allergène: self.allergène)
         }
         return .none
     }

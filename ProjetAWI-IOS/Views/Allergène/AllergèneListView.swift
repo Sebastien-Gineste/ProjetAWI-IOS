@@ -56,7 +56,7 @@ struct AllergèneListView : View {
                 HStack{
                     LazyVGrid(columns: columns){
                         EditButton()
-                        NavigationLink(destination: AllergèneDetailView()){
+                        NavigationLink(destination: AllergèneCreateView()){
                             Text("Ajout")
                         }
                     }

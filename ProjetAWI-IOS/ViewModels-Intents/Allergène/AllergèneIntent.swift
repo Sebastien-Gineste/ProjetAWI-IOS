@@ -17,6 +17,7 @@ enum AllergèneIntentState : Equatable {
     case ready
     case changingNom(String)
     case updateDatabase
+    case addAllergène
 }
 
 struct AllergèneIntent  {
@@ -33,6 +34,10 @@ struct AllergèneIntent  {
     
     func intentToDeleteAllergène(id : Int){
         self.stateList.send(AllergèneListIntentState.deleteAllergène(id))
+    }
+    
+    func intentToAddAllergène(){
+        self.stateElement.send(AllergèneIntentState.addAllergène)
     }
     
     func addObserver(_ allergèneListView : AllergèneListViewModel){

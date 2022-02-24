@@ -8,16 +8,17 @@
 import Foundation
 import SwiftUI
 
-struct AllergèneDetailView: View {
+struct AllergèneCreateView: View {
+    @Environment(\.presentationMode) var presentationMode
     var intent : AllergèneIntent
     @ObservedObject var allergène : AllergèneViewModel
     let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
     
-    init(vm: AllergèneListViewModel, indice : Int){
+    init(){
         self.intent = AllergèneIntent()
-        self.allergène = AllergèneViewModel(allergèneListViewModel: vm, indice: indice)
+        self.allergène = AllergèneViewModel()
         self.intent.addObserver(self.allergène)
     }
     
@@ -37,8 +38,9 @@ struct AllergèneDetailView: View {
                     result in
                     switch result {
                     case let .success(msg):
-                        self.alertMessage = msg
-                        self.showingAlert = true
+                       self.alertMessage = msg
+                       self.showingAlert = true
+                        break
                     case let .failure(error):
                         switch error {
                         case .updateError, .createError :
@@ -56,10 +58,11 @@ struct AllergèneDetailView: View {
                     }
                 }
             Spacer()
-            Button("Modifier"){
-                intent.intentToUpdateDatabase()
+            Button("Ajout"){
+                intent.intentToAddAllergène()
+                self.presentationMode.wrappedValue.dismiss()
             }.padding(20)
         }
-        .navigationBarTitle(Text("Détails de l'allergène"),displayMode: .inline)
+        .navigationBarTitle(Text("Ajout d'allergène"),displayMode: .inline)
         
     }}

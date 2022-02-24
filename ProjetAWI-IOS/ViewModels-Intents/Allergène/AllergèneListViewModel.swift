@@ -23,7 +23,7 @@ enum AllergèneListViewModelError : Error, Equatable, CustomStringConvertible {
 
 class AllergèneListViewModel : ObservableObject, Subscriber, AllergèneListServiceObserver {
 
-    private var allergèneService : AllergèneService = AllergèneService.instance
+    private var allergèneService : AllergèneService = AllergèneService()
     @Published var tabAllergène : [Allergène]
     @Published var result : Result<String, AllergèneListViewModelError> = .success("")
 

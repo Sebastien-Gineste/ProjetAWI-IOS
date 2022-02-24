@@ -21,7 +21,6 @@ protocol AllergèneServiceObserver {
 
 class AllergèneService {
     
-    public static let instance = AllergèneService()
     private let firestore = Firestore.firestore()
     private var tabListObserver : [AllergèneListServiceObserver] = []
     private var tabObserver : [AllergèneServiceObserver] = []
@@ -33,7 +32,7 @@ class AllergèneService {
         }
     }
     
-    private init(){
+    init(){
         self.tabAllergène = []
     }
     
@@ -75,12 +74,21 @@ class AllergèneService {
     }
     
     func deleteAllergène(id : String){
-        print("là")
         firestore.collection("allergenes").document(id).delete() {
             (error) in if let _ = error {
                 self.sendResultList(result: .failure(.deleteError))
             } else{
                 self.sendResultList(result: .success("Suppresion effectué !"))
+            }
+        }
+    }
+    
+    func addAllergène(allergène : Allergène){
+        firestore.collection("allergenes").addDocument(data: AllergèneDTO.transformToDTO(allergène)){
+            (error) in if let _ = error {
+                self.sendResultElement(result: .failure(.createError))
+            } else {
+                self.sendResultElement(result: .success("Création effectué"))
             }
         }
     }
