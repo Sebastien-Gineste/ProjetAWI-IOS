@@ -11,6 +11,8 @@ import SwiftUI
 
 struct UtilisateurListView : View {
     
+    @State private var action: Int? = 0
+    
     @StateObject var utilisateurModel : UtilisateurListViewModel = UtilisateurListViewModel()
     @State private var searchText : String = ""
     
@@ -25,16 +27,34 @@ struct UtilisateurListView : View {
     var body : some View {
         NavigationView{
             VStack{
+                /*NavigationLink(destination: UtilisateurDetailView(model:UtilisateurService.instance.currentUtilisateur), tag: 1, selection: $action) {
+                    
+                }
+                NavigationLink(destination:UtilisateurDetailView(model: Utilisateur(email: "", nom: "", prenom: "", type: .User, id: "")), tag: 2, selection: $action) {
+                    
+                }
+                
+                Button("Mon compte"){
+                        //perform some tasks if needed before opening Destination view
+                        self.action = 1
+                    }
+                Button("Créer un compte"){
+                        //perform some tasks if needed before opening Destination view
+                        self.action = 2
+                    }*/
+                NavigationLink(destination:UtilisateurDetailView(model: Utilisateur(email: "", nom: "", prenom: "", type: .User, id: ""))){
+                    Text("ttgvg")
+                }
                /* Button("Mon compte"){}
                 NavigationLink(
                     destination: UtilisateurDetailView(model:UtilisateurService.instance.currentUtilisateur)) {
                 }*/
                 
-                Text("Ajoute un compte")
+               /* Text("Ajoute un compte")
                 NavigationLink(
                     destination: UtilisateurDetailView(model: Utilisateur(email: "", nom: "", prenom: "", type: .User, id: ""))) {
                     
-                }
+                }*/
                 
                 
                 
@@ -58,9 +78,6 @@ struct UtilisateurListView : View {
                    }
                    .onDelete{ indexSet in
                        utilisateurModel.utilisateurs.remove(atOffsets: indexSet)
-                   }
-                   .onMove{ indexSet, index in
-                       utilisateurModel.utilisateurs.move(fromOffsets: indexSet, toOffset: index)
                    }
                 }.searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
                     .navigationTitle("Liste des utilisateurs")

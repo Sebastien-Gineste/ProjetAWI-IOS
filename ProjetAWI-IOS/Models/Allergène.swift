@@ -15,7 +15,7 @@ class Allergène {
     var nom : String {
         didSet {
             if self.nom != oldValue {
-                if self.nom.count > 1 {
+                if self.nom.count >= 1 {
                     self.observer?.changed(nom: self.nom)
                 } else {
                     self.nom = oldValue

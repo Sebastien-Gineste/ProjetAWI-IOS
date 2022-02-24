@@ -42,6 +42,12 @@
 		6FB6534127C67BA00074EC91 /* IngredientIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6534027C67BA00074EC91 /* IngredientIntent.swift */; };
 		6FB6534427C67CE90074EC91 /* IngredientListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6534327C67CE90074EC91 /* IngredientListView.swift */; };
 		6FB6534627C6DB870074EC91 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6534527C6DB870074EC91 /* String.swift */; };
+		6FB6534827C767B20074EC91 /* AllergèneService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6534727C767B20074EC91 /* AllergèneService.swift */; };
+		6FB6534B27C76BB60074EC91 /* AllergèneIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6534A27C76BB60074EC91 /* AllergèneIntent.swift */; };
+		6FB6534D27C76BCB0074EC91 /* AllergèneListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6534C27C76BCB0074EC91 /* AllergèneListViewModel.swift */; };
+		6FB6535027C76DAD0074EC91 /* AllergèneListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6534F27C76DAD0074EC91 /* AllergèneListView.swift */; };
+		6FB6535227C7BC9C0074EC91 /* AllergèneDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6535127C7BC9C0074EC91 /* AllergèneDetailView.swift */; };
+		6FB6535427C7BDCA0074EC91 /* AllergèneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6535327C7BDCA0074EC91 /* AllergèneViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -79,6 +85,12 @@
 		6FB6534027C67BA00074EC91 /* IngredientIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientIntent.swift; sourceTree = "<group>"; };
 		6FB6534327C67CE90074EC91 /* IngredientListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientListView.swift; sourceTree = "<group>"; };
 		6FB6534527C6DB870074EC91 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		6FB6534727C767B20074EC91 /* AllergèneService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AllergèneService.swift"; sourceTree = "<group>"; };
+		6FB6534A27C76BB60074EC91 /* AllergèneIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AllergèneIntent.swift"; sourceTree = "<group>"; };
+		6FB6534C27C76BCB0074EC91 /* AllergèneListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AllergèneListViewModel.swift"; sourceTree = "<group>"; };
+		6FB6534F27C76DAD0074EC91 /* AllergèneListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AllergèneListView.swift"; sourceTree = "<group>"; };
+		6FB6535127C7BC9C0074EC91 /* AllergèneDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AllergèneDetailView.swift"; sourceTree = "<group>"; };
+		6FB6535327C7BDCA0074EC91 /* AllergèneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AllergèneViewModel.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +161,7 @@
 		6F3B82A327BE7C7E00428123 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				6FB6534E27C76D930074EC91 /* Allergène */,
 				6FB6534227C67CCD0074EC91 /* Ingredient */,
 				6FB6533027C676370074EC91 /* Preference */,
 				6F3B82CC27C11D7800428123 /* Utilisateur */,
@@ -181,6 +194,7 @@
 		6F3B82A627BE7D8E00428123 /* ViewModels-Intents */ = {
 			isa = PBXGroup;
 			children = (
+				6FB6534927C76B9F0074EC91 /* Allergène */,
 				6FB6533D27C679DE0074EC91 /* Ingredient */,
 				6FB6532B27C675F10074EC91 /* Store */,
 				6F3B82C327C117C500428123 /* Utilisateur */,
@@ -256,6 +270,7 @@
 				6F3B82DB27C4C44200428123 /* Utilisateur */,
 				6FB6532927C675C30074EC91 /* StoreService.swift */,
 				6FB6533B27C6798C0074EC91 /* IngredientService.swift */,
+				6FB6534727C767B20074EC91 /* AllergèneService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -300,6 +315,27 @@
 				6FB6534327C67CE90074EC91 /* IngredientListView.swift */,
 			);
 			path = Ingredient;
+			sourceTree = "<group>";
+		};
+		6FB6534927C76B9F0074EC91 /* Allergène */ = {
+			isa = PBXGroup;
+			children = (
+				6FB6534A27C76BB60074EC91 /* AllergèneIntent.swift */,
+				6FB6534C27C76BCB0074EC91 /* AllergèneListViewModel.swift */,
+				6FB6535327C7BDCA0074EC91 /* AllergèneViewModel.swift */,
+			);
+			name = "Allergène";
+			path = "Allergène";
+			sourceTree = "<group>";
+		};
+		6FB6534E27C76D930074EC91 /* Allergène */ = {
+			isa = PBXGroup;
+			children = (
+				6FB6534F27C76DAD0074EC91 /* AllergèneListView.swift */,
+				6FB6535127C7BC9C0074EC91 /* AllergèneDetailView.swift */,
+			);
+			name = "Allergène";
+			path = "Allergène";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -383,12 +419,15 @@
 				6F3B82AA27BE916400428123 /* MenuView.swift in Sources */,
 				6FB6533A27C6794F0074EC91 /* AllergèneDTO.swift in Sources */,
 				6FB6532627C675480074EC91 /* Store.swift in Sources */,
+				6FB6534827C767B20074EC91 /* AllergèneService.swift in Sources */,
 				6F3B82CB27C11B1100428123 /* UtilisateurViewModel.swift in Sources */,
 				6F3B82C627C118AE00428123 /* UtilisateurListViewModel.swift in Sources */,
 				6F3B82A827BE8F4E00428123 /* FicheTechniqueListView.swift in Sources */,
 				6FB6533C27C6798C0074EC91 /* IngredientService.swift in Sources */,
 				6F3B82AE27BFBB0C00428123 /* Theme.swift in Sources */,
+				6FB6535027C76DAD0074EC91 /* AllergèneListView.swift in Sources */,
 				6F3B82B327BFC47600428123 /* Color.swift in Sources */,
+				6FB6535427C7BDCA0074EC91 /* AllergèneViewModel.swift in Sources */,
 				6F3B82C827C1196700428123 /* UtilisateurIntent.swift in Sources */,
 				6F3B82BF27C10F8400428123 /* UtilisateurDTO.swift in Sources */,
 				6F3B82D627C12A7500428123 /* UtilisateurDetailView.swift in Sources */,
@@ -397,14 +436,17 @@
 				6FB6532D27C676010074EC91 /* StoreIntent.swift in Sources */,
 				6FB6533227C676510074EC91 /* PreferenceView.swift in Sources */,
 				6FB6532427C51D720074EC91 /* ConnexionView.swift in Sources */,
+				6FB6534B27C76BB60074EC91 /* AllergèneIntent.swift in Sources */,
 				6F3B829527BE7B6D00428123 /* ProjetAWI_IOSApp.swift in Sources */,
 				6FB6534127C67BA00074EC91 /* IngredientIntent.swift in Sources */,
 				6FB6533827C679080074EC91 /* IngredientDTO.swift in Sources */,
 				6F3B82C227C1102700428123 /* Utilisateur.swift in Sources */,
+				6FB6534D27C76BCB0074EC91 /* AllergèneListViewModel.swift in Sources */,
 				6F3B82CF27C11D9C00428123 /* UtilisateurListView.swift in Sources */,
 				6FB6532827C675810074EC91 /* StoreDTO.swift in Sources */,
 				6F3B82AC27BFB98200428123 /* UIColor.swift in Sources */,
 				6FB6533627C678230074EC91 /* Allergène.swift in Sources */,
+				6FB6535227C7BC9C0074EC91 /* AllergèneDetailView.swift in Sources */,
 				6FB6533427C678010074EC91 /* Ingredient.swift in Sources */,
 				6FB6533F27C67A090074EC91 /* IngredientListViewModel.swift in Sources */,
 				6F3B82DD27C4C45600428123 /* UtilisateurService.swift in Sources */,

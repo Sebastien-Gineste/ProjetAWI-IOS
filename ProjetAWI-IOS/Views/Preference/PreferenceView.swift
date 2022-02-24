@@ -78,11 +78,11 @@ struct PreferenceView : View {
                         }
                     }
                 Spacer()
-                Button("Envoyer"){
+                Button("Modifier"){
                     intent.intentToUpdateDatabase()
                 }.padding(20)
             }
-            .navigationTitle("Préférences de calculs")
+            .navigationBarTitle(Text("Préférences de calculs"),displayMode: .inline)
         }
     }
 }

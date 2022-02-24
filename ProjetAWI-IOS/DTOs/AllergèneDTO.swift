@@ -12,4 +12,10 @@ struct AllergèneDTO {
     static func transformDTO(_ allergène : AllergèneDTO) -> Allergène{
         return Allergène(nom: allergène.nom, id: allergène.id)
     }
+    
+    static func transformToDTO(_ allergène : Allergène) -> [String : Any]{
+        return [
+            "nom" : allergène.nom,
+        ]
+    }
 }

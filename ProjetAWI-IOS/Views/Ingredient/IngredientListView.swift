@@ -14,6 +14,8 @@ struct IngredientListView : View {
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
     @State private var searchText : String = ""
+    private var categoryArray : [String] = ["Toutes les catégories"]
+    @State private var selectedIndex : Int = 0
     var intent: IngredientIntent
     var ingredientsFiltre: [Ingredient] {
         if searchText.isEmpty {
@@ -32,6 +34,13 @@ struct IngredientListView : View {
     var body : some View {
         NavigationView {
             VStack {
+                Form {
+                    Picker(selection: $selectedIndex, label: Text("Categorie")) {
+                        ForEach(0 ..< categoryArray.count) {
+                            Text(self.categoryArray[$0])
+                        }
+                  }
+                }.frame(height: 100)
                 List {
                     ForEach(Array(ingredientsFiltre.enumerated()), id: \.offset) {
                         index, ingredient in
@@ -51,12 +60,9 @@ struct IngredientListView : View {
                     .onDelete{ indexSet in
                         ingredientListViewModel.tabIngredient.remove(atOffsets: indexSet)
                     }
-                    .onMove{ indexSet, index in
-                        ingredientListViewModel.tabIngredient.move(fromOffsets: indexSet, toOffset: index)
-                    }
                 }
                 .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
-                .navigationTitle("Liste des ingrédients")
+                .navigationBarTitle(Text("Liste des ingrédients"),displayMode: .large)
                 EditButton().padding()
             }
             

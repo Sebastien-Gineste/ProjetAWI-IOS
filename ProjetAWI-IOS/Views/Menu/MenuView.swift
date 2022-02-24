@@ -29,7 +29,7 @@ struct MenuView: View {
                         Text("Ingrédient")
                     }
                 
-                FicheTechniqueListView()
+                AllergèneListView(vm: AllergèneListViewModel())
                     .tabItem {
                         Image(systemName: "list.bullet.rectangle.portrait.fill")
                         Text("Allergènes")
