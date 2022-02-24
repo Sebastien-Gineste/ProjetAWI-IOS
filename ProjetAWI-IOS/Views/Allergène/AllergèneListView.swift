@@ -14,6 +14,7 @@ struct AllergèneListView : View {
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
     @State private var searchText : String = ""
+    let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
     var intent: AllergèneIntent
     var allergènesFiltre: [Allergène] {
         if searchText.isEmpty {
@@ -52,7 +53,14 @@ struct AllergèneListView : View {
                 }
                 .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
                 .navigationBarTitle(Text("Liste des allergènes"),displayMode: .inline)
-                EditButton().padding()
+                HStack{
+                    LazyVGrid(columns: columns){
+                        EditButton()
+                        NavigationLink(destination: AllergèneDetailView()){
+                            Text("Ajout")
+                        }
+                    }
+                }.padding()
             }
             .onChange(of: allergèneListViewModel.result){
                 result in

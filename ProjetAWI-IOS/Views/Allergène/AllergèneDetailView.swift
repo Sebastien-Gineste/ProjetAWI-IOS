@@ -10,18 +10,16 @@ import SwiftUI
 
 struct AllergèneDetailView: View {
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var allergèneListViewModel : AllergèneListViewModel
-    var indice : Int
     var intent : AllergèneIntent
     @ObservedObject var allergène : AllergèneViewModel
     let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
-
-    init(vm: AllergèneListViewModel, indice : Int){
-        self.allergèneListViewModel = vm
-        self.indice = indice
+    var isAdd : Bool
+    
+    init(vm: AllergèneListViewModel? = nil, indice : Int? = nil){
         self.intent = AllergèneIntent()
+        self.isAdd = vm == nil && indice == nil
         self.allergène = AllergèneViewModel(allergèneListViewModel: vm, indice: indice)
         self.intent.addObserver(self.allergène)
     }
@@ -61,10 +59,10 @@ struct AllergèneDetailView: View {
                     }
                 }
             Spacer()
-            Button("Modifier"){
+            Button(self.isAdd ? "Ajout" : "Modifier"){
                intent.intentToUpdateDatabase()
             }.padding(20)
         }
-        .navigationBarTitle(Text("Détails de l'allergène"),displayMode: .inline)
+        .navigationBarTitle(Text(self.isAdd ? "Ajout d'allergène" : "Détails de l'allergène"),displayMode: .inline)
         
     }}

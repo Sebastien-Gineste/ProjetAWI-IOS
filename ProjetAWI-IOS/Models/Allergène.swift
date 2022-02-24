@@ -24,7 +24,7 @@ class Allergène {
         }
     }
     
-    init(nom : String, id : String?){
+    init(nom : String, id : String? = nil){
         self.nom = nom
         self.id = id
     }

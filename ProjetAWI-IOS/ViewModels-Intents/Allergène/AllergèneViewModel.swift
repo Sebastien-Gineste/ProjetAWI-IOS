@@ -23,15 +23,18 @@ enum AllergèneViewModelError : Error, Equatable, CustomStringConvertible {
 class AllergèneViewModel : ObservableObject, Subscriber, AllergèneServiceObserver, AllergèneObserver {
 
     private var allergèneService : AllergèneService = AllergèneService.instance
-    private var allergèneListViewModel : AllergèneListViewModel
-    private var indice : Int
+    private var allergène : Allergène
     @Published var nom : String
     @Published var result : Result<String, AllergèneViewModelError> = .success("")
     
-    init(allergèneListViewModel : AllergèneListViewModel, indice : Int) {
-        self.allergèneListViewModel = allergèneListViewModel
-        self.indice = indice
-        self.nom = allergèneListViewModel.tabAllergène[indice].nom
+    init(allergèneListViewModel : AllergèneListViewModel? = nil, indice : Int? = nil) {
+        if let indice = indice , let allergèneListViewModel = allergèneListViewModel{
+            self.allergène = allergèneListViewModel.tabAllergène[indice]
+            self.nom = allergèneListViewModel.tabAllergène[indice].nom
+        } else {
+            self.allergène = Allergène(nom: "")
+            self.nom = ""
+        }
         self.allergèneService.addObserver(observer: self)
     }
     
@@ -55,12 +58,12 @@ class AllergèneViewModel : ObservableObject, Subscriber, AllergèneServiceObser
         case .ready:
             break
         case .changingNom(let string):
-            self.allergèneListViewModel.tabAllergène[indice].nom = string
-            if self.allergèneListViewModel.tabAllergène[indice].nom != string {
-                self.nom = self.allergèneListViewModel.tabAllergène[indice].nom
+            self.allergène.nom = string
+            if self.allergène.nom != string {
+                self.nom = self.allergène.nom
             }
         case .updateDatabase:
-           self.allergèneService.updateAllergène(allergène: self.allergèneListViewModel.tabAllergène[indice])
+           self.allergèneService.updateAllergène(allergène: self.allergène)
         }
         return .none
     }

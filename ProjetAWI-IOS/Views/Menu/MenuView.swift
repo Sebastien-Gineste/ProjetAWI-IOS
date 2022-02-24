@@ -14,12 +14,13 @@ struct MenuView: View {
     @StateObject var user : UtilisateurService = UtilisateurService.instance
     
     var body: some View {
+        
         TabView {
-            FicheTechniqueListView()
-                .tabItem {
-                    Image(systemName: "list.bullet.below.rectangle")
-                    Text("Fiche")
-                }
+            FicheTechniqueListView().tabItem {
+                Image(systemName: "list.bullet.below.rectangle")
+                Text("Fiche")
+            }
+
             
             if user.currentUtilisateur.estConnecte() {
                 
@@ -59,5 +60,7 @@ struct MenuView: View {
             }
             
         }.accentColor(Color.specialGreen)
+            
+            
     }
 }
