@@ -35,14 +35,23 @@ struct MenuView: View {
                         Image(systemName: "list.bullet.rectangle.portrait.fill")
                         Text("Allergènes")
                     }
+                if !user.currentUtilisateur.estAdmin() {
+                    
+                        GestionCompteView()
+                        .tabItem{
+                           Image(systemName: "person.fill")
+                           Text("Compte")
+                        }
+                    
+                }
                 
-                UtilisateurListView()
-                    .tabItem {
-                        Image(systemName: "person.fill")
-                        Text("Comptes")
-                    }
-                
-                if user.currentUtilisateur.estAdmin() {
+                else {
+                    UtilisateurListView()
+                        .tabItem {
+                            Image(systemName: "person.fill")
+                            Text("Comptes")
+                        }
+                    
                     PreferenceView(vm:StoreViewModel())
                         .tabItem{
                             Image(systemName: "gearshape.2.fill")

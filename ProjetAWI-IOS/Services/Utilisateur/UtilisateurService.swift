@@ -172,10 +172,23 @@ public class UtilisateurService : ObservableObject{
                     }
                     self.utilisateurs = data!.documents.map{
                         (doc) -> Utilisateur in
+                        
+                        print("\(self.tabObserversCurrentUser.count) count current")
+                        print("\(self.tabObservers.count) count list")
+                        
+                        let email = doc["email"] as? String ?? ""
+                        let estAdmin = doc["estAdmin"] as? Bool ?? false
+                        
+                        if email == self.currentUtilisateur.email { // met à jour l’état de l’user si il change 
+                            if estAdmin != self.currentUtilisateur.estAdmin() {
+                                self.currentUtilisateur.type = estAdmin ? .Admin : .User
+                            }
+                        }
+                        
                         return UtilisateurDTO.transformDTO(
                             UtilisateurDTO( id : doc.documentID,
-                                            email: doc["email"] as? String ?? "",
-                                            estAdmin: doc["estAdmin"] as? Bool ?? false,
+                                            email: email,
+                                            estAdmin: estAdmin,
                                             motDePasse: "",
                                             nom: doc["nom"] as? String ?? "",
                                             prenom: doc["prenom"] as? String ?? ""))

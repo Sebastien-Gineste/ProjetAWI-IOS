@@ -20,9 +20,13 @@ struct UtilisateurDetailView : View {
     @State private var nomButton = "Modifier"
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
+    @State var isCreate : Bool = false
     
     init(model : Utilisateur, modelList : UtilisateurListViewModel? = nil){
         self.intent = UtilisateurIntent()
+        self.isCreate = model.email == ""
+        self.disabledTextField = model.email != ""
+        
         self.utilisateur = UtilisateurViewModel(from: model)
        /* if let mod = modelList {
             self.intent.addObserver(utilisateurViewModel: self.utilisateur, utilisateurListViewModel: mod)
@@ -41,9 +45,17 @@ struct UtilisateurDetailView : View {
         VStack(alignment:.center){
             Spacer()
             HStack{
-                Text("E-mail : \(utilisateur.email)")
-            }
+                Text("E-mail : ")
+                TextField("", text : $utilisateur.email).disabled(!isCreate)
+            }.padding(10)
             
+            if isCreate {
+            HStack{
+                Text("Mot de passe : ")
+                TextField("", text : $utilisateur.motDePasse).disabled(!isCreate)
+            }.padding(10)
+            }
+                
             HStack{
                 Text("Nom : ")
                 TextField("",text : $utilisateur.nom)
@@ -51,7 +63,7 @@ struct UtilisateurDetailView : View {
                     .onSubmit {
                         intent.intentToChange(name: utilisateur.nom)
                     }
-            }
+            }.padding(10)
             HStack{
                 Text("Prénom : ")
                 TextField("",text : $utilisateur.prenom)
@@ -59,7 +71,7 @@ struct UtilisateurDetailView : View {
                     .onSubmit {
                         intent.intentToChange(firstName: utilisateur.prenom)
                     }
-            }
+            }.padding(10)
             
             if user.currentUtilisateur.estAdmin(){
                 HStack{
@@ -72,14 +84,20 @@ struct UtilisateurDetailView : View {
                             value in
                             intent.intentToChange(type: value)
                         })
-                }
+                }.padding(10)
             }
             
-            HStack{
+            Spacer()
+            
+            HStack(spacing:10){
+                
+                
+                if !isCreate {
                 Button("Supprimer"){
                     intent.intentToDeleteUser()
                     // retourner en arrière 
                 }
+                
                 
                 Button(nomButton){
                     disabledTextField = !disabledTextField
@@ -99,9 +117,16 @@ struct UtilisateurDetailView : View {
                         nomButton = "Modifier"
                     }
                 }
+                }
+                
+                else {
+                    Button("Créer le compte"){
+                        intent.intentToCreateUser()
+                    }
+                }
             }
            
-            Spacer()
+            
         }.navigationTitle("Détail \(utilisateur.nom)")
             .padding()
             .onChange(of: utilisateur.result){
