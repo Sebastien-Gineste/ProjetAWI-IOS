@@ -45,7 +45,7 @@ struct IngredientListView : View {
                     ForEach(Array(ingredientsFiltre.enumerated()), id: \.offset) {
                         index, ingredient in
                             HStack{
-                                NavigationLink(destination: FicheTechniqueListView()){
+                                NavigationLink(destination: IngredientDetailView(vm: self.ingredientListViewModel, indice: index)){
                                     VStack(alignment: .leading) {
                                         Text(ingredient.nomIngredient).bold()
                                         HStack {

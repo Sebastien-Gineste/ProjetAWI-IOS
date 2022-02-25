@@ -11,7 +11,7 @@ import Combine
 
 class IngredientListViewModel : ObservableObject, Subscriber, IngredientListServiceObserver {
 
-    private var ingredientService : IngredientService = IngredientService.instance
+    private var ingredientService : IngredientService = IngredientService()
     @Published var tabIngredient : [Ingredient]
     
     init() {
@@ -38,6 +38,8 @@ class IngredientListViewModel : ObservableObject, Subscriber, IngredientListServ
     func receive(_ input: IngredientListIntentState) -> Subscribers.Demand {
         switch input {
         case .ready:
+            break
+        case .deleteIngredient(_):
             break
         }
         return .none

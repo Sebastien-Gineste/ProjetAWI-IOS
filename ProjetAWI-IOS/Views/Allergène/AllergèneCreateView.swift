@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct AllergèneCreateView: View {
-    @Environment(\.presentationMode) var presentationMode
+    //@Environment(\.presentationMode) var presentationMode
     var intent : AllergèneIntent
     @ObservedObject var allergène : AllergèneViewModel
     let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
@@ -60,7 +60,7 @@ struct AllergèneCreateView: View {
             Spacer()
             Button("Ajout"){
                 intent.intentToAddAllergène()
-                self.presentationMode.wrappedValue.dismiss()
+                //self.presentationMode.wrappedValue.dismiss()
             }.padding(20)
         }
         .navigationBarTitle(Text("Ajout d'allergène"),displayMode: .inline)

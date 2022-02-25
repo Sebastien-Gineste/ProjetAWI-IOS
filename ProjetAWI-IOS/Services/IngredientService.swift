@@ -14,11 +14,14 @@ protocol IngredientListServiceObserver {
     func emit(to: [Ingredient])
 }
 
+protocol IngredientServiceObserver {
+    func emit(to: Result<String,IngredientViewModelError>)
+}
+
 class IngredientService {
-    
-    public static let instance = IngredientService()
     private let firestore = Firestore.firestore()
     private var tabListObserver : [IngredientListServiceObserver] = []
+    private var tabObserver : [IngredientServiceObserver] = []
     private var tabIngredient : [Ingredient] {
         didSet {
             for observer in tabListObserver {
@@ -27,13 +30,17 @@ class IngredientService {
         }
     }
     
-    private init(){
+    init(){
         self.tabIngredient = []
     }
     
     func addObserver(observer : IngredientListServiceObserver){
         self.tabListObserver.append(observer)
         observer.emit(to: tabIngredient)
+    }
+    
+    func addObserver(observer : IngredientServiceObserver){
+        self.tabObserver.append(observer)
     }
     
     func getAllIngredient(){

@@ -70,7 +70,7 @@ class Ingredient {
             }
         }
     }
-    init(nomIngredient: String, prixUnitaire : Double, qteIngredient : Double, unite : String, categorie : String, id : String?){
+    init(nomIngredient: String, prixUnitaire : Double, qteIngredient : Double, unite : String, categorie : String, id : String? = nil){
         self.id = id
         self.nomIngredient = nomIngredient
         self.prixUnitaire = prixUnitaire
