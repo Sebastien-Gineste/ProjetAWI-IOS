@@ -74,6 +74,17 @@ public class UtilisateurService : ObservableObject{
         obs.emit(to: currentUtilisateur)
     }
     
+    func setObserverResult(obs : UserServiceResultObserver) -> Int{
+        self.tabObserversResult.append(obs)
+        print("taille result : \(tabObserversResult.count)")
+        return tabObserversResult.count
+    }
+    
+    func removeObserverResult(id : Int){
+        self.tabObserversResult.remove(at: id)
+        print("taille result : \(tabObserversResult.count)")
+    }
+    
     private init(){
         self.utilisateurs = []
         self.currentUtilisateur = Utilisateur(
@@ -117,7 +128,9 @@ public class UtilisateurService : ObservableObject{
     
     func createUtilisateur(util : Utilisateur){
         firestore.collection("users").addDocument(data: UtilisateurDTO.transformToDTO(util)){
-            (error) in if let _ = error {
+            (error) in
+            print("création go go go ")
+            if let _ = error {
                 self.sendResult(result: .failure(.createError))
             } else {
                 self.sendResult(result: .success("Création effectué"))

@@ -13,6 +13,8 @@ enum UtilisateurIntentState : CustomStringConvertible, Equatable {
     case changingName(String)
     case changingFirstName(String)
     case changingType(TypeUtilisateur)
+    case changingEmail(String)
+    case changingPassword(String)
     case updateDatabase
     case deleteUser
     case createUser
@@ -22,6 +24,8 @@ enum UtilisateurIntentState : CustomStringConvertible, Equatable {
         case .changingFirstName(let prenom) : return "Va changer son prénom : \(prenom)"
         case .changingType(let typeUtilisateur) : return "Va changer son statue : \(typeUtilisateur)"
         case .changingName(let nom) : return "Va changer son nom : \(nom)"
+        case .changingEmail(let email) : return "Va email \(email)"
+        case .changingPassword(let password) : return "Va \(password)"
         case .updateDatabase : return "Modification effectuée"
         case .createUser : return "Utilisateur bien créé !"
         case .deleteUser : return "Utilisateur a bien été supprimé"
@@ -52,6 +56,14 @@ struct UtilisateurIntent  {
     func intentToChange(type : TypeUtilisateur){
         self.stateElement.send(UtilisateurIntentState.changingType(type))
         self.updateList()
+    }
+    
+    func intentToChange(email : String) {
+        self.stateElement.send(UtilisateurIntentState.changingEmail(email))
+    }
+    
+    func intentToChange(password : String){
+        self.stateElement.send(UtilisateurIntentState.changingPassword(password))
     }
     
     func intentToUpdateDatabase(){

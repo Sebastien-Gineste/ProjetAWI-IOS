@@ -36,9 +36,10 @@ enum UserError : Error, Equatable, CustomStringConvertible {
     }
 }
 
-class UtilisateurViewModel : ObservableObject, UtilisateurObserver, Subscriber{
+class UtilisateurViewModel : ObservableObject, UtilisateurObserver,UserServiceResultObserver, Subscriber{
     private var model : Utilisateur
     private var userService : UtilisateurService = UtilisateurService.instance
+    private var idTabResult : Int = -1
     @Published var nom : String
     @Published var prenom : String
     @Published var email : String
@@ -50,12 +51,25 @@ class UtilisateurViewModel : ObservableObject, UtilisateurObserver, Subscriber{
     
     
     init(from model : Utilisateur){
+        print("bb xavier")
         self.model = model
         self.email = model.email
         self.nom = model.nom
         self.prenom = model.prenom
         self.type = model.type
         self.model.observer = self
+    }
+    
+    func addObserverResult(){
+        self.idTabResult = UtilisateurService.instance.setObserverResult(obs: self)
+    }
+    
+    func removeObserverResult(){
+        UtilisateurService.instance.removeObserverResult(id: self.idTabResult-1)
+    }
+    
+    func emit(to: Result<String, UserError>) {
+        result = to
     }
     
     func changed(nom: String) {
@@ -68,6 +82,14 @@ class UtilisateurViewModel : ObservableObject, UtilisateurObserver, Subscriber{
     
     func changed(type : TypeUtilisateur) {
         self.type = type
+    }
+    
+    func changed(email: String) {
+        self.email = email
+    }
+    
+    func changed(motDePasse: String) {
+        self.motDePasse = motDePasse
     }
     
     typealias Input = UtilisateurIntentState
@@ -91,6 +113,12 @@ class UtilisateurViewModel : ObservableObject, UtilisateurObserver, Subscriber{
                 self.result = .failure(.errorName(nom))
                 self.nom = nom
             }
+            
+        case .changingPassword(let motDePasse):
+            self.model.motDePasse = motDePasse
+            
+            case .changingEmail(let email):
+            self.model.email = email
                
             case .changingFirstName(let prenom):
             self.model.prenom = prenom

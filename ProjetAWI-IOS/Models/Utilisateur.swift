@@ -11,6 +11,8 @@ protocol UtilisateurObserver {
     func changed(nom : String)
     func changed(prenom : String)
     func changed(type : TypeUtilisateur)
+    func changed(email : String)
+    func changed(motDePasse : String)
 }
 
 enum TypeUtilisateur : String, CaseIterable, Identifiable{

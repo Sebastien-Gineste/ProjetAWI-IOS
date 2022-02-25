@@ -11,7 +11,7 @@ import SwiftUI
 
 
 struct UtilisateurDetailView : View {
-    
+
     @StateObject var user : UtilisateurService = UtilisateurService.instance
     var intent : UtilisateurIntent
     @ObservedObject var utilisateur : UtilisateurViewModel
@@ -46,13 +46,18 @@ struct UtilisateurDetailView : View {
             Spacer()
             HStack{
                 Text("E-mail : ")
-                TextField("", text : $utilisateur.email).disabled(!isCreate)
+                TextField("", text : $utilisateur.email).disabled(!isCreate).onSubmit {
+                    intent.intentToChange(email: utilisateur.email)
+                }
             }.padding(10)
             
             if isCreate {
             HStack{
                 Text("Mot de passe : ")
                 TextField("", text : $utilisateur.motDePasse).disabled(!isCreate)
+                    .onSubmit {
+                        intent.intentToChange(password: utilisateur.motDePasse)
+                    }
             }.padding(10)
             }
                 
@@ -150,6 +155,10 @@ struct UtilisateurDetailView : View {
                 Button("OK", role: .cancel){
                     utilisateur.result = .failure(.noError)
                 }
+            }.onAppear(){
+                self.utilisateur.addObserverResult()
+            }.onDisappear(){
+                self.utilisateur.removeObserverResult()
             }
         
     }
