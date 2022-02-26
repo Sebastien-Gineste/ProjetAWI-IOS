@@ -12,7 +12,7 @@ enum UserError : Error, Equatable, CustomStringConvertible {
     case errorName(String)
     case errorFirstName(String)
     case emailError(String)
-    case mdpError(String)
+    case mdpError
     case noError
     case updateError
     case createError
@@ -26,10 +26,18 @@ enum UserError : Error, Equatable, CustomStringConvertible {
             return "Erreur lors de la suppresion"
             
         case .createError:
-            return "Erreir durant la création du compte"
+            return "Erreur durant la création du compte"
 
-        case .errorName(let name):
-            return "Erreur avec le nom : \(name)"
+        case .errorName(_), .errorFirstName(_):
+            return "Erreur : Le champs ne doit pas être vide"
+            
+        case .emailError(let email):
+            return "Erreur, l'email n'a pas le bon format : \(email)"
+            
+        case .mdpError:
+            return "Erreur : Le mot de passe doit faire au moins 6 caractères"
+            
+        
         default :
             return "Erreur inconnu"
         }
@@ -39,6 +47,10 @@ enum UserError : Error, Equatable, CustomStringConvertible {
 class UtilisateurViewModel : ObservableObject, UtilisateurObserver,UserServiceResultObserver, Subscriber{
     private var model : Utilisateur
     private var userService : UtilisateurService = UtilisateurService.instance
+    
+    var isValid : Bool {
+        return model.isValid
+    }
     
     @Published var nom : String
     @Published var prenom : String
@@ -69,7 +81,7 @@ class UtilisateurViewModel : ObservableObject, UtilisateurObserver,UserServiceRe
     
     func emit(to: Result<String, UserError>) {
         result = to
-        print("to receive : \(to)")
+        print("(name : \(model.nom)to receive : \(to)")
     }
     
     func changed(nom: String) {
@@ -115,7 +127,7 @@ class UtilisateurViewModel : ObservableObject, UtilisateurObserver,UserServiceRe
         case .changingPassword(let motDePasse):
             self.model.motDePasse = motDePasse
             if motDePasse != self.model.motDePasse {
-                self.result = .failure(.mdpError("Le mot de passe doit faire au moins 6 caractères"))
+                self.result = .failure(.mdpError)
                 self.motDePasse = motDePasse
             }
             
@@ -137,7 +149,8 @@ class UtilisateurViewModel : ObservableObject, UtilisateurObserver,UserServiceRe
             self.model.type = type
             
         case .updateDatabase:
-            if self.model.isValid() {
+            if self.model.isValid {
+                print("gogogogo \(nom)")
                 self.userService.updateUtilisateur(util: self.model)
             }
             else{
@@ -148,7 +161,7 @@ class UtilisateurViewModel : ObservableObject, UtilisateurObserver,UserServiceRe
             self.userService.deleteUtilisateur(id: self.model.id)
             
         case .createUser:
-            if self.model.isValid() {
+            if self.model.isValid {
                 self.userService.createUtilisateur(util: self.model)
             }
             else{

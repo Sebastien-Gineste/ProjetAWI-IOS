@@ -24,25 +24,14 @@ class Utilisateur : ObservableObject{
     var observer : UtilisateurObserver?
     var id : String = UUID().uuidString
     
-    
-    /**
-            Function from https://stackoverflow.com/questions/25471114/how-to-validate-an-e-mail-address-in-swift
-     */
-    private func isValidEmail(_ email: String) -> Bool {
-        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-
-        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        return emailPred.evaluate(with: email)
-    }
-    
-    func isValid() -> Bool{
+    var isValid : Bool{
         return email.count > 1 && motDePasse.count > 1 && nom.count > 1 && prenom.count > 1
     }
     
     var email : String {
         didSet {
             if email != oldValue {
-                if isValidEmail(email){
+                if email.isValidEmail(){
                     self.observer?.changed(email : self.email)
                 } else{
                     self.email = oldValue
@@ -88,9 +77,7 @@ class Utilisateur : ObservableObject{
     var motDePasse : String {
         didSet {
             if motDePasse != oldValue {
-                let regex = "^[0-9a-zA-Z]{6,}$"
-                print("mdp : |\(motDePasse)| => valid ? : \(NSPredicate(format: "SELF MATCHES %@",regex).evaluate(with: motDePasse))")
-                if NSPredicate(format: "SELF MATCHES %@",regex).evaluate(with: motDePasse) {
+                if motDePasse.isValidPassword() {
                     self.observer?.changed(motDePasse: motDePasse)
                 }
                 else{

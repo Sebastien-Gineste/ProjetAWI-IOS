@@ -19,5 +19,7 @@ struct ProjetAWI_IOSApp: App {
     
     init(){
         FirebaseApp.configure()
+        
+        
     }
 }

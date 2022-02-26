@@ -170,6 +170,7 @@ public class UtilisateurService : ObservableObject{
             (error) in if let _ = error {
                 self.sendResult(result: .failure(.updateError))
             } else {
+                print("send success !!! ")
                 self.sendResult(result: .success("Mise à jour effectué du compte"))
             }
         }

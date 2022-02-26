@@ -67,7 +67,7 @@ struct UtilisateurListView : View {
                     
                     HStack(spacing : 20){
                         EditButton()
-                        NavigationLink(destination:UtilisateurDetailView(), isActive: $isActiveCreateView){
+                        NavigationLink(destination:UtilisateurCreateUpdateView(), isActive: $isActiveCreateView){
                             Text("Créer un compte")
                         }
                     }
@@ -91,6 +91,7 @@ struct UtilisateurListView : View {
             .alert("\(alertMessage)", isPresented: $showingAlert){
                 Button("OK", role: .cancel){
                     if (alertMessage == "Création effectué"){
+
                         self.isActiveCreateView = false
                     }
                     utilisateurListViewModel.result = .failure(.noError)
