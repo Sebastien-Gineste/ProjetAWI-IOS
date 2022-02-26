@@ -2,7 +2,7 @@
 //  IngredientDTO.swift
 //  ProjetAWI-IOS
 //
-//  Created by etud on 23/02/2022.
+//  Created by etud on 23/02/2022
 //
 
 struct IngredientDTO {
@@ -13,6 +13,7 @@ struct IngredientDTO {
     var unite : String
     var categorie : String
     var listAllergene : [String]
+    
     static func transformDTO(_ ingredient : IngredientDTO) -> Ingredient {
         return Ingredient(nomIngredient: ingredient.nomIngredient,
                           prixUnitaire: ingredient.prixUnitaire,
@@ -20,5 +21,16 @@ struct IngredientDTO {
                           unite: ingredient.unite,
                           categorie: ingredient.categorie,
                           id: ingredient.id)
+    }
+    
+    static func transformToDTO(_ ingredient : Ingredient) -> [String : Any]{
+        return [
+            "nomIngredient" : ingredient.nomIngredient,
+            "prixUnitaire" : ingredient.prixUnitaire,
+            "qteIngredient" : ingredient.qteIngredient,
+            "unite" : ingredient.unite,
+            "categorie" : ingredient.categorie,
+            "nomIngredient" : ingredient.nomIngredient,
+        ]
     }
 }

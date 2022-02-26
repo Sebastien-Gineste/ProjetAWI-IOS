@@ -10,7 +10,7 @@ import SwiftUI
 
 struct IngredientListView : View {
     
-    @ObservedObject var ingredientListViewModel : IngredientListViewModel = IngredientListViewModel()
+    @ObservedObject var ingredientListViewModel : IngredientListViewModel
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
     @State private var searchText : String = ""

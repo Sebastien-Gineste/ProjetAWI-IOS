@@ -46,7 +46,7 @@ struct MenuView: View {
                 }
                 
                 else {
-                    UtilisateurListView()
+                    UtilisateurListView(vm : UtilisateurListViewModel())
                         .tabItem {
                             Image(systemName: "person.fill")
                             Text("Comptes")

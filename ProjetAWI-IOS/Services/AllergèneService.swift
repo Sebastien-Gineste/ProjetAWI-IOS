@@ -51,6 +51,9 @@ class AllergèneService {
             guard let documents = data?.documents else {
                 return
             }
+            
+            print("\(self.tabObserver.count) count list allergène")
+            
             self.tabAllergène = documents.map{
                 (doc) -> Allergène in
                 return AllergèneDTO.transformDTO(

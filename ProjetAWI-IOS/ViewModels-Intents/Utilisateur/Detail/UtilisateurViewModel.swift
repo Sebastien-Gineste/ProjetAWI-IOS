@@ -39,7 +39,7 @@ enum UserError : Error, Equatable, CustomStringConvertible {
 class UtilisateurViewModel : ObservableObject, UtilisateurObserver,UserServiceResultObserver, Subscriber{
     private var model : Utilisateur
     private var userService : UtilisateurService = UtilisateurService.instance
-    private var idTabResult : Int = -1
+    
     @Published var nom : String
     @Published var prenom : String
     @Published var email : String
@@ -51,7 +51,6 @@ class UtilisateurViewModel : ObservableObject, UtilisateurObserver,UserServiceRe
     
     
     init(from model : Utilisateur){
-        print("bb xavier")
         self.model = model
         self.email = model.email
         self.nom = model.nom
@@ -61,15 +60,16 @@ class UtilisateurViewModel : ObservableObject, UtilisateurObserver,UserServiceRe
     }
     
     func addObserverResult(){
-        self.idTabResult = UtilisateurService.instance.setObserverResult(obs: self)
+        userService.addObserverResult(obs: self)
     }
     
     func removeObserverResult(){
-        UtilisateurService.instance.removeObserverResult(id: self.idTabResult-1)
+        userService.removeObserverResult()
     }
     
     func emit(to: Result<String, UserError>) {
         result = to
+        print("to receive : \(to)")
     }
     
     func changed(nom: String) {
@@ -134,6 +134,7 @@ class UtilisateurViewModel : ObservableObject, UtilisateurObserver,UserServiceRe
             self.userService.deleteUtilisateur(id: self.model.id)
             
             case .createUser:
+            print("create user database receive")
             self.userService.createUtilisateur(util: self.model)
             
         }

@@ -11,15 +11,27 @@ import SwiftUI
 
 struct UtilisateurListView : View {
     
-    @StateObject var utilisateurModel : UtilisateurListViewModel = UtilisateurListViewModel()
+    @ObservedObject var utilisateurListViewModel : UtilisateurListViewModel
     @State private var searchText : String = ""
+    @State var showingAlert : Bool = false
+    @State var alertMessage = ""
+    @State var isActiveCreateView = false
+    
+    private var intent : UtilisateurIntent
+    
     
     var utilisateursFiltre: [Utilisateur] {
         if searchText.isEmpty {
-            return utilisateurModel.utilisateurs
+            return utilisateurListViewModel.utilisateurs
         } else {
-            return utilisateurModel.utilisateurs.filter{ $0.nom.uppercased().contains(searchText.uppercased()) || $0.prenom.uppercased().contains(searchText.uppercased()) }
+            return utilisateurListViewModel.utilisateurs.filter{ $0.nom.uppercased().contains(searchText.uppercased()) || $0.prenom.uppercased().contains(searchText.uppercased()) }
         }
+    }
+    
+    init(vm : UtilisateurListViewModel){
+        self.utilisateurListViewModel = vm
+        self.intent = UtilisateurIntent()
+        self.intent.addObserver(vm)
     }
     
     var body : some View {
@@ -41,11 +53,13 @@ struct UtilisateurListView : View {
                                 Text("\(utilisateur.prenom)").bold().frame(maxWidth:.infinity)
                                 Text("\(utilisateur.type.rawValue)").italic().frame(maxWidth:.infinity)
                                 
-                                NavigationLink(destination:UtilisateurDetailView(model:utilisateur,modelList:utilisateurModel)){
+                                NavigationLink(destination:UtilisateurDetailView(model:utilisateur)){
                                 }.frame(maxWidth:0)
                             }.frame(minWidth : 0, maxWidth: .infinity)
                         }.onDelete{indexSet in
-                            utilisateurModel.utilisateurs.remove(atOffsets:indexSet)
+                            for index in indexSet {
+                                intent.intentToDeleteUserFromList(id: index)
+                            }
                         }
                     }
                     .searchable(text: $searchText,placement:.navigationBarDrawer(displayMode:.always))
@@ -53,10 +67,34 @@ struct UtilisateurListView : View {
                     
                     HStack(spacing : 20){
                         EditButton()
-                        NavigationLink(destination:UtilisateurDetailView(model: Utilisateur(email: "", nom: "", prenom: "", type: .User, id: ""))){
+                        NavigationLink(destination:UtilisateurDetailView(), isActive: $isActiveCreateView){
                             Text("Créer un compte")
                         }
                     }
+            }
+            .onChange(of: utilisateurListViewModel.result){
+                result in
+                switch result {
+                case let .success(msg):
+                    self.alertMessage = msg
+                    self.showingAlert = true
+                case let .failure(error):
+                    switch error {
+                    case .noError :
+                        return
+                    case .deleteError:
+                        self.alertMessage = "\(error)"
+                        self.showingAlert = true
+                    }
+                }
+            }
+            .alert("\(alertMessage)", isPresented: $showingAlert){
+                Button("OK", role: .cancel){
+                    if (alertMessage == "Création effectué"){
+                        self.isActiveCreateView = false
+                    }
+                    utilisateurListViewModel.result = .failure(.noError)
+                }
             }
         }
     }

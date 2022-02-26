@@ -13,6 +13,7 @@ import Combine
 
 protocol UserServiceObserver{
     func emit(to : [Utilisateur])
+    func emit(to : Result<String, UtilisateurListError>)
 }
 
 protocol CurrentUserServiceObserver{
@@ -27,11 +28,14 @@ public class UtilisateurService : ObservableObject{
     public static let instance = UtilisateurService()
     
     private let firestore = Firestore.firestore()
-    private var tabObservers : [UserServiceObserver] = []
-    private var tabObserversCurrentUser : [CurrentUserServiceObserver] = []
-    private var tabObserversResult : [UserServiceResultObserver] = []
     
-    @Published var currentUtilisateur : Utilisateur{ // regarde si déconnexion ou connexion
+    private var observerList : UserServiceObserver? = nil // Observeur de la liste utilisateurs et de ses résultats aux requêtes
+    private var observerResult : UserServiceResultObserver? = nil // Observer des résultat des requêtes sur un utilisateur
+    
+    private var tabObserversCurrentUser : [CurrentUserServiceObserver] = []
+    
+    
+    @Published var currentUtilisateur : Utilisateur{ // état courant de l'utilisateur
         didSet{
             print("new value : \(currentUtilisateur.email)")
             emitCurrentUser()
@@ -41,7 +45,7 @@ public class UtilisateurService : ObservableObject{
         }
     }
     
-    @Published var utilisateurs : [Utilisateur]{
+    private var utilisateurs : [Utilisateur]{
         didSet{
             emitListUser()
             print("new value : \(utilisateurs.count)")
@@ -59,30 +63,33 @@ public class UtilisateurService : ObservableObject{
 
     
     func emitListUser(){
-        for obs in self.tabObservers{
-            obs.emit(to: self.utilisateurs)
-        }
+        self.observerList?.emit(to: self.utilisateurs)
     }
     
-    func setObserverList(obs : UserServiceObserver){
-        self.tabObservers.append(obs)
-        obs.emit(to: utilisateurs)
+    func addObserverList(obs : UserServiceObserver){
+        self.observerList = obs
+        self.observerList?.emit(to: utilisateurs)
     }
     
-    func setObserverCurrent(obs : CurrentUserServiceObserver){
+    func addObserverCurrent(obs : CurrentUserServiceObserver){
         self.tabObserversCurrentUser.append(obs)
         obs.emit(to: currentUtilisateur)
     }
     
-    func setObserverResult(obs : UserServiceResultObserver) -> Int{
-        self.tabObserversResult.append(obs)
-        print("taille result : \(tabObserversResult.count)")
-        return tabObserversResult.count
+    func addObserverResult(obs : UserServiceResultObserver){
+        self.observerResult = obs
     }
     
-    func removeObserverResult(id : Int){
-        self.tabObserversResult.remove(at: id)
-        print("taille result : \(tabObserversResult.count)")
+    func removeObserverResult(){
+        self.observerResult = nil
+    }
+    
+    private func sendResult(result : Result<String, UserError>){
+        self.observerResult?.emit(to: result)
+    }
+    
+    private func sendResultList(result : Result<String, UtilisateurListError>){
+        self.observerList?.emit(to: result)
     }
     
     private init(){
@@ -133,7 +140,7 @@ public class UtilisateurService : ObservableObject{
             if let _ = error {
                 self.sendResult(result: .failure(.createError))
             } else {
-                self.sendResult(result: .success("Création effectué"))
+                self.sendResultList(result: .success("Création effectué"))
             }
         }
     }
@@ -145,9 +152,9 @@ public class UtilisateurService : ObservableObject{
     func deleteUtilisateur(id : String){
         firestore.collection("users").document("\(id)").delete() {
             (error) in if let _ = error {
-                self.sendResult(result: .failure(.deleteError))
+                self.sendResultList(result: .failure(.deleteError))
             } else{
-                self.sendResult(result: .success("Suppresion effectué !"))
+                self.sendResultList(result: .success("Suppresion effectué !"))
                 if id == self.currentUtilisateur.id {
                     self.deconnexion()
                 }
@@ -168,12 +175,7 @@ public class UtilisateurService : ObservableObject{
         }
     }
     
-    private func sendResult(result : Result<String, UserError>){
-        for obs in self.tabObserversResult{
-            obs.emit(to: result)
-        }
 
-    }
     
     func getListUtilisateurs(){
         if self.utilisateurs.isEmpty {
@@ -185,9 +187,6 @@ public class UtilisateurService : ObservableObject{
                     }
                     self.utilisateurs = data!.documents.map{
                         (doc) -> Utilisateur in
-                        
-                        print("\(self.tabObserversCurrentUser.count) count current")
-                        print("\(self.tabObservers.count) count list")
                         
                         let email = doc["email"] as? String ?? ""
                         let estAdmin = doc["estAdmin"] as? Bool ?? false

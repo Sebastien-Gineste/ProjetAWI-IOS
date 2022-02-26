@@ -10,7 +10,7 @@ import SwiftUI
 
 struct AllergèneListView : View {
     
-    @ObservedObject var allergèneListViewModel : AllergèneListViewModel = AllergèneListViewModel()
+    @ObservedObject var allergèneListViewModel : AllergèneListViewModel
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
     @State private var searchText : String = ""

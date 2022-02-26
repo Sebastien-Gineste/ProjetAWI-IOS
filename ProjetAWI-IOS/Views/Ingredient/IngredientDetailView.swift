@@ -59,7 +59,7 @@ struct IngredientDetailView: View {
                         }
                 }
             }.padding()
-                /*.onChange(of: ingredient.result){
+                .onChange(of: ingredient.result){
                     result in
                     switch result {
                     case let .success(msg):
@@ -80,7 +80,7 @@ struct IngredientDetailView: View {
                         ingredient.result = .failure(.noError)
                         self.showingAlert = false
                     }
-                }*/
+                }
             Spacer()
             Button("Modifier"){
                 //intent.intentToUpdateDatabase()

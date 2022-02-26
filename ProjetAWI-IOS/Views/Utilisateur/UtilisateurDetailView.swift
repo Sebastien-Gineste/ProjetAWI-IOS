@@ -11,30 +11,27 @@ import SwiftUI
 
 
 struct UtilisateurDetailView : View {
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
 
     @StateObject var user : UtilisateurService = UtilisateurService.instance
     var intent : UtilisateurIntent
     @ObservedObject var utilisateur : UtilisateurViewModel
     
-    @State private var disabledTextField = true
+    @State private var disabledTextField : Bool
     @State private var nomButton = "Modifier"
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
-    @State var isCreate : Bool = false
+    @State private var isCreate : Bool
     
-    init(model : Utilisateur, modelList : UtilisateurListViewModel? = nil){
-        self.intent = UtilisateurIntent()
-        self.isCreate = model.email == ""
-        self.disabledTextField = model.email != ""
+    
+    init(model : Utilisateur = Utilisateur(email: "", nom: "", prenom: "", type: .User, id: "")){
+        self._disabledTextField = State(initialValue: (model.email.count > 0))
+        self._isCreate = State(initialValue:  (model.email.count == 0))
         
+        self.intent = UtilisateurIntent()
         self.utilisateur = UtilisateurViewModel(from: model)
-       /* if let mod = modelList {
-            self.intent.addObserver(utilisateurViewModel: self.utilisateur, utilisateurListViewModel: mod)
-        }
-        else{*/
-            self.intent.addObserver(utilisateurViewModel: self.utilisateur)
-       /** }*/
-       
+    
+        self.intent.addObserver(self.utilisateur)
     }
     
     func updateAccount(){
@@ -98,30 +95,30 @@ struct UtilisateurDetailView : View {
                 
                 
                 if !isCreate {
-                Button("Supprimer"){
-                    intent.intentToDeleteUser()
-                    // retourner en arrière 
-                }
-                
-                
-                Button(nomButton){
-                    disabledTextField = !disabledTextField
-                    if nomButton == "Modifier" {
-                        nomButton = "Valider"
+                    Button("Supprimer"){
+                        intent.intentToDeleteUser()
+                        self.presentationMode.wrappedValue.dismiss()
                     }
-                    else{
-                        nomButton = "Modifier"
-                        print("go udapte")
-                        intent.intentToUpdateDatabase()
+                    
+                    
+                    Button(nomButton){
+                        disabledTextField = !disabledTextField
+                        if nomButton == "Modifier" {
+                            nomButton = "Valider"
+                        }
+                        else{
+                            nomButton = "Modifier"
+                            print("go udapte")
+                            intent.intentToUpdateDatabase()
+                        }
                     }
-                }
-                
-                if !disabledTextField {
-                    Button("Annuler"){
-                        disabledTextField = true
-                        nomButton = "Modifier"
+                    
+                    if !disabledTextField {
+                        Button("Annuler"){
+                            disabledTextField = true
+                            nomButton = "Modifier"
+                        }
                     }
-                }
                 }
                 
                 else {
@@ -151,7 +148,6 @@ struct UtilisateurDetailView : View {
                 }
             }
             .alert("\(alertMessage)", isPresented: $showingAlert){
-
                 Button("OK", role: .cancel){
                     utilisateur.result = .failure(.noError)
                 }

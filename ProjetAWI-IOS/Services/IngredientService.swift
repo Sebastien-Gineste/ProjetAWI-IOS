@@ -49,6 +49,9 @@ class IngredientService {
             guard let documents = data?.documents else {
                 return
             }
+            
+            print("\(self.tabObserver.count) count list ingrédient")
+            
             self.tabIngredient = documents.map{
                 (doc) -> Ingredient in
                 return IngredientDTO.transformDTO(

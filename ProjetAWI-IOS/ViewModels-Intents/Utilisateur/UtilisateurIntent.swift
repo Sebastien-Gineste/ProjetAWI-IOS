@@ -35,27 +35,28 @@ enum UtilisateurIntentState : CustomStringConvertible, Equatable {
 
 enum UtilisateurListIntentState : Equatable{
     case ready
-    case updateList
+    //case updateList
+    case deleteUser(Int)
 }
 
 struct UtilisateurIntent  {
     private var stateElement = PassthroughSubject<UtilisateurIntentState,Never>()
     private var stateList = PassthroughSubject<UtilisateurListIntentState,Never>()
-    private var isFromList : Bool = true
+    //private var isFromList : Bool = true
     
     func intentToChange(name : String){
         self.stateElement.send(UtilisateurIntentState.changingName(name))
-        self.updateList()
+        //self.updateList()
     }
     
     func intentToChange(firstName : String) {
         self.stateElement.send(UtilisateurIntentState.changingFirstName(firstName))
-        self.updateList()
+        //self.updateList()
     }
     
     func intentToChange(type : TypeUtilisateur){
         self.stateElement.send(UtilisateurIntentState.changingType(type))
-        self.updateList()
+        //self.updateList()
     }
     
     func intentToChange(email : String) {
@@ -79,20 +80,24 @@ struct UtilisateurIntent  {
         self.stateElement.send(UtilisateurIntentState.deleteUser)
     }
     
-    mutating func addObserver(utilisateurViewModel : UtilisateurViewModel){
-        self.stateElement.subscribe(utilisateurViewModel)
-        self.isFromList = false
+    func intentToDeleteUserFromList(id : Int){
+        self.stateList.send(UtilisateurListIntentState.deleteUser(id))
     }
     
-    mutating func addObserver(utilisateurViewModel : UtilisateurViewModel, utilisateurListViewModel : UtilisateurListViewModel ){
+    mutating func addObserver(_ utilisateurViewModel : UtilisateurViewModel){
         self.stateElement.subscribe(utilisateurViewModel)
+       // self.isFromList = false
+    }
+    
+    mutating func addObserver(_ utilisateurListViewModel : UtilisateurListViewModel){
+        //self.stateElement.subscribe(utilisateurViewModel)
         self.stateList.subscribe(utilisateurListViewModel)
-        self.isFromList = true
+       /* self.isFromList = true*/
     }
     
-    func updateList(){
+    /*func updateList(){
         if self.isFromList {
             self.stateList.send(.updateList)
         }
-    }
+    }*/
 }
