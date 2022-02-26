@@ -49,13 +49,13 @@ struct UtilisateurDetailView : View {
             }.padding(10)
             
             if isCreate {
-            HStack{
-                Text("Mot de passe : ")
-                TextField("", text : $utilisateur.motDePasse).disabled(!isCreate)
-                    .onSubmit {
-                        intent.intentToChange(password: utilisateur.motDePasse)
-                    }
-            }.padding(10)
+                HStack{
+                    Text("Mot de passe : ")
+                    TextField("", text : $utilisateur.motDePasse).disabled(!isCreate)
+                        .onSubmit {
+                            intent.intentToChange(password: utilisateur.motDePasse)
+                        }
+                }.padding(10)
             }
                 
             HStack{

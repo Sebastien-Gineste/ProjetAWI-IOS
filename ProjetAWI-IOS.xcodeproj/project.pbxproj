@@ -52,6 +52,7 @@
 		6FB6535827C8C3170074EC91 /* GestionCompteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6535727C8C3170074EC91 /* GestionCompteView.swift */; };
 		6FB6535A27C9095C0074EC91 /* IngredientDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6535927C9095C0074EC91 /* IngredientDetailView.swift */; };
 		6FB6535C27C90AB60074EC91 /* IngredientViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6535B27C90AB60074EC91 /* IngredientViewModel.swift */; };
+		6FB6535F27CA6EA50074EC91 /* UtilisateurCreateUpdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6535E27CA6EA50074EC91 /* UtilisateurCreateUpdateView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -99,6 +100,7 @@
 		6FB6535727C8C3170074EC91 /* GestionCompteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestionCompteView.swift; sourceTree = "<group>"; };
 		6FB6535927C9095C0074EC91 /* IngredientDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientDetailView.swift; sourceTree = "<group>"; };
 		6FB6535B27C90AB60074EC91 /* IngredientViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientViewModel.swift; sourceTree = "<group>"; };
+		6FB6535E27CA6EA50074EC91 /* UtilisateurCreateUpdateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilisateurCreateUpdateView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -259,6 +261,7 @@
 				6F3B82D527C12A7500428123 /* UtilisateurDetailView.swift */,
 				6FB6532327C51D720074EC91 /* ConnexionView.swift */,
 				6FB6535727C8C3170074EC91 /* GestionCompteView.swift */,
+				6FB6535E27CA6EA50074EC91 /* UtilisateurCreateUpdateView.swift */,
 			);
 			path = Utilisateur;
 			sourceTree = "<group>";
@@ -442,6 +445,7 @@
 				6FB6535827C8C3170074EC91 /* GestionCompteView.swift in Sources */,
 				6F3B82AE27BFBB0C00428123 /* Theme.swift in Sources */,
 				6FB6535027C76DAD0074EC91 /* AllergèneListView.swift in Sources */,
+				6FB6535F27CA6EA50074EC91 /* UtilisateurCreateUpdateView.swift in Sources */,
 				6F3B82B327BFC47600428123 /* Color.swift in Sources */,
 				6FB6535427C7BDCA0074EC91 /* AllergèneViewModel.swift in Sources */,
 				6F3B82C827C1196700428123 /* UtilisateurIntent.swift in Sources */,

@@ -23,24 +23,82 @@ enum TypeUtilisateur : String, CaseIterable, Identifiable{
 class Utilisateur : ObservableObject{
     var observer : UtilisateurObserver?
     var id : String = UUID().uuidString
-    var email : String
+    
+    
+    /**
+            Function from https://stackoverflow.com/questions/25471114/how-to-validate-an-e-mail-address-in-swift
+     */
+    private func isValidEmail(_ email: String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+
+        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailPred.evaluate(with: email)
+    }
+    
+    func isValid() -> Bool{
+        return email.count > 1 && motDePasse.count > 1 && nom.count > 1 && prenom.count > 1
+    }
+    
+    var email : String {
+        didSet {
+            if email != oldValue {
+                if isValidEmail(email){
+                    self.observer?.changed(email : self.email)
+                } else{
+                    self.email = oldValue
+                }
+            }
+        }
+    }
+    
+    
     var nom : String {
         didSet {
-            self.observer?.changed(nom: self.nom)
+            if nom != oldValue {
+                if nom.count >= 1{
+                    self.observer?.changed(nom: self.nom)
+                }
+                else{
+                    self.nom = oldValue
+                }
+            }
         }
     }
     var prenom : String{
         didSet{
-            self.observer?.changed(prenom: self.prenom)
-        }
-    }
-    var type : TypeUtilisateur{
-        didSet{
-            self.observer?.changed(type : self.type)
+            if prenom != oldValue {
+                if prenom.count >= 1{
+                    self.observer?.changed(prenom: self.prenom)
+                }
+                else{
+                    self.nom = oldValue
+                }
+            }
         }
     }
     
-    var motDePasse : String = ""
+    var type : TypeUtilisateur{
+        didSet{
+            if type != oldValue {
+                self.observer?.changed(type : self.type)
+            }
+        }
+    }
+    
+    var motDePasse : String {
+        didSet {
+            if motDePasse != oldValue {
+                let regex = "^[0-9a-zA-Z]{6,}$"
+                print("mdp : |\(motDePasse)| => valid ? : \(NSPredicate(format: "SELF MATCHES %@",regex).evaluate(with: motDePasse))")
+                if NSPredicate(format: "SELF MATCHES %@",regex).evaluate(with: motDePasse) {
+                    self.observer?.changed(motDePasse: motDePasse)
+                }
+                else{
+                    self.motDePasse = oldValue
+                }
+            }
+        }
+    }
     
     func estConnecte() -> Bool{
         return self.email.count > 3 

@@ -10,6 +10,7 @@ import Firebase
 
 @main
 struct ProjetAWI_IOSApp: App {
+    
     var body: some Scene {
         WindowGroup {
             MenuView()

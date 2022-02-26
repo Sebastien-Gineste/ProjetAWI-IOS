@@ -105,38 +105,55 @@ class UtilisateurViewModel : ObservableObject, UtilisateurObserver,UserServiceRe
     
     func receive(_ input: UtilisateurIntentState) -> Subscribers.Demand {
         switch input {
-            case .ready: break
-            case .changingName(let nom):
-           
+        case .ready: break
+        case .changingName(let nom):
             self.model.nom = nom
             if nom != self.model.nom {
                 self.result = .failure(.errorName(nom))
                 self.nom = nom
             }
-            
         case .changingPassword(let motDePasse):
             self.model.motDePasse = motDePasse
+            if motDePasse != self.model.motDePasse {
+                self.result = .failure(.mdpError("Le mot de passe doit faire au moins 6 caractères"))
+                self.motDePasse = motDePasse
+            }
             
-            case .changingEmail(let email):
+        case .changingEmail(let email):
             self.model.email = email
+            if email != self.model.email {
+                self.result = .failure(.emailError(email))
+                self.email = self.model.email // ancienne valeur 
+            }
                
-            case .changingFirstName(let prenom):
+        case .changingFirstName(let prenom):
             self.model.prenom = prenom
+            if prenom != self.model.prenom {
+                self.result = .failure(.errorFirstName(prenom))
+                self.prenom = prenom
+            }
                 
-            case .changingType(let type):
+        case .changingType(let type):
             self.model.type = type
             
-            case .updateDatabase:
-            print("update database receive")
-            self.userService.updateUtilisateur(util: self.model)
+        case .updateDatabase:
+            if self.model.isValid() {
+                self.userService.updateUtilisateur(util: self.model)
+            }
+            else{
+                self.result = .failure(.updateError)
+            }
             
-            case .deleteUser:
+        case .deleteUser:
             self.userService.deleteUtilisateur(id: self.model.id)
             
-            case .createUser:
-            print("create user database receive")
-            self.userService.createUtilisateur(util: self.model)
-            
+        case .createUser:
+            if self.model.isValid() {
+                self.userService.createUtilisateur(util: self.model)
+            }
+            else{
+                self.result = .failure(.createError)
+            }
         }
         return .none
     }
