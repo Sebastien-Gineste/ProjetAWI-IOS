@@ -24,39 +24,41 @@ struct AllergèneCreateView: View {
     
     var body : some View {
         VStack {
-            Spacer()
-            HStack{
-                LazyVGrid(columns: columns){
-                    Text("Nom de l'allergène :").frame(maxWidth: .infinity, alignment: .leading)
-                    TextField("",text: $allergène.nom)
-                        .onSubmit {
-                            intent.intentToChange(nom: allergène.nom)
+            Form {
+                Section {
+                    HStack{
+                        LazyVGrid(columns: columns){
+                            Text("Nom de l'allergène :").frame(maxWidth: .infinity, alignment: .leading)
+                            TextField("",text: $allergène.nom)
+                                .onSubmit {
+                                    intent.intentToChange(nom: allergène.nom)
+                                }
+                        }
+                    }.onChange(of: allergène.result){
+                            result in
+                            switch result {
+                            case let .success(msg):
+                               self.alertMessage = msg
+                               self.showingAlert = true
+                                break
+                            case let .failure(error):
+                                switch error {
+                                case .updateError, .createError :
+                                    self.alertMessage = "\(error)"
+                                    self.showingAlert = true
+                                case .noError :
+                                    return
+                                }
+                            }
+                        }
+                        .alert(Text(alertMessage), isPresented: $showingAlert){
+                            Button("OK", role: .cancel){
+                                allergène.result = .failure(.noError)
+                                self.showingAlert = false
+                            }
                         }
                 }
-            }.padding()
-                .onChange(of: allergène.result){
-                    result in
-                    switch result {
-                    case let .success(msg):
-                       self.alertMessage = msg
-                       self.showingAlert = true
-                        break
-                    case let .failure(error):
-                        switch error {
-                        case .updateError, .createError :
-                            self.alertMessage = "\(error)"
-                            self.showingAlert = true
-                        case .noError :
-                            return
-                        }
-                    }
-                }
-                .alert(Text(alertMessage), isPresented: $showingAlert){
-                    Button("OK", role: .cancel){
-                        allergène.result = .failure(.noError)
-                        self.showingAlert = false
-                    }
-                }
+            }
             Spacer()
             Button("Ajout"){
                 intent.intentToAddAllergène()

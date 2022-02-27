@@ -53,7 +53,7 @@ struct IngredientListView : View {
                     ForEach(Array(ingredientsFiltre.enumerated()), id: \.offset) {
                         index, ingredient in
                             HStack{
-                                NavigationLink(destination: IngredientDetailView(vm: self.ingredientListViewModel, indice: index)){
+                                NavigationLink(destination: IngredientDetailView(vm: self.ingredientListViewModel, indice: index, vmCategorie: self.categorieIngredientViewModel)){
                                     VStack(alignment: .leading) {
                                         Text(ingredient.nomIngredient).bold()
                                         HStack {
@@ -76,7 +76,7 @@ struct IngredientListView : View {
                 HStack{
                     LazyVGrid(columns: columns){
                         EditButton()
-                        NavigationLink(destination: IngredientCreateView()){
+                        NavigationLink(destination: IngredientCreateView(vm: CategorieIngredientViewModel())){
                             Text("Ajout")
                         }
                     }

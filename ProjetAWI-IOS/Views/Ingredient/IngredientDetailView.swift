@@ -9,11 +9,14 @@ import Foundation
 import SwiftUI
 
 struct IngredientDetailView: View {
-    var intent : IngredientIntent
+    
     @ObservedObject var ingredient : IngredientViewModel
-    let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
+    @ObservedObject var categorieIngredientViewModel : CategorieIngredientViewModel
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
+    @State private var selectedIndex : Int
+    var intent : IngredientIntent
+    let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
     let formatter : NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
@@ -21,50 +24,77 @@ struct IngredientDetailView: View {
         return formatter
     }()
     
-    init(vm: IngredientListViewModel, indice : Int){
+    init(vm: IngredientListViewModel, indice : Int, vmCategorie : CategorieIngredientViewModel){
         self.intent = IngredientIntent()
         self.ingredient = IngredientViewModel(ingrédientListViewModel: vm, indice: indice)
+        self.categorieIngredientViewModel = vmCategorie
+        if let index = vmCategorie.tabCategorieIngredient.firstIndex(of:vm.tabIngredient[indice].categorie) {
+            self.selectedIndex = index
+        } else {
+            self.selectedIndex = 0
+        }
         self.intent.addObserver(self.ingredient)
     }
     
+    func getAlert() -> Alert {
+                 return Alert(title: Text("Error getting alert dialog."))
+    }
     var body : some View {
         VStack {
-            Spacer()
-            HStack{
-                LazyVGrid(columns: columns){
-                    Text("Nom :").frame(maxWidth: .infinity, alignment: .leading)
-                    TextField("",text: $ingredient.nomIngredient)
-                        .onSubmit {
-                            intent.intentToChange(nomIngrédient: ingredient.nomIngredient)
+            Form {
+                Section {
+                    HStack{
+                        LazyVGrid(columns: columns){
+                            Text("Nom :").frame(maxWidth: .infinity, alignment: .leading)
+                            TextField("",text: $ingredient.nomIngredient)
+                                .onSubmit {
+                                    intent.intentToChange(nomIngrédient: ingredient.nomIngredient)
+                                }
                         }
-                    Text("Prix unitaire :").frame(maxWidth: .infinity, alignment: .leading)
-                    TextField("",value: $ingredient.prixUnitaire, formatter: formatter)
-                        .onSubmit {
-                            intent.intentToChange(prixUnitaire: ingredient.prixUnitaire)
+                    }
+                    HStack{
+                        LazyVGrid(columns: columns){
+                            Text("Prix unitaire :").frame(maxWidth: .infinity, alignment: .leading)
+                            TextField("",value: $ingredient.prixUnitaire, formatter: formatter)
+                                .onSubmit {
+                                    intent.intentToChange(prixUnitaire: ingredient.prixUnitaire)
+                                }
                         }
-                    Text("Quantité :").frame(maxWidth: .infinity, alignment: .leading)
-                    TextField("",value: $ingredient.qteIngredient, formatter: formatter)
-                        .onSubmit {
-                            intent.intentToChange(quantité: ingredient.qteIngredient)
+                    }
+                    HStack{
+                        LazyVGrid(columns: columns){
+                            Text("Quantité :").frame(maxWidth: .infinity, alignment: .leading)
+                            TextField("",value: $ingredient.qteIngredient, formatter: formatter)
+                                .onSubmit {
+                                    intent.intentToChange(quantité: ingredient.qteIngredient)
+                                }
                         }
-                    Text("Unité :").frame(maxWidth: .infinity, alignment: .leading)
-                    TextField("",text: $ingredient.unite)
-                        .onSubmit {
-                            intent.intentToChange(unite: ingredient.unite)
+                    }
+                    HStack{
+                        LazyVGrid(columns: columns){
+                            Text("Unité :").frame(maxWidth: .infinity, alignment: .leading)
+                            TextField("",text: $ingredient.unite)
+                                .onSubmit {
+                                    intent.intentToChange(unite: ingredient.unite)
+                                }
                         }
-                    Text("Catégorie :").frame(maxWidth: .infinity, alignment: .leading)
-                    TextField("",text: $ingredient.categorie)
-                        .onSubmit {
-                            intent.intentToChange(categorie: ingredient.categorie)
-                        }
-                }
-            }.padding()
-                .onChange(of: ingredient.result){
+                    }
+                    HStack {
+                        Picker(selection: $selectedIndex, label: Text("Categorie :")) {
+                            ForEach(0 ..< categorieIngredientViewModel.tabCategorieIngredient.count) {
+                                Text(self.categorieIngredientViewModel.tabCategorieIngredient[$0])
+                            }
+                        }.onChange(of: selectedIndex, perform: {
+                            value in
+                            self.intent.intentToChange(categorie: self.categorieIngredientViewModel.tabCategorieIngredient[value])
+                        })
+                    }
+                }.onChange(of: ingredient.result){
                     result in
                     switch result {
                     case let .success(msg):
-                        self.alertMessage = msg
-                        self.showingAlert = true
+                        self.alertMessage = "\(msg)"
+                        self.showingAlert.toggle()
                     case let .failure(error):
                         switch error {
                         case .updateError, .createError :
@@ -74,13 +104,13 @@ struct IngredientDetailView: View {
                             return
                         }
                     }
-                }
-                .alert(Text(alertMessage), isPresented: $showingAlert){
+                }.alert(Text(alertMessage), isPresented: $showingAlert){
                     Button("OK", role: .cancel){
                         ingredient.result = .failure(.noError)
                         self.showingAlert = false
                     }
                 }
+            }
             Spacer()
             Button("Modifier"){
                 intent.intentToUpdateDatabase()

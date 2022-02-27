@@ -31,31 +31,46 @@ struct PreferenceView : View {
     var body : some View {
         NavigationView {
             VStack {
-                Spacer()
-                HStack{
-                    LazyVGrid(columns: columns){
-                        Text("Coefficient Coût de Production :").frame(maxWidth: .infinity, alignment: .leading)
-                        TextField("",value: $storeModel.coefCoûtProduction, formatter: formatter)
-                            .onSubmit {
-                                intent.intentToChange(coefCoûtProduction: storeModel.coefCoûtProduction)
+                Form{
+                    Section {
+                        HStack {
+                            LazyVGrid(columns: columns){
+                                Text("Coefficient Coût de Production :").frame(maxWidth: .infinity, alignment: .leading)
+                                TextField("",value: $storeModel.coefCoûtProduction, formatter: formatter)
+                                    .onSubmit {
+                                        intent.intentToChange(coefCoûtProduction: storeModel.coefCoûtProduction)
+                                    }
                             }
-                        Text("Coefficient Prix de Vente :").frame(maxWidth: .infinity, alignment: .leading)
-                        TextField("",value: $storeModel.coefPrixDeVente, formatter: formatter)
-                            .onSubmit {
-                                intent.intentToChange(coefPrixDeVente: storeModel.coefPrixDeVente)
+                        }
+                        HStack {
+                            LazyVGrid(columns: columns){
+                                Text("Coefficient Prix de Vente :").frame(maxWidth: .infinity, alignment: .leading)
+                                TextField("",value: $storeModel.coefPrixDeVente, formatter: formatter)
+                                    .onSubmit {
+                                        intent.intentToChange(coefPrixDeVente: storeModel.coefPrixDeVente)
+                                    }
                             }
-                        Text("Coefficient Coût Forfaitaire :").frame(maxWidth: .infinity, alignment: .leading)
-                        TextField("",value: $storeModel.coûtForfaitaire, formatter: formatter)
-                            .onSubmit {
-                                intent.intentToChange(coûtForfaitaire: storeModel.coûtForfaitaire)
+                        }
+                        HStack {
+                            LazyVGrid(columns: columns){
+                                Text("Coefficient Coût Forfaitaire :").frame(maxWidth: .infinity, alignment: .leading)
+                                TextField("",value: $storeModel.coûtForfaitaire, formatter: formatter)
+                                    .onSubmit {
+                                        intent.intentToChange(coûtForfaitaire: storeModel.coûtForfaitaire)
+                                    }
                             }
-                        Text("Coefficient Coût Moyen :").frame(maxWidth: .infinity, alignment: .leading)
-                        TextField("",value: $storeModel.coûtMoyen, formatter: formatter)
-                            .onSubmit {
-                                intent.intentToChange(coûtMoyen: storeModel.coûtMoyen)
+                        }
+                        HStack {
+                            LazyVGrid(columns: columns){
+                                Text("Coefficient Coût Moyen :").frame(maxWidth: .infinity, alignment: .leading)
+                                TextField("",value: $storeModel.coûtMoyen, formatter: formatter)
+                                    .onSubmit {
+                                        intent.intentToChange(coûtMoyen: storeModel.coûtMoyen)
+                                    }
                             }
+                        }
                     }
-                }.padding()
+                }
                     .onChange(of: storeModel.result){
                         result in
                         switch result {

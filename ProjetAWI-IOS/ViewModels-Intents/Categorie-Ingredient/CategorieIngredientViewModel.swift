@@ -16,13 +16,13 @@ class CategorieIngredientViewModel : ObservableObject, /*Subscriber,*/ Categorie
     @Published var result : Result<String, AllergèneListViewModelError> = .failure(.noError)
 
     init() {
-        self.tabCategorieIngredient = []
+        self.tabCategorieIngredient = ["Choisir"]
         self.categorieIngredientService.addObserver(observer: self)
         self.categorieIngredientService.getAllCategorieIngredient()
     }
     
     func emit(to: [String]) {
-        self.tabCategorieIngredient = ["Toutes les catégories"]
+        self.tabCategorieIngredient = ["Choisir"]
         self.tabCategorieIngredient.append(contentsOf: to)
     }
     /*
