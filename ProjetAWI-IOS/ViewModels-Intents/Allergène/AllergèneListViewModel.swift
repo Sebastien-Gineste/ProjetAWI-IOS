@@ -25,7 +25,7 @@ class AllergèneListViewModel : ObservableObject, Subscriber, AllergèneListServ
 
     private var allergèneService : AllergèneService = AllergèneService()
     @Published var tabAllergène : [Allergène]
-    @Published var result : Result<String, AllergèneListViewModelError> = .success("")
+    @Published var result : Result<String, AllergèneListViewModelError> = .failure(.noError)
 
     init() {
         self.tabAllergène = []

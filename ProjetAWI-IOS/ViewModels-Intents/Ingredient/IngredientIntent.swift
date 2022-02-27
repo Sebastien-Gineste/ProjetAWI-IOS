@@ -47,6 +47,18 @@ struct IngredientIntent  {
     func intentToChange(categorie : String){
         self.stateElement.send(IngredientIntentState.changingCategorie(categorie))
     }
+    
+    func intentToUpdateDatabase(){
+        self.stateElement.send(IngredientIntentState.updateDatabase)
+    }
+    
+    func intentToDeleteIngredient(id : Int){
+        self.stateList.send(IngredientListIntentState.deleteIngredient(id))
+    }
+    
+    func intentToAddIngredient(){
+        self.stateElement.send(IngredientIntentState.addIngredient)
+    }
    
     func addObserver(_ ingredientListView : IngredientListViewModel){
         self.stateList.subscribe(ingredientListView)

@@ -12,6 +12,7 @@ import FirebaseFirestoreSwift
 
 protocol IngredientListServiceObserver {
     func emit(to: [Ingredient])
+    func emit(to: Result<String,IngredientListViewModelError>)
 }
 
 protocol IngredientServiceObserver {
@@ -49,9 +50,6 @@ class IngredientService {
             guard let documents = data?.documents else {
                 return
             }
-            
-            print("\(self.tabObserver.count) count list ingrédient")
-            
             self.tabIngredient = documents.map{
                 (doc) -> Ingredient in
                 return IngredientDTO.transformDTO(
@@ -65,5 +63,49 @@ class IngredientService {
             }
         }
 
+    }
+    
+    func updateIngredient(ingredient : Ingredient){
+        let ref = firestore.collection("ingredients").document(ingredient.id!)
+        ref.updateData(IngredientDTO.transformToDTO(ingredient)) {
+            (error) in
+            if let _ = error {
+                self.sendResultElement(result: .failure(.updateError))
+            } else {
+                self.sendResultElement(result: .success("Mise a jour effectué"))
+            }
+        }
+    }
+    
+    func deleteIngredient(id : String){
+        firestore.collection("ingredients").document(id).delete() {
+            (error) in if let _ = error {
+                self.sendResultList(result: .failure(.deleteError))
+            } else{
+                self.sendResultList(result: .success("Suppresion effectué !"))
+            }
+        }
+    }
+    
+    func addIngredient(ingredient : Ingredient){
+        firestore.collection("ingredients").addDocument(data: IngredientDTO.transformToDTO(ingredient)){
+            (error) in if let _ = error {
+                self.sendResultElement(result: .failure(.createError))
+            } else {
+                self.sendResultElement(result: .success("Création effectué"))
+            }
+        }
+    }
+    
+    private func sendResultElement(result : Result<String,IngredientViewModelError>){
+        for observer in self.tabObserver {
+            observer.emit(to: result)
+        }
+    }
+    
+    private func sendResultList(result : Result<String,IngredientListViewModelError>){
+        for observer in self.tabListObserver {
+            observer.emit(to: result)
+        }
     }
 }

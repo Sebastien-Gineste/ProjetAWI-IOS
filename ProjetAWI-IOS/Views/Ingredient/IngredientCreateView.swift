@@ -1,14 +1,15 @@
 //
-//  IngredientDetailView.swift
+//  IngredientCreateView.swift
 //  ProjetAWI-IOS
 //
-//  Created by m1 on 25/02/2022.
+//  Created by m1 on 27/02/2022.
 //
 
 import Foundation
 import SwiftUI
 
-struct IngredientDetailView: View {
+struct IngredientCreateView: View {
+    @Environment(\.presentationMode) var presentationMode
     var intent : IngredientIntent
     @ObservedObject var ingredient : IngredientViewModel
     let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
@@ -21,9 +22,9 @@ struct IngredientDetailView: View {
         return formatter
     }()
     
-    init(vm: IngredientListViewModel, indice : Int){
+    init(){
         self.intent = IngredientIntent()
-        self.ingredient = IngredientViewModel(ingrédientListViewModel: vm, indice: indice)
+        self.ingredient = IngredientViewModel()
         self.intent.addObserver(self.ingredient)
     }
     
@@ -63,8 +64,9 @@ struct IngredientDetailView: View {
                     result in
                     switch result {
                     case let .success(msg):
-                        self.alertMessage = msg
-                        self.showingAlert = true
+                       self.alertMessage = msg
+                       self.showingAlert = true
+                        break
                     case let .failure(error):
                         switch error {
                         case .updateError, .createError :
@@ -82,11 +84,12 @@ struct IngredientDetailView: View {
                     }
                 }
             Spacer()
-            Button("Modifier"){
-                intent.intentToUpdateDatabase()
+            Button("Ajout"){
+                intent.intentToAddIngredient()
+                self.presentationMode.wrappedValue.dismiss()
             }.padding(20)
         }
-        .navigationBarTitle(Text("Détails de l'ingrédient"),displayMode: .inline)
+        .navigationBarTitle(Text("Ajout d'ingredient"),displayMode: .inline)
         
     }}
 

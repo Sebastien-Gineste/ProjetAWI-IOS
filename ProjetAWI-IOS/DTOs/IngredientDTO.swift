@@ -30,7 +30,7 @@ struct IngredientDTO {
             "qteIngredient" : ingredient.qteIngredient,
             "unite" : ingredient.unite,
             "categorie" : ingredient.categorie,
-            "nomIngredient" : ingredient.nomIngredient,
+            "listAllergene" : [],
         ]
     }
 }

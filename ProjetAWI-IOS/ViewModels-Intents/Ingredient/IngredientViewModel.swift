@@ -73,11 +73,9 @@ class IngredientViewModel : ObservableObject, Subscriber, IngredientServiceObser
                 self.nomIngredient = self.ingredient.nomIngredient
             }
         case .updateDatabase:
-           break
-            //self.allergèneService.updateAllergène(allergène: self.allergène)
+            self.ingredientService.updateIngredient(ingredient: self.ingredient)
         case .addIngredient:
-            break
-            //self.allergèneService.addAllergène(allergène: self.allergène)
+            self.ingredientService.addIngredient(ingredient: self.ingredient)
         case .changingPrix(let double):
             self.ingredient.prixUnitaire = double
             if self.ingredient.prixUnitaire != double {

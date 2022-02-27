@@ -9,11 +9,23 @@ import Foundation
 import SwiftUI
 import Combine
 
+enum IngredientListViewModelError : Error, Equatable, CustomStringConvertible {
+    case noError
+    case deleteError
+    var description: String {
+        switch self {
+        case .noError : return "Aucune erreur"
+        case .deleteError : return "Erreur de supression"
+        }
+    }
+}
+
 class IngredientListViewModel : ObservableObject, Subscriber, IngredientListServiceObserver {
 
     private var ingredientService : IngredientService = IngredientService()
     @Published var tabIngredient : [Ingredient]
-    
+    @Published var result : Result<String, IngredientListViewModelError> = .failure(.noError)
+
     init() {
         self.tabIngredient = []
         self.ingredientService.addObserver(observer: self)
@@ -22,6 +34,10 @@ class IngredientListViewModel : ObservableObject, Subscriber, IngredientListServ
     
     func emit(to: [Ingredient]) {
         self.tabIngredient = to
+    }
+    
+    func emit(to: Result<String, IngredientListViewModelError>) {
+        self.result = to
     }
     
     typealias Input = IngredientListIntentState
@@ -39,8 +55,8 @@ class IngredientListViewModel : ObservableObject, Subscriber, IngredientListServ
         switch input {
         case .ready:
             break
-        case .deleteIngredient(_):
-            break
+        case .deleteIngredient(let id):
+            self.ingredientService.deleteIngredient(id: self.tabIngredient[id].id!)
         }
         return .none
     }

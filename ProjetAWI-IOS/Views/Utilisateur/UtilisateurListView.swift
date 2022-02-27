@@ -63,7 +63,8 @@ struct UtilisateurListView : View {
                         }
                     }
                     .searchable(text: $searchText,placement:.navigationBarDrawer(displayMode:.always))
-                    .navigationTitle("Liste des utilisateurs")
+                    .navigationBarTitle(Text("Liste des utilisateurs"),displayMode: .inline)
+
                     
                     HStack(spacing : 20){
                         EditButton()

@@ -14,8 +14,9 @@ struct IngredientListView : View {
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
     @State private var searchText : String = ""
-    private var categoryArray : [String] = ["Toutes les catégories"]
     @State private var selectedIndex : Int = 0
+    let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
+    private var categoryArray : [String] = ["Toutes les catégories"]
     var intent: IngredientIntent
     var ingredientsFiltre: [Ingredient] {
         if searchText.isEmpty {
@@ -58,14 +59,43 @@ struct IngredientListView : View {
                             }
                     }
                     .onDelete{ indexSet in
-                        ingredientListViewModel.tabIngredient.remove(atOffsets: indexSet)
+                        for index in indexSet {
+                            intent.intentToDeleteIngredient(id: index)
+                        }
                     }
                 }
                 .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
-                .navigationBarTitle(Text("Liste des ingrédients"),displayMode: .large)
-                EditButton().padding()
+                .navigationBarTitle(Text("Liste des ingrédients"),displayMode: .inline)
+                HStack{
+                    LazyVGrid(columns: columns){
+                        EditButton()
+                        NavigationLink(destination: IngredientCreateView()){
+                            Text("Ajout")
+                        }
+                    }
+                }.padding()
             }
-            
+            .onChange(of: ingredientListViewModel.result){
+                result in
+                switch result {
+                case let .success(msg):
+                    self.alertMessage = msg
+                    self.showingAlert = true
+                case let .failure(error):
+                    switch error {
+                    case .noError :
+                        return
+                    case .deleteError:
+                        self.alertMessage = "\(error)"
+                        self.showingAlert = true
+                    }
+                }
+            }
+            .alert("\(alertMessage)", isPresented: $showingAlert){
+                Button("OK", role: .cancel){
+                    ingredientListViewModel.result = .failure(.noError)
+                }
+            }
         }
 
         
