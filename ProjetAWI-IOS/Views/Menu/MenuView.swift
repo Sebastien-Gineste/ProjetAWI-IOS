@@ -24,7 +24,7 @@ struct MenuView: View {
             
             if user.currentUtilisateur.estConnecte() {
                 
-                IngredientListView(vm:IngredientListViewModel())
+                IngredientListView(vm:IngredientListViewModel(), vmCategorie: CategorieIngredientViewModel())
                     .tabItem {
                         Image(systemName: "list.bullet.rectangle.portrait.fill")
                         Text("Ingrédient")

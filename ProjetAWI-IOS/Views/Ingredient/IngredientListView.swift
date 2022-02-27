@@ -11,25 +11,32 @@ import SwiftUI
 struct IngredientListView : View {
     
     @ObservedObject var ingredientListViewModel : IngredientListViewModel
+    @ObservedObject var categorieIngredientViewModel : CategorieIngredientViewModel
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
     @State private var searchText : String = ""
     @State private var selectedIndex : Int = 0
     let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
-    private var categoryArray : [String] = ["Toutes les catégories"]
     var intent: IngredientIntent
     var ingredientsFiltre: [Ingredient] {
-        if searchText.isEmpty {
+        if searchText.isEmpty &&  selectedIndex <= 0 {
             return ingredientListViewModel.tabIngredient
         } else {
-            return ingredientListViewModel.tabIngredient.filter{ $0.nomIngredient.uppercased().contains(searchText.uppercased()) }
+            if selectedIndex <= 0 {
+                return ingredientListViewModel.tabIngredient.filter{ $0.nomIngredient.uppercased().contains(searchText.uppercased()) }
+            } else if searchText.isEmpty {
+                return ingredientListViewModel.tabIngredient.filter{ $0.categorie.uppercased().contains(categorieIngredientViewModel.tabCategorieIngredient[selectedIndex].uppercased()) }
+            } else {
+                return ingredientListViewModel.tabIngredient.filter{ $0.nomIngredient.uppercased().contains(searchText.uppercased()) && $0.categorie.uppercased().contains(categorieIngredientViewModel.tabCategorieIngredient[selectedIndex].uppercased()) }
+            }
         }
     }
     
-    init(vm : IngredientListViewModel){
+    init(vm : IngredientListViewModel, vmCategorie : CategorieIngredientViewModel){
         self.ingredientListViewModel = vm
         self.intent = IngredientIntent()
         self.intent.addObserver(vm)
+        self.categorieIngredientViewModel = vmCategorie
     }
     
     var body : some View {
@@ -37,8 +44,8 @@ struct IngredientListView : View {
             VStack {
                 Form {
                     Picker(selection: $selectedIndex, label: Text("Categorie")) {
-                        ForEach(0 ..< categoryArray.count) {
-                            Text(self.categoryArray[$0])
+                        ForEach(0 ..< categorieIngredientViewModel.tabCategorieIngredient.count) {
+                            Text(self.categorieIngredientViewModel.tabCategorieIngredient[$0])
                         }
                   }
                 }.frame(height: 100)
