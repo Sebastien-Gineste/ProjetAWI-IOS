@@ -34,6 +34,8 @@ public class UtilisateurService : ObservableObject{
     
     private var tabObserversCurrentUser : [CurrentUserServiceObserver] = []
     
+    private var requeteEnCours = false
+    
     
     @Published var currentUtilisateur : Utilisateur{ // état courant de l'utilisateur
         didSet{
@@ -171,7 +173,9 @@ public class UtilisateurService : ObservableObject{
                 self.sendResult(result: .failure(.updateError))
             } else {
                 print("send success !!! ")
-                self.sendResult(result: .success("Mise à jour effectué du compte"))
+                print("Observer Result : \(self.observerResult)")
+                self.sendResult(result: .success("Mise à jour effectué du compte from result"))
+                self.sendResultList(result: .success("Mise à jour effectué du compte from list"))
             }
         }
     }

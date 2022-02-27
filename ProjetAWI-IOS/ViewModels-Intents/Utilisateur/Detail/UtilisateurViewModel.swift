@@ -115,6 +115,7 @@ class UtilisateurViewModel : ObservableObject, UtilisateurObserver,UserServiceRe
         return
     }
     
+    
     func receive(_ input: UtilisateurIntentState) -> Subscribers.Demand {
         switch input {
         case .ready: break
@@ -150,7 +151,7 @@ class UtilisateurViewModel : ObservableObject, UtilisateurObserver,UserServiceRe
             
         case .updateDatabase:
             if self.model.isValid {
-                print("gogogogo \(nom)")
+                print("case updateDatabase")
                 self.userService.updateUtilisateur(util: self.model)
             }
             else{

@@ -67,7 +67,7 @@ struct UtilisateurListView : View {
                     
                     HStack(spacing : 20){
                         EditButton()
-                        NavigationLink(destination:UtilisateurCreateUpdateView(), isActive: $isActiveCreateView){
+                        NavigationLink(destination:UtilisateurDetailView(), isActive: $isActiveCreateView){
                             Text("Créer un compte")
                         }
                     }
