@@ -59,7 +59,7 @@ class IngredientService {
                                   qteIngredient: doc["qteIngredient"] as? Double ?? 0,
                                   unite: doc["unite"] as? String ?? "",
                                   categorie: doc["categorie"] as? String ?? "",
-                                  listAllergene: []))
+                                  listAllergene: doc["listAllergene"] as? [String] ?? []))
             }
         }
 

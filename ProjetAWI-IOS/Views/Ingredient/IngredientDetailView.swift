@@ -42,7 +42,7 @@ struct IngredientDetailView: View {
     var body : some View {
         VStack {
             Form {
-                Section {
+                Section(header: Text("Informations")) {
                     HStack{
                         LazyVGrid(columns: columns){
                             Text("Nom :").frame(maxWidth: .infinity, alignment: .leading)
@@ -89,6 +89,17 @@ struct IngredientDetailView: View {
                             self.intent.intentToChange(categorie: self.categorieIngredientViewModel.tabCategorieIngredient[value])
                         })
                     }
+                    HStack {
+                        NavigationLink(destination: MultipleSelectionAllergène(selections: $ingredient.listAllergene)){
+                            HStack {
+                                Text("Liste allergènes :")
+                                Spacer()
+                                Text("Modifier")
+                                    .foregroundColor(Color.gray)
+                            }
+                        }
+                    }
+                    
                 }.onChange(of: ingredient.result){
                     result in
                     switch result {
@@ -110,7 +121,25 @@ struct IngredientDetailView: View {
                         self.showingAlert = false
                     }
                 }
+                Section(header: Text("Allergènes contenu")){
+                    VStack{
+                        if $ingredient.listAllergene.count == 0 {
+                            Text("Cet ingrédient ne contient pas d'allergènes")
+                        } else {
+                            List {
+                                ForEach(Array(ingredient.listAllergene.enumerated()), id: \.offset) {
+                                    _, allergène in
+                                    VStack {
+                                        Text(allergène)
+                                    }.padding(2)
+                                    
+                                }
+                            }
+                        }
+                    }
+                }
             }
+            
             Spacer()
             Button("Modifier"){
                 intent.intentToUpdateDatabase()

@@ -31,19 +31,21 @@ class IngredientViewModel : ObservableObject, Subscriber, IngredientServiceObser
     @Published var qteIngredient : Double
     @Published var unite : String
     @Published var categorie : String
+    @Published var listAllergene : [String]
     @Published var result : Result<String, IngredientViewModelError> = .failure(.noError)
     
     init(ingrédientListViewModel : IngredientListViewModel? = nil, indice : Int? = nil) {
         if let indice = indice , let ingrédientListViewModel = ingrédientListViewModel{
             self.ingredient = ingrédientListViewModel.tabIngredient[indice]
         } else {
-            self.ingredient = Ingredient(nomIngredient: "", prixUnitaire: 0, qteIngredient: 0, unite: "", categorie: "")
+            self.ingredient = Ingredient(nomIngredient: "", prixUnitaire: 0, qteIngredient: 0, unite: "", categorie: "", listAllergene: [])
         }
         self.nomIngredient = self.ingredient.nomIngredient
         self.prixUnitaire = self.ingredient.prixUnitaire
         self.qteIngredient = self.ingredient.qteIngredient
         self.unite = self.ingredient.unite
         self.categorie = self.ingredient.categorie
+        self.listAllergene = self.ingredient.listAllergene
         self.ingredientService.addObserver(observer: self)
         self.ingredient.observer = self
     }
@@ -118,6 +120,10 @@ class IngredientViewModel : ObservableObject, Subscriber, IngredientServiceObser
     
     func changed(categorie: String) {
         self.categorie = categorie
+    }
+    
+    func changed(listAllergene: [String]) {
+        self.listAllergene = listAllergene
     }
 }
 

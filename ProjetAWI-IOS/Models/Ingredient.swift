@@ -10,6 +10,7 @@ protocol IngredientObserver {
     func changed(qteIngredient: Double)
     func changed(unite: String)
     func changed(categorie: String)
+    func changed(listAllergene: [String])
 }
 
 class Ingredient {
@@ -62,21 +63,25 @@ class Ingredient {
     var categorie : String {
         didSet {
             if self.categorie != oldValue {
-                if self.categorie != oldValue {
-                    self.observer?.changed(categorie: self.categorie)
-                } else {
-                    self.categorie = oldValue
-                }
+                self.observer?.changed(categorie: self.categorie)
             }
         }
     }
-    init(nomIngredient: String, prixUnitaire : Double, qteIngredient : Double, unite : String, categorie : String, id : String? = nil){
+    var listAllergene : [String] {
+        didSet {
+            if self.listAllergene != oldValue {
+               self.observer?.changed(listAllergene: self.listAllergene)
+            }
+        }
+    }
+    init(nomIngredient: String, prixUnitaire : Double, qteIngredient : Double, unite : String, categorie : String, listAllergene : [String], id : String? = nil){
         self.id = id
         self.nomIngredient = nomIngredient
         self.prixUnitaire = prixUnitaire
         self.qteIngredient = qteIngredient
         self.unite = unite
         self.categorie = categorie
+        self.listAllergene = listAllergene
     }
     
 }
