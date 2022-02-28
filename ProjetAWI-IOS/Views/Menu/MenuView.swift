@@ -13,6 +13,7 @@ struct MenuView: View {
     
     @StateObject var user : UtilisateurService = UtilisateurService.instance
     var vmAllergene : AllergèneListViewModel = AllergèneListViewModel()
+    var vmIngredient : IngredientListViewModel = IngredientListViewModel()
     var body: some View {
         
         TabView {
@@ -24,13 +25,13 @@ struct MenuView: View {
             
             if user.currentUtilisateur.estConnecte() {
                 
-                IngredientListView(vm:IngredientListViewModel(), vmCategorie: CategorieIngredientViewModel(), vmAllergene: self.vmAllergene)
+                IngredientListView(vm:self.vmIngredient, vmCategorie: CategorieIngredientViewModel(), vmAllergene: self.vmAllergene)
                     .tabItem {
                         Image(systemName: "list.bullet.rectangle.portrait.fill")
                         Text("Ingrédient")
                     }
                 
-                AllergèneListView(vm: self.vmAllergene)
+                AllergèneListView(vm: self.vmAllergene, vmIngredient: self.vmIngredient)
                     .tabItem {
                         Image(systemName: "list.bullet.rectangle.portrait.fill")
                         Text("Allergènes")

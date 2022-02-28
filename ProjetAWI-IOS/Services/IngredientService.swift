@@ -97,6 +97,9 @@ class IngredientService {
         }
     }
     
+    // get ingrédient by allergène
+    
+    
     private func sendResultElement(result : Result<String,IngredientViewModelError>){
         for observer in self.tabObserver {
             observer.emit(to: result)

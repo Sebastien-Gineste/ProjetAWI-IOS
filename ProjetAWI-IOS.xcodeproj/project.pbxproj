@@ -57,6 +57,7 @@
 		6FB6536627CC016E0074EC91 /* CategorieIngredientViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6536527CC016E0074EC91 /* CategorieIngredientViewModel.swift */; };
 		6FB6536A27CCF0710074EC91 /* MultipleSelectionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6536927CCF0710074EC91 /* MultipleSelectionRow.swift */; };
 		6FB6536C27CCFD4F0074EC91 /* MultipleSelectionAllergène.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6536B27CCFD4F0074EC91 /* MultipleSelectionAllergène.swift */; };
+		6FB6536E27CD0F990074EC91 /* MultipleSelectionIngredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6536D27CD0F990074EC91 /* MultipleSelectionIngredient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -109,6 +110,7 @@
 		6FB6536527CC016E0074EC91 /* CategorieIngredientViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorieIngredientViewModel.swift; sourceTree = "<group>"; };
 		6FB6536927CCF0710074EC91 /* MultipleSelectionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleSelectionRow.swift; sourceTree = "<group>"; };
 		6FB6536B27CCFD4F0074EC91 /* MultipleSelectionAllergène.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MultipleSelectionAllergène.swift"; sourceTree = "<group>"; };
+		6FB6536D27CD0F990074EC91 /* MultipleSelectionIngredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleSelectionIngredient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -360,6 +362,7 @@
 				6FB6534F27C76DAD0074EC91 /* AllergèneListView.swift */,
 				6FB6535127C7BC9C0074EC91 /* AllergèneDetailView.swift */,
 				6FB6535527C80F880074EC91 /* AllergèneCreateView.swift */,
+				6FB6536D27CD0F990074EC91 /* MultipleSelectionIngredient.swift */,
 			);
 			name = "Allergène";
 			path = "Allergène";
@@ -492,6 +495,7 @@
 				6FB6533627C678230074EC91 /* Allergène.swift in Sources */,
 				6FB6535227C7BC9C0074EC91 /* AllergèneDetailView.swift in Sources */,
 				6FB6533427C678010074EC91 /* Ingredient.swift in Sources */,
+				6FB6536E27CD0F990074EC91 /* MultipleSelectionIngredient.swift in Sources */,
 				6FB6533F27C67A090074EC91 /* IngredientListViewModel.swift in Sources */,
 				6F3B82DD27C4C45600428123 /* UtilisateurService.swift in Sources */,
 				6FB6532F27C676210074EC91 /* StoreViewModel.swift in Sources */,

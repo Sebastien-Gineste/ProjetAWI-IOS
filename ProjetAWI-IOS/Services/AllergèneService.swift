@@ -92,7 +92,7 @@ class AllergèneService {
             }
         }
     }
-    
+    // update ingredient from allergène
     private func sendResultElement(result : Result<String,AllergèneViewModelError>){
         for observer in self.tabObserver {
             observer.emit(to: result)

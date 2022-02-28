@@ -12,12 +12,14 @@ struct AllergèneCreateView: View {
     @Environment(\.presentationMode) var presentationMode
     var intent : AllergèneIntent
     @ObservedObject var allergène : AllergèneViewModel
+    @ObservedObject var ingredientListViewModel : IngredientListViewModel
     let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
     
-    init(){
+    init(vmIngredient : IngredientListViewModel){
         self.intent = AllergèneIntent()
+        self.ingredientListViewModel = vmIngredient
         self.allergène = AllergèneViewModel()
         self.intent.addObserver(self.allergène)
     }

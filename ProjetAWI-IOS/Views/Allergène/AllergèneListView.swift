@@ -11,6 +11,7 @@ import SwiftUI
 struct AllergèneListView : View {
     
     @ObservedObject var allergèneListViewModel : AllergèneListViewModel
+    @ObservedObject var ingredientListViewModel : IngredientListViewModel
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
     @State private var searchText : String = ""
@@ -24,8 +25,9 @@ struct AllergèneListView : View {
         }
     }
     
-    init(vm : AllergèneListViewModel){
+    init(vm : AllergèneListViewModel, vmIngredient : IngredientListViewModel){
         self.allergèneListViewModel = vm
+        self.ingredientListViewModel = vmIngredient
         self.intent = AllergèneIntent()
         self.intent.addObserver(vm)
     }
@@ -38,7 +40,7 @@ struct AllergèneListView : View {
                     ForEach(Array(allergènesFiltre.enumerated()), id: \.offset) {
                         index, allergène in
                             HStack{
-                                NavigationLink(destination: AllergèneDetailView(vm: self.allergèneListViewModel, indice: index)){
+                                NavigationLink(destination: AllergèneDetailView(vm: self.allergèneListViewModel, indice: index, vmIngredient: self.ingredientListViewModel)){
                                     VStack(alignment: .leading) {
                                         Text(allergène.nom).bold()
                                     }
@@ -56,7 +58,7 @@ struct AllergèneListView : View {
                 HStack{
                     LazyVGrid(columns: columns){
                         EditButton()
-                        NavigationLink(destination: AllergèneCreateView()){
+                        NavigationLink(destination: AllergèneCreateView(vmIngredient: self.ingredientListViewModel)){
                             Text("Ajout")
                         }
                     }
