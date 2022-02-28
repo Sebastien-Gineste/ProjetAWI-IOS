@@ -13,6 +13,7 @@ struct IngredientCreateView: View {
     var intent : IngredientIntent
     @ObservedObject var ingredient : IngredientViewModel
     @ObservedObject var categorieIngredientViewModel : CategorieIngredientViewModel
+    @ObservedObject var allergèneViewModel : AllergèneListViewModel
     let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
@@ -24,9 +25,10 @@ struct IngredientCreateView: View {
         return formatter
     }()
     
-    init(vm: CategorieIngredientViewModel){
+    init(vm: CategorieIngredientViewModel, vmAllergène : AllergèneListViewModel){
         self.intent = IngredientIntent()
         self.categorieIngredientViewModel = vm
+        self.allergèneViewModel = vmAllergène
         self.ingredient = IngredientViewModel()
         self.intent.addObserver(self.ingredient)
     }
@@ -34,7 +36,7 @@ struct IngredientCreateView: View {
     var body : some View {
         VStack {
             Form{
-                Section {
+                Section(header: Text("Informations")) {
                     HStack{
                         LazyVGrid(columns: columns){
                             Text("Nom :").frame(maxWidth: .infinity, alignment: .leading)
@@ -85,9 +87,36 @@ struct IngredientCreateView: View {
                             self.intent.intentToChange(categorie: self.categorieIngredientViewModel.tabCategorieIngredient[value])
                         })
                     }
+                    HStack {
+                        NavigationLink(destination: MultipleSelectionAllergène(items: self.allergèneViewModel.tabAllergène, selections: $ingredient.listAllergene)){
+                            HStack {
+                                Text("Liste allergènes :")
+                                Spacer()
+                                Text("Modifier")
+                                    .foregroundColor(Color.gray)
+                            }
+                        }.onChange(of: ingredient.listAllergene, perform: { value in
+                            self.intent.intentToChange(listIngredient: value)
+                        })
+                    }
                 }
-            }.padding()
-                .onChange(of: ingredient.result){
+                Section(header: Text("Allergènes contenu")){
+                    VStack{
+                        if $ingredient.listAllergene.count == 0 {
+                            Text("Cet ingrédient ne contient pas d'allergènes")
+                        } else {
+                            List {
+                                ForEach(Array(ingredient.listAllergene.enumerated()), id: \.offset) {
+                                    _, allergène in
+                                    VStack {
+                                        Text(allergène)
+                                    }.padding(2)
+                                }
+                            }
+                        }
+                    }
+                }
+            }.onChange(of: ingredient.result){
                     result in
                     switch result {
                     case let .success(msg):

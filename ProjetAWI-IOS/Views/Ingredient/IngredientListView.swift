@@ -12,6 +12,7 @@ struct IngredientListView : View {
     
     @ObservedObject var ingredientListViewModel : IngredientListViewModel
     @ObservedObject var categorieIngredientViewModel : CategorieIngredientViewModel
+    @ObservedObject var allergèneViewModel : AllergèneListViewModel
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
     @State private var searchText : String = ""
@@ -32,8 +33,9 @@ struct IngredientListView : View {
         }
     }
     
-    init(vm : IngredientListViewModel, vmCategorie : CategorieIngredientViewModel){
+    init(vm : IngredientListViewModel, vmCategorie : CategorieIngredientViewModel, vmAllergene : AllergèneListViewModel){
         self.ingredientListViewModel = vm
+        self.allergèneViewModel = vmAllergene
         self.intent = IngredientIntent()
         self.intent.addObserver(vm)
         self.categorieIngredientViewModel = vmCategorie
@@ -53,7 +55,7 @@ struct IngredientListView : View {
                     ForEach(Array(ingredientsFiltre.enumerated()), id: \.offset) {
                         index, ingredient in
                             HStack{
-                                NavigationLink(destination: IngredientDetailView(vm: self.ingredientListViewModel, indice: index, vmCategorie: self.categorieIngredientViewModel)){
+                                NavigationLink(destination: IngredientDetailView(vm: self.ingredientListViewModel, indice: index, vmCategorie: self.categorieIngredientViewModel, vmAllergene: self.allergèneViewModel)){
                                     VStack(alignment: .leading) {
                                         Text(ingredient.nomIngredient).bold()
                                         HStack {
@@ -76,7 +78,7 @@ struct IngredientListView : View {
                 HStack{
                     LazyVGrid(columns: columns){
                         EditButton()
-                        NavigationLink(destination: IngredientCreateView(vm: CategorieIngredientViewModel())){
+                        NavigationLink(destination: IngredientCreateView(vm: CategorieIngredientViewModel(), vmAllergène: self.allergèneViewModel)){
                             Text("Ajout")
                         }
                     }

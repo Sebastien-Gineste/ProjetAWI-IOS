@@ -98,6 +98,11 @@ class IngredientViewModel : ObservableObject, Subscriber, IngredientServiceObser
             if self.ingredient.categorie != string {
                 self.categorie = self.ingredient.categorie
             }
+        case .changingListAllergene(let array):
+            self.ingredient.listAllergene = array
+            if self.ingredient.listAllergene != array {
+                self.listAllergene = self.ingredient.listAllergene
+            }
         }
         return .none
     }

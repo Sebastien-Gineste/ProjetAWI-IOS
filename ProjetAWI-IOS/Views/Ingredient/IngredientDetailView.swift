@@ -12,6 +12,7 @@ struct IngredientDetailView: View {
     
     @ObservedObject var ingredient : IngredientViewModel
     @ObservedObject var categorieIngredientViewModel : CategorieIngredientViewModel
+    @ObservedObject var allergèneViewModel : AllergèneListViewModel
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
     @State private var selectedIndex : Int
@@ -24,10 +25,11 @@ struct IngredientDetailView: View {
         return formatter
     }()
     
-    init(vm: IngredientListViewModel, indice : Int, vmCategorie : CategorieIngredientViewModel){
+    init(vm: IngredientListViewModel, indice : Int, vmCategorie : CategorieIngredientViewModel, vmAllergene : AllergèneListViewModel){
         self.intent = IngredientIntent()
         self.ingredient = IngredientViewModel(ingrédientListViewModel: vm, indice: indice)
         self.categorieIngredientViewModel = vmCategorie
+        self.allergèneViewModel = vmAllergene
         if let index = vmCategorie.tabCategorieIngredient.firstIndex(of:vm.tabIngredient[indice].categorie) {
             self.selectedIndex = index
         } else {
@@ -36,9 +38,6 @@ struct IngredientDetailView: View {
         self.intent.addObserver(self.ingredient)
     }
     
-    func getAlert() -> Alert {
-                 return Alert(title: Text("Error getting alert dialog."))
-    }
     var body : some View {
         VStack {
             Form {
@@ -90,14 +89,16 @@ struct IngredientDetailView: View {
                         })
                     }
                     HStack {
-                        NavigationLink(destination: MultipleSelectionAllergène(selections: $ingredient.listAllergene)){
+                        NavigationLink(destination: MultipleSelectionAllergène(items: self.allergèneViewModel.tabAllergène,selections: $ingredient.listAllergene)){
                             HStack {
                                 Text("Liste allergènes :")
                                 Spacer()
                                 Text("Modifier")
                                     .foregroundColor(Color.gray)
                             }
-                        }
+                        }.onChange(of: ingredient.listAllergene, perform: { value in
+                            self.intent.intentToChange(listIngredient: value)
+                        })
                     }
                     
                 }.onChange(of: ingredient.result){
@@ -132,7 +133,6 @@ struct IngredientDetailView: View {
                                     VStack {
                                         Text(allergène)
                                     }.padding(2)
-                                    
                                 }
                             }
                         }

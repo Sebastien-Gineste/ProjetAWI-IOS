@@ -12,7 +12,7 @@ import SwiftUI
 struct MenuView: View {
     
     @StateObject var user : UtilisateurService = UtilisateurService.instance
-    
+    var vmAllergene : AllergèneListViewModel = AllergèneListViewModel()
     var body: some View {
         
         TabView {
@@ -24,13 +24,13 @@ struct MenuView: View {
             
             if user.currentUtilisateur.estConnecte() {
                 
-                IngredientListView(vm:IngredientListViewModel(), vmCategorie: CategorieIngredientViewModel())
+                IngredientListView(vm:IngredientListViewModel(), vmCategorie: CategorieIngredientViewModel(), vmAllergene: self.vmAllergene)
                     .tabItem {
                         Image(systemName: "list.bullet.rectangle.portrait.fill")
                         Text("Ingrédient")
                     }
                 
-                AllergèneListView(vm: AllergèneListViewModel())
+                AllergèneListView(vm: self.vmAllergene)
                     .tabItem {
                         Image(systemName: "list.bullet.rectangle.portrait.fill")
                         Text("Allergènes")

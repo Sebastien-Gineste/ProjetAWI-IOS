@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct MultipleSelectionAllergène: View {
-    @State var items: [Allergène] = [Allergène(nom: "tat"),Allergène(nom: "test"),Allergène(nom: "Ajhgj")]
+    var items: [Allergène] 
     @Binding var selections: [String]
     @State private var searchText : String = ""
     var allergènesFiltre: [Allergène] {

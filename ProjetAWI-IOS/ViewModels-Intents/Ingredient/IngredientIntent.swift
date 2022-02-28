@@ -20,6 +20,7 @@ enum IngredientIntentState : Equatable {
     case changingQuantité(Double)
     case changingUnite(String)
     case changingCategorie(String)
+    case changingListAllergene([String])
     case updateDatabase
     case addIngredient
 }
@@ -46,6 +47,10 @@ struct IngredientIntent  {
     
     func intentToChange(categorie : String){
         self.stateElement.send(IngredientIntentState.changingCategorie(categorie))
+    }
+    
+    func intentToChange(listIngredient : [String]){
+        self.stateElement.send(IngredientIntentState.changingListAllergene(listIngredient))
     }
     
     func intentToUpdateDatabase(){
