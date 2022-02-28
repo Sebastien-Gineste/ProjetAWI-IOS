@@ -50,6 +50,7 @@ class IngredientService {
             guard let documents = data?.documents else {
                 return
             }
+            print("update ing")
             self.tabIngredient = documents.map{
                 (doc) -> Ingredient in
                 return IngredientDTO.transformDTO(
@@ -96,10 +97,7 @@ class IngredientService {
             }
         }
     }
-    
-    // get ingrédient by allergène
-    
-    
+
     private func sendResultElement(result : Result<String,IngredientViewModelError>){
         for observer in self.tabObserver {
             observer.emit(to: result)

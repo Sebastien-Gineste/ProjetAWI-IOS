@@ -21,12 +21,13 @@ struct AllergèneDetailView: View {
         self.ingredientListViewModel = vmIngredient
         self.allergène = AllergèneViewModel(allergèneListViewModel: vm, indice: indice)
         self.intent.addObserver(self.allergène)
+        self.intent.intentToChange(listIngredient: vm.tabIngredientFromAllergène[self.allergène.nom] ?? [])
     }
     
     var body : some View {
         VStack {
             Form{
-                Section {
+                Section(header: Text("Informations")) {
                     HStack{
                         LazyVGrid(columns: columns){
                             Text("Nom de l'allergène :").frame(maxWidth: .infinity, alignment: .leading)
@@ -58,16 +59,32 @@ struct AllergèneDetailView: View {
                             }
                         }
                     HStack {
-                        /*NavigationLink(destination: MultipleSelectionAllergène(items: self.allergèneViewModel.tabAllergène,selections: $ingredient.listAllergene)){
+                        NavigationLink(destination: MultipleSelectionIngredient(items: self.ingredientListViewModel.tabIngredient,selections: $allergène.listIngredient)){
                             HStack {
-                                Text("Liste allergènes :")
+                                Text("Liste ingrédient :")
                                 Spacer()
                                 Text("Modifier")
                                     .foregroundColor(Color.gray)
                             }
-                        }.onChange(of: ingredient.listAllergene, perform: { value in
+                        }.onChange(of: allergène.listIngredient, perform: { value in
                             self.intent.intentToChange(listIngredient: value)
-                        })*/
+                        })
+                    }
+                }
+                Section(header: Text("Ingrédient contenant cet allergène")){
+                    VStack(alignment: .leading) {
+                        if $allergène.listIngredient.count == 0 {
+                            Text("Cet allergène n'est dans aucun ingrédient")
+                        } else {
+                            List {
+                                ForEach(Array(allergène.listIngredient.enumerated()), id: \.offset) {
+                                    _, ingrédient in
+                                    VStack(alignment: .leading) {
+                                        Text(ingrédient)
+                                    }.padding(2)
+                                }
+                            }
+                        }
                     }
                 }
             }

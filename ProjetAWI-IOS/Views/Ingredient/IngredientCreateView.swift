@@ -101,14 +101,14 @@ struct IngredientCreateView: View {
                     }
                 }
                 Section(header: Text("Allergènes contenu")){
-                    VStack{
+                    VStack(alignment: .leading){
                         if $ingredient.listAllergene.count == 0 {
                             Text("Cet ingrédient ne contient pas d'allergènes")
                         } else {
                             List {
                                 ForEach(Array(ingredient.listAllergene.enumerated()), id: \.offset) {
                                     _, allergène in
-                                    VStack {
+                                    VStack(alignment: .leading) {
                                         Text(allergène)
                                     }.padding(2)
                                 }

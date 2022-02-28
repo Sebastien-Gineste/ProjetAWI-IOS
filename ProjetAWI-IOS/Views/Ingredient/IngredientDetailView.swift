@@ -107,6 +107,8 @@ struct IngredientDetailView: View {
                     case let .success(msg):
                         self.alertMessage = "\(msg)"
                         self.showingAlert.toggle()
+                        self.allergèneViewModel.update()
+                        // intent allergène
                     case let .failure(error):
                         switch error {
                         case .updateError, .createError :
@@ -123,14 +125,14 @@ struct IngredientDetailView: View {
                     }
                 }
                 Section(header: Text("Allergènes contenu")){
-                    VStack{
+                    VStack(alignment: .leading){
                         if $ingredient.listAllergene.count == 0 {
                             Text("Cet ingrédient ne contient pas d'allergènes")
                         } else {
                             List {
                                 ForEach(Array(ingredient.listAllergene.enumerated()), id: \.offset) {
                                     _, allergène in
-                                    VStack {
+                                    VStack(alignment: .leading) {
                                         Text(allergène)
                                     }.padding(2)
                                 }

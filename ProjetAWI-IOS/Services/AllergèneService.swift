@@ -12,6 +12,7 @@ import FirebaseFirestoreSwift
 
 protocol AllergèneListServiceObserver {
     func emit(to: [Allergène])
+    func emit(to: [String:[String]])
     func emit(to: Result<String,AllergèneListViewModelError>)
 }
 
@@ -31,9 +32,17 @@ class AllergèneService {
             }
         }
     }
+    private var tabIngredientFromAllergène : [String : [String]] {
+        didSet {
+            for observer in tabListObserver {
+                observer.emit(to: tabIngredientFromAllergène)
+            }
+        }
+    }
     
     init(){
         self.tabAllergène = []
+        self.tabIngredientFromAllergène = [:]
     }
     
     func addObserver(observer : AllergèneListServiceObserver){
@@ -51,14 +60,43 @@ class AllergèneService {
             guard let documents = data?.documents else {
                 return
             }
+            self.tabIngredientFromAllergène = [:]
             self.tabAllergène = documents.map{
                 (doc) -> Allergène in
+                
                 return AllergèneDTO.transformDTO(
                     AllergèneDTO(id: doc.documentID,
-                                 nom: doc["nom"] as? String ?? "" ))
+                                 nom: doc["nom"] as? String ?? "" ,
+                                listIngredient: []))
             }
+            self.getIngredientByAllergène()
         }
-
+    }
+    
+    func getIngredientByAllergène(){
+        for allergène in self.tabAllergène {
+            firestore.collection("ingredients").whereField("listAllergene", arrayContains: allergène.nom)
+                .getDocuments(){
+                    (querySnapshot, err) in
+                    if let err = err {
+                        print("Error getting document : \(err)")
+                    }
+                    else{
+                        let ingredients = querySnapshot!.documents
+                        for ingredient in ingredients {
+                            if self.tabIngredientFromAllergène[allergène.nom] != nil {
+                                if !self.tabIngredientFromAllergène[allergène.nom]!.contains(ingredient["nomIngredient"] as? String ?? "") {
+                                    self.tabIngredientFromAllergène[allergène.nom]!.append(ingredient["nomIngredient"] as? String ?? "")
+                                }
+                            } else {
+                                self.tabIngredientFromAllergène[allergène.nom
+                                ] = [ingredient["nomIngredient"] as? String ?? ""]
+                            }
+                        }
+                    }
+                }
+        }
+        
     }
     
     func updateAllergène(allergène : Allergène){
@@ -92,7 +130,7 @@ class AllergèneService {
             }
         }
     }
-    // update ingredient from allergène
+
     private func sendResultElement(result : Result<String,AllergèneViewModelError>){
         for observer in self.tabObserver {
             observer.emit(to: result)

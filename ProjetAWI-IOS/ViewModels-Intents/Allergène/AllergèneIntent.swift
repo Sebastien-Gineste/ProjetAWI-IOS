@@ -16,6 +16,7 @@ enum AllergèneListIntentState : Equatable {
 enum AllergèneIntentState : Equatable {
     case ready
     case changingNom(String)
+    case changingListIngredient([String])
     case updateDatabase
     case addAllergène
 }
@@ -26,6 +27,10 @@ struct AllergèneIntent  {
 
     func intentToChange(nom : String){
         self.stateElement.send(AllergèneIntentState.changingNom(nom))
+    }
+    
+    func intentToChange(listIngredient : [String]){
+        self.stateElement.send(AllergèneIntentState.changingListIngredient(listIngredient))
     }
     
     func intentToUpdateDatabase(){
