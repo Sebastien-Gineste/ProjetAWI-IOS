@@ -84,4 +84,12 @@ class Ingredient {
         self.listAllergene = listAllergene
     }
     
+    func getCopyIngredient() -> Ingredient {
+        return Ingredient(nomIngredient: self.nomIngredient, prixUnitaire: self.prixUnitaire, qteIngredient: self.qteIngredient, unite: self.unite, categorie: self.categorie, listAllergene: self.listAllergene, id: self.id)
+    }
+    
+    var coutStock : Double {
+        return self.qteIngredient * self.qteIngredient
+    }
+    
 }

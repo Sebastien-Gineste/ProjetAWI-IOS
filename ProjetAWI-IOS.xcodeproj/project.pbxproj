@@ -26,6 +26,7 @@
 		6F3B82CF27C11D9C00428123 /* UtilisateurListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82CE27C11D9C00428123 /* UtilisateurListView.swift */; };
 		6F3B82D627C12A7500428123 /* UtilisateurDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82D527C12A7500428123 /* UtilisateurDetailView.swift */; };
 		6F3B82DD27C4C45600428123 /* UtilisateurService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82DC27C4C45600428123 /* UtilisateurService.swift */; };
+		6F7B59FF27CD3CEF009E59BA /* FicheTechniqueService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B59FE27CD3CEF009E59BA /* FicheTechniqueService.swift */; };
 		6FB6532427C51D720074EC91 /* ConnexionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6532327C51D720074EC91 /* ConnexionView.swift */; };
 		6FB6532627C675480074EC91 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6532527C675480074EC91 /* Store.swift */; };
 		6FB6532827C675810074EC91 /* StoreDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6532727C675810074EC91 /* StoreDTO.swift */; };
@@ -58,6 +59,11 @@
 		6FB6536A27CCF0710074EC91 /* MultipleSelectionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6536927CCF0710074EC91 /* MultipleSelectionRow.swift */; };
 		6FB6536C27CCFD4F0074EC91 /* MultipleSelectionAllergène.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6536B27CCFD4F0074EC91 /* MultipleSelectionAllergène.swift */; };
 		6FB6536E27CD0F990074EC91 /* MultipleSelectionIngredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6536D27CD0F990074EC91 /* MultipleSelectionIngredient.swift */; };
+		6FB6537027CD227C0074EC91 /* Denree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6536F27CD227C0074EC91 /* Denree.swift */; };
+		6FB6537227CD24120074EC91 /* Description.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6537127CD24120074EC91 /* Description.swift */; };
+		6FB6537427CD255D0074EC91 /* Etape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6537327CD255D0074EC91 /* Etape.swift */; };
+		6FB6537627CD27BC0074EC91 /* HeaderFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6537527CD27BC0074EC91 /* HeaderFT.swift */; };
+		6FB6537827CD2F790074EC91 /* FicheTechnique.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6537727CD2F790074EC91 /* FicheTechnique.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -79,6 +85,7 @@
 		6F3B82CE27C11D9C00428123 /* UtilisateurListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilisateurListView.swift; sourceTree = "<group>"; };
 		6F3B82D527C12A7500428123 /* UtilisateurDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilisateurDetailView.swift; sourceTree = "<group>"; };
 		6F3B82DC27C4C45600428123 /* UtilisateurService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilisateurService.swift; sourceTree = "<group>"; };
+		6F7B59FE27CD3CEF009E59BA /* FicheTechniqueService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FicheTechniqueService.swift; sourceTree = "<group>"; };
 		6FB6532327C51D720074EC91 /* ConnexionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnexionView.swift; sourceTree = "<group>"; };
 		6FB6532527C675480074EC91 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		6FB6532727C675810074EC91 /* StoreDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreDTO.swift; sourceTree = "<group>"; };
@@ -111,6 +118,11 @@
 		6FB6536927CCF0710074EC91 /* MultipleSelectionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleSelectionRow.swift; sourceTree = "<group>"; };
 		6FB6536B27CCFD4F0074EC91 /* MultipleSelectionAllergène.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MultipleSelectionAllergène.swift"; sourceTree = "<group>"; };
 		6FB6536D27CD0F990074EC91 /* MultipleSelectionIngredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleSelectionIngredient.swift; sourceTree = "<group>"; };
+		6FB6536F27CD227C0074EC91 /* Denree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Denree.swift; sourceTree = "<group>"; };
+		6FB6537127CD24120074EC91 /* Description.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Description.swift; sourceTree = "<group>"; };
+		6FB6537327CD255D0074EC91 /* Etape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Etape.swift; sourceTree = "<group>"; };
+		6FB6537527CD27BC0074EC91 /* HeaderFT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderFT.swift; sourceTree = "<group>"; };
+		6FB6537727CD2F790074EC91 /* FicheTechnique.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FicheTechnique.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +186,11 @@
 				6FB6532527C675480074EC91 /* Store.swift */,
 				6FB6533327C678010074EC91 /* Ingredient.swift */,
 				6FB6533527C678230074EC91 /* Allergène.swift */,
+				6FB6536F27CD227C0074EC91 /* Denree.swift */,
+				6FB6537127CD24120074EC91 /* Description.swift */,
+				6FB6537327CD255D0074EC91 /* Etape.swift */,
+				6FB6537527CD27BC0074EC91 /* HeaderFT.swift */,
+				6FB6537727CD2F790074EC91 /* FicheTechnique.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -295,6 +312,7 @@
 				6FB6533B27C6798C0074EC91 /* IngredientService.swift */,
 				6FB6534727C767B20074EC91 /* AllergèneService.swift */,
 				6FB6536227CBFE900074EC91 /* CategorieIngredientService.swift */,
+				6F7B59FE27CD3CEF009E59BA /* FicheTechniqueService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -454,9 +472,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6FB6537227CD24120074EC91 /* Description.swift in Sources */,
 				6F3B82AA27BE916400428123 /* MenuView.swift in Sources */,
+				6FB6537627CD27BC0074EC91 /* HeaderFT.swift in Sources */,
 				6FB6535C27C90AB60074EC91 /* IngredientViewModel.swift in Sources */,
 				6FB6533A27C6794F0074EC91 /* AllergèneDTO.swift in Sources */,
+				6F7B59FF27CD3CEF009E59BA /* FicheTechniqueService.swift in Sources */,
 				6FB6535A27C9095C0074EC91 /* IngredientDetailView.swift in Sources */,
 				6FB6532627C675480074EC91 /* Store.swift in Sources */,
 				6FB6534827C767B20074EC91 /* AllergèneService.swift in Sources */,
@@ -469,6 +490,7 @@
 				6F3B82AE27BFBB0C00428123 /* Theme.swift in Sources */,
 				6FB6535027C76DAD0074EC91 /* AllergèneListView.swift in Sources */,
 				6F3B82B327BFC47600428123 /* Color.swift in Sources */,
+				6FB6537027CD227C0074EC91 /* Denree.swift in Sources */,
 				6FB6535427C7BDCA0074EC91 /* AllergèneViewModel.swift in Sources */,
 				6F3B82C827C1196700428123 /* UtilisateurIntent.swift in Sources */,
 				6F3B82BF27C10F8400428123 /* UtilisateurDTO.swift in Sources */,
@@ -487,6 +509,7 @@
 				6FB6533827C679080074EC91 /* IngredientDTO.swift in Sources */,
 				6F3B82C227C1102700428123 /* Utilisateur.swift in Sources */,
 				6FB6534D27C76BCB0074EC91 /* AllergèneListViewModel.swift in Sources */,
+				6FB6537427CD255D0074EC91 /* Etape.swift in Sources */,
 				6F3B82CF27C11D9C00428123 /* UtilisateurListView.swift in Sources */,
 				6FB6532827C675810074EC91 /* StoreDTO.swift in Sources */,
 				6FB6536627CC016E0074EC91 /* CategorieIngredientViewModel.swift in Sources */,
@@ -499,6 +522,7 @@
 				6FB6533F27C67A090074EC91 /* IngredientListViewModel.swift in Sources */,
 				6F3B82DD27C4C45600428123 /* UtilisateurService.swift in Sources */,
 				6FB6532F27C676210074EC91 /* StoreViewModel.swift in Sources */,
+				6FB6537827CD2F790074EC91 /* FicheTechnique.swift in Sources */,
 				6FB6532A27C675C30074EC91 /* StoreService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
