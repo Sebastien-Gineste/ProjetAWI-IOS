@@ -29,6 +29,9 @@
 		6F7B59FF27CD3CEF009E59BA /* FicheTechniqueService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B59FE27CD3CEF009E59BA /* FicheTechniqueService.swift */; };
 		6F7B5A0527CE78A4009E59BA /* HeaderFTDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B5A0427CE78A4009E59BA /* HeaderFTDTO.swift */; };
 		6F7B5A0727CE78B4009E59BA /* FicheTechniqueDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B5A0627CE78B4009E59BA /* FicheTechniqueDTO.swift */; };
+		6F7B5A0927CE7BA4009E59BA /* EtapeDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B5A0827CE7BA4009E59BA /* EtapeDTO.swift */; };
+		6F7B5A0B27CE7C3A009E59BA /* DenreeDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B5A0A27CE7C3A009E59BA /* DenreeDTO.swift */; };
+		6F7B5A0D27CE7C68009E59BA /* DescriptionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B5A0C27CE7C68009E59BA /* DescriptionDTO.swift */; };
 		6FB6532427C51D720074EC91 /* ConnexionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6532327C51D720074EC91 /* ConnexionView.swift */; };
 		6FB6532627C675480074EC91 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6532527C675480074EC91 /* Store.swift */; };
 		6FB6532827C675810074EC91 /* StoreDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6532727C675810074EC91 /* StoreDTO.swift */; };
@@ -90,6 +93,9 @@
 		6F7B59FE27CD3CEF009E59BA /* FicheTechniqueService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FicheTechniqueService.swift; sourceTree = "<group>"; };
 		6F7B5A0427CE78A4009E59BA /* HeaderFTDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderFTDTO.swift; sourceTree = "<group>"; };
 		6F7B5A0627CE78B4009E59BA /* FicheTechniqueDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FicheTechniqueDTO.swift; sourceTree = "<group>"; };
+		6F7B5A0827CE7BA4009E59BA /* EtapeDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EtapeDTO.swift; sourceTree = "<group>"; };
+		6F7B5A0A27CE7C3A009E59BA /* DenreeDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DenreeDTO.swift; sourceTree = "<group>"; };
+		6F7B5A0C27CE7C68009E59BA /* DescriptionDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionDTO.swift; sourceTree = "<group>"; };
 		6FB6532327C51D720074EC91 /* ConnexionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnexionView.swift; sourceTree = "<group>"; };
 		6FB6532527C675480074EC91 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		6FB6532727C675810074EC91 /* StoreDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreDTO.swift; sourceTree = "<group>"; };
@@ -231,6 +237,9 @@
 				6FB6533927C6794F0074EC91 /* AllergèneDTO.swift */,
 				6F7B5A0427CE78A4009E59BA /* HeaderFTDTO.swift */,
 				6F7B5A0627CE78B4009E59BA /* FicheTechniqueDTO.swift */,
+				6F7B5A0827CE7BA4009E59BA /* EtapeDTO.swift */,
+				6F7B5A0A27CE7C3A009E59BA /* DenreeDTO.swift */,
+				6F7B5A0C27CE7C68009E59BA /* DescriptionDTO.swift */,
 			);
 			path = DTOs;
 			sourceTree = "<group>";
@@ -522,15 +531,18 @@
 				6FB6532827C675810074EC91 /* StoreDTO.swift in Sources */,
 				6FB6536627CC016E0074EC91 /* CategorieIngredientViewModel.swift in Sources */,
 				6F3B82AC27BFB98200428123 /* UIColor.swift in Sources */,
+				6F7B5A0B27CE7C3A009E59BA /* DenreeDTO.swift in Sources */,
 				6FB6536327CBFE900074EC91 /* CategorieIngredientService.swift in Sources */,
 				6FB6533627C678230074EC91 /* Allergène.swift in Sources */,
 				6FB6535227C7BC9C0074EC91 /* AllergèneDetailView.swift in Sources */,
 				6FB6533427C678010074EC91 /* Ingredient.swift in Sources */,
 				6FB6536E27CD0F990074EC91 /* MultipleSelectionIngredient.swift in Sources */,
 				6FB6533F27C67A090074EC91 /* IngredientListViewModel.swift in Sources */,
+				6F7B5A0D27CE7C68009E59BA /* DescriptionDTO.swift in Sources */,
 				6F3B82DD27C4C45600428123 /* UtilisateurService.swift in Sources */,
 				6FB6532F27C676210074EC91 /* StoreViewModel.swift in Sources */,
 				6FB6537827CD2F790074EC91 /* FicheTechnique.swift in Sources */,
+				6F7B5A0927CE7BA4009E59BA /* EtapeDTO.swift in Sources */,
 				6FB6532A27C675C30074EC91 /* StoreService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
