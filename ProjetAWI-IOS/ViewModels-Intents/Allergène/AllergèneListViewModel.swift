@@ -35,10 +35,6 @@ class AllergèneListViewModel : ObservableObject, Subscriber, AllergèneListServ
         self.allergèneService.getAllAllergène()
     }
     
-    func update(){
-        self.allergèneService.getIngredientByAllergène()
-    }
-    
     func emit(to: [Allergène]) {
         self.tabAllergène = to
     }
@@ -67,7 +63,9 @@ class AllergèneListViewModel : ObservableObject, Subscriber, AllergèneListServ
         case .ready:
             break
         case .deleteAllergène(let id):
-            self.allergèneService.deleteAllergène(id: self.tabAllergène[id].id!)
+            self.allergèneService.deleteAllergène(allergène: self.tabAllergène[id])
+        case .updateIngredientFromAllergène:
+            self.allergèneService.getAllAllergène()
         }
         return .none
     }

@@ -17,6 +17,7 @@ struct IngredientDetailView: View {
     @State var showingAlert : Bool = false
     @State private var selectedIndex : Int
     var intent : IngredientIntent
+    var intentAllergène : AllergèneIntent
     let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
     let formatter : NumberFormatter = {
         let formatter = NumberFormatter()
@@ -27,6 +28,7 @@ struct IngredientDetailView: View {
     
     init(vm: IngredientListViewModel, indice : Int, vmCategorie : CategorieIngredientViewModel, vmAllergene : AllergèneListViewModel){
         self.intent = IngredientIntent()
+        self.intentAllergène = AllergèneIntent()
         self.ingredient = IngredientViewModel(ingrédientListViewModel: vm, indice: indice)
         self.categorieIngredientViewModel = vmCategorie
         self.allergèneViewModel = vmAllergene
@@ -36,6 +38,7 @@ struct IngredientDetailView: View {
             self.selectedIndex = 0
         }
         self.intent.addObserver(self.ingredient)
+        self.intentAllergène.addObserver(self.allergèneViewModel)
     }
     
     var body : some View {
@@ -107,8 +110,7 @@ struct IngredientDetailView: View {
                     case let .success(msg):
                         self.alertMessage = "\(msg)"
                         self.showingAlert.toggle()
-                        self.allergèneViewModel.update()
-                        // intent allergène
+                        self.intentAllergène.intentToUpdateIngredientFromAllergène()
                     case let .failure(error):
                         switch error {
                         case .updateError, .createError :

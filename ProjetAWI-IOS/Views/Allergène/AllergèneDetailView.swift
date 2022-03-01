@@ -42,6 +42,7 @@ struct AllergèneDetailView: View {
                             case let .success(msg):
                                 self.alertMessage = msg
                                 self.showingAlert = true
+                                self.intent.intentToUpdateIngredientFromAllergène()
                             case let .failure(error):
                                 switch error {
                                 case .updateError, .createError :

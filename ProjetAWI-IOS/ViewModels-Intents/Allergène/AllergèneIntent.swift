@@ -11,6 +11,7 @@ import Combine
 enum AllergèneListIntentState : Equatable {
     case ready
     case deleteAllergène(Int)
+    case updateIngredientFromAllergène
 }
 
 enum AllergèneIntentState : Equatable {
@@ -43,6 +44,10 @@ struct AllergèneIntent  {
     
     func intentToAddAllergène(){
         self.stateElement.send(AllergèneIntentState.addAllergène)
+    }
+    
+    func intentToUpdateIngredientFromAllergène(){
+        self.stateList.send(AllergèneListIntentState.updateIngredientFromAllergène)
     }
     
     func addObserver(_ allergèneListView : AllergèneListViewModel){

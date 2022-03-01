@@ -92,6 +92,7 @@ struct AllergèneCreateView: View {
             Spacer()
             Button("Ajout"){
                 intent.intentToAddAllergène()
+                intent.intentToUpdateIngredientFromAllergène()
                 self.presentationMode.wrappedValue.dismiss()
             }.padding(20)
         }

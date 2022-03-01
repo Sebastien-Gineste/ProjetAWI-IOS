@@ -14,6 +14,7 @@ protocol IngredientObserver {
 }
 
 class Ingredient {
+    
     var observer : IngredientObserver?
     var id : String?
     var nomIngredient : String {

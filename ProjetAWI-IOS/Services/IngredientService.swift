@@ -50,7 +50,6 @@ class IngredientService {
             guard let documents = data?.documents else {
                 return
             }
-            print("update ing")
             self.tabIngredient = documents.map{
                 (doc) -> Ingredient in
                 return IngredientDTO.transformDTO(
@@ -97,7 +96,48 @@ class IngredientService {
             }
         }
     }
-
+    
+    func getIngredientByAllergène(allergène : String, action : ((String) -> Void)?) {
+            firestore.collection("ingredients").whereField("listAllergene", arrayContains: allergène)
+            .getDocuments(){
+                (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting document : \(err)")
+                }
+                else{
+                    let ingredients = querySnapshot!.documents
+                    for ingredient in ingredients {
+                        action?(ingredient["nomIngredient"] as? String ?? "")
+                    }
+                }
+            }
+        
+    }
+    
+    func getIngredientByName(ingredient : String, action : ((Ingredient) -> Void)?){
+        firestore.collection("ingredients").whereField("nomIngredient", isEqualTo: ingredient)
+        .getDocuments(){
+            (querySnapshot, err) in
+            if let err = err {
+                print("Error getting document : \(err)")
+            }
+            else{
+                let ingredients = querySnapshot!.documents
+                for doc in ingredients {
+                    action?(IngredientDTO.transformDTO(
+                        IngredientDTO(id: doc.documentID,
+                                      nomIngredient: doc["nomIngredient"] as? String ?? "",
+                                      prixUnitaire: doc["prixUnitaire"] as? Double ?? 0,
+                                      qteIngredient: doc["qteIngredient"] as? Double ?? 0,
+                                      unite: doc["unite"] as? String ?? "",
+                                      categorie: doc["categorie"] as? String ?? "",
+                                      listAllergene: doc["listAllergene"] as? [String] ?? []))
+                    )
+                }
+            }
+        }
+    }
+    
     private func sendResultElement(result : Result<String,IngredientViewModelError>){
         for observer in self.tabObserver {
             observer.emit(to: result)

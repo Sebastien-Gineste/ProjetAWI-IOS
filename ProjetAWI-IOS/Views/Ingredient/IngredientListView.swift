@@ -19,6 +19,7 @@ struct IngredientListView : View {
     @State private var selectedIndex : Int = 0
     let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
     var intent: IngredientIntent
+    var intentAllergène: AllergèneIntent
     var ingredientsFiltre: [Ingredient] {
         if searchText.isEmpty &&  selectedIndex <= 0 {
             return ingredientListViewModel.tabIngredient
@@ -37,6 +38,8 @@ struct IngredientListView : View {
         self.ingredientListViewModel = vm
         self.allergèneViewModel = vmAllergene
         self.intent = IngredientIntent()
+        self.intentAllergène = AllergèneIntent()
+        self.intentAllergène.addObserver(vmAllergene)
         self.intent.addObserver(vm)
         self.categorieIngredientViewModel = vmCategorie
     }
@@ -90,6 +93,7 @@ struct IngredientListView : View {
                 case let .success(msg):
                     self.alertMessage = msg
                     self.showingAlert = true
+                    self.intentAllergène.intentToUpdateIngredientFromAllergène()
                 case let .failure(error):
                     switch error {
                     case .noError :

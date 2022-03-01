@@ -11,6 +11,7 @@ import SwiftUI
 struct IngredientCreateView: View {
     @Environment(\.presentationMode) var presentationMode
     var intent : IngredientIntent
+    var intentAllergène : AllergèneIntent
     @ObservedObject var ingredient : IngredientViewModel
     @ObservedObject var categorieIngredientViewModel : CategorieIngredientViewModel
     @ObservedObject var allergèneViewModel : AllergèneListViewModel
@@ -27,9 +28,11 @@ struct IngredientCreateView: View {
     
     init(vm: CategorieIngredientViewModel, vmAllergène : AllergèneListViewModel){
         self.intent = IngredientIntent()
+        self.intentAllergène = AllergèneIntent()
         self.categorieIngredientViewModel = vm
         self.allergèneViewModel = vmAllergène
         self.ingredient = IngredientViewModel()
+        self.intentAllergène.addObserver(vmAllergène)
         self.intent.addObserver(self.ingredient)
     }
     
@@ -122,6 +125,7 @@ struct IngredientCreateView: View {
                     case let .success(msg):
                        self.alertMessage = msg
                        self.showingAlert = true
+
                         break
                     case let .failure(error):
                         switch error {
@@ -142,6 +146,7 @@ struct IngredientCreateView: View {
             Spacer()
             Button("Ajout"){
                 intent.intentToAddIngredient()
+                intentAllergène.intentToUpdateIngredientFromAllergène()
                 self.presentationMode.wrappedValue.dismiss()
             }.padding(20)
         }
