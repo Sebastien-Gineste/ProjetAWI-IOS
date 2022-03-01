@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 struct DescriptionDTO {
     
@@ -25,6 +26,12 @@ struct DescriptionDTO {
             "nom" : description.nom,
             "tempsPreparation" : description.tempsPreparation
         ]
+    }
+    
+    static func docToDTO(doc : NSDictionary) -> DescriptionDTO {
+        return DescriptionDTO(description: doc["description"] as? String ?? "",
+                              nom: doc["nom"] as? String ?? "",
+                              tempsPreparation: doc["tempsPreparation"] as? Double ?? 0)
     }
     
 }

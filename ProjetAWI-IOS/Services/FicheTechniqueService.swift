@@ -7,18 +7,37 @@
 
 import Foundation
 import FirebaseFirestore
+import FirebaseFirestoreSwift
+
+protocol FicheTechniqueListServiceObserver {
+    func emit(to: [FicheTechnique])
+    func emit(to: Result<String,FicheTechniqueViewModelError>)
+}
 
 class FicheTechniqueService {
     private let firestore = Firestore.firestore()
- 
-    private var tabFicheTechnique : [FicheTechnique]
+    private var tabFicheTechnique : [FicheTechnique] {
+        didSet {
+            self.observerList?.emit(to: tabFicheTechnique)
+        }
+    }
+    
+    
+    private var observerList : FicheTechniqueListServiceObserver? = nil
+    
     
     
     init(){
         self.tabFicheTechnique = []
     }
-    /* à compléter
-    func getAllIngredient(){
+    
+    func setObserverList(obs : FicheTechniqueListServiceObserver){
+        self.observerList = obs
+        obs.emit(to: tabFicheTechnique)
+    }
+    
+    
+    func getAllFicheTechnique(){
         firestore.collection("fiche-techniques").addSnapshotListener {
             (data, error) in
             guard let documents = data?.documents else {
@@ -27,17 +46,11 @@ class FicheTechniqueService {
             self.tabFicheTechnique = documents.map{
                 (doc) -> FicheTechnique in
                 return FicheTechniqueDTO.transformDTO(
-                    FicheTechniqueDTO(id: doc.documentID,
-                                      nomIngredient: doc["nomIngredient"] as? String ?? "",
-                                      prixUnitaire: doc["prixUnitaire"] as? Double ?? 0,
-                                      qteIngredient: doc["qteIngredient"] as? Double ?? 0,
-                                      unite: doc["unite"] as? String ?? "",
-                                      categorie: doc["categorie"] as? String ?? "",
-                                      listAllergene: doc["listAllergene"] as? [String] ?? []))
+                    FicheTechniqueDTO.docToDTO(doc: doc))
             }
         }
 
-    }*/
+    }
     
     
 

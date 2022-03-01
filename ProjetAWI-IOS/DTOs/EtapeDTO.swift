@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 struct EtapeDTO {
         
@@ -28,6 +29,14 @@ struct EtapeDTO {
             },
             "identification" : DescriptionDTO.transformToDTO(etape.description),
         ]
+    }
+    
+    static func docToDTO(doc : NSDictionary) -> EtapeDTO {
+        return EtapeDTO(contenu: (doc["contenu"] as! [NSDictionary] ).map{
+            (docDenree) -> DenreeDTO in
+            return DenreeDTO.docToDTO(doc: docDenree)
+        },
+                        identification: DescriptionDTO.docToDTO(doc: doc["identification"] as! NSDictionary))
     }
 
     

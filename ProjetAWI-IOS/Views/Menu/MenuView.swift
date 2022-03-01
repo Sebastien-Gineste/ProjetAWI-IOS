@@ -14,10 +14,11 @@ struct MenuView: View {
     @StateObject var user : UtilisateurService = UtilisateurService.instance
     var vmAllergene : AllergèneListViewModel = AllergèneListViewModel()
     var vmIngredient : IngredientListViewModel = IngredientListViewModel()
+    var vmFicheTechnique : FicheTechniqueListViewModel = FicheTechniqueListViewModel()
     var body: some View {
         
         TabView {
-            FicheTechniqueListView().tabItem {
+            FicheTechniqueListView(vm :vmFicheTechnique ).tabItem {
                 Image(systemName: "list.bullet.below.rectangle")
                 Text("Fiche")
             }

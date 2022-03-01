@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 
 struct DenreeDTO {
@@ -23,6 +24,11 @@ struct DenreeDTO {
             "ingredient" : IngredientDTO.transformToDTO(denree.ingredient),
             "number" : denree.nombre,
         ]
+    }
+    
+    static func docToDTO(doc : NSDictionary) -> DenreeDTO {
+        return DenreeDTO(ingredient: IngredientDTO.docToDTO(doc: doc["ingredient"] as! NSDictionary),
+                         number: doc["number"] as? Double ?? 0)
     }
     
     

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 struct EtapeFicheDTO {
     
@@ -33,6 +34,15 @@ struct EtapeFicheDTO {
         }
         
         return tab
+    }
+    
+    static func docToDTO(doc : NSDictionary) -> EtapeFicheDTO {
+        return EtapeFicheDTO(
+            etapes: (doc["etapes"] as! [NSDictionary] ).map{
+                (docEtape) -> EtapeDTO in
+                return EtapeDTO.docToDTO(doc: docEtape)
+            },
+            identification: doc["identification"] as? String ?? nil)
     }
     
 }
@@ -75,6 +85,18 @@ struct FicheTechniqueDTO {
     
         
         return tab
+    }
+    
+    
+    static func docToDTO(doc : QueryDocumentSnapshot) -> FicheTechniqueDTO {
+        return FicheTechniqueDTO(header: HeaderFTDTO.docToDTO(doc: doc["header"] as! NSDictionary),
+                                 id: doc.documentID,
+                                 materielSpecifique: doc["materielSpecifique"] as? String ?? nil,
+                                 materielDressage: doc["materielDressage"] as? String ?? nil,
+                                 progression: (doc["progression"] as! [NSDictionary] ).map{
+             (docEtapeFiche )-> EtapeFicheDTO in
+            return EtapeFicheDTO.docToDTO(doc: docEtapeFiche)
+        })
     }
     
 }
