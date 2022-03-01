@@ -1,5 +1,5 @@
 //
-//  FicheTechniqueDTO.swift
+//  HeaderFTDTO.swift
 //  ProjetAWI-IOS
 //
 //  Created by m1 on 01/03/2022.
