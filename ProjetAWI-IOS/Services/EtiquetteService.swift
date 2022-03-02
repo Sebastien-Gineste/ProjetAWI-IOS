@@ -1,5 +1,5 @@
 //
-//  VenteService.swift
+//  EtiquetteService.swift
 //  ProjetAWI-IOS
 //
 //  Created by m1 on 02/03/2022.
@@ -10,17 +10,16 @@ import Combine
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-protocol VenteServiceObserver{
-    func emit(to: Result<String,VenteViewModelError>)
+protocol EtiquetteServiceObserver{
+    func emit(to: Result<String,EtiquetteViewModelError>)
 }
 
-class VenteService {
+class EtiquetteService {
     private let firestore = Firestore.firestore()
-    private var tabObserver : [VenteServiceObserver] = []
+    private var tabObserver : [EtiquetteServiceObserver] = []
 
-    // TO DO : impact sur le stock
-    func addVente(vente : Vente){
-        firestore.collection("ventes").addDocument(data: VenteDTO.transformToDTO(vente)){
+    func addEtiquette(etiquette : Etiquette){
+        firestore.collection("etiquettes").addDocument(data: EtiquetteDTO.transformToDTO(etiquette)){
             (error) in if let _ = error {
                 self.sendResult(result: .failure(.createError))
             } else {
@@ -29,11 +28,11 @@ class VenteService {
         }
     }
     
-    func addObserver(observer : VenteServiceObserver){
+    func addObserver(observer : EtiquetteServiceObserver){
         self.tabObserver.append(observer)
     }
     
-    private func sendResult(result : Result<String,VenteViewModelError>){
+    private func sendResult(result : Result<String,EtiquetteViewModelError>){
         for observer in self.tabObserver {
             observer.emit(to: result)
         }

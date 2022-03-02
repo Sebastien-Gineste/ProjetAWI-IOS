@@ -91,7 +91,7 @@ class VenteViewModel : ObservableObject, VenteObserver, Subscriber, VenteService
             if self.vente.isValid {
                 self.venteService.addVente(vente: self.vente)
             } else {
-                self.result = .failure(.noError)
+                self.result = .failure(.inputError)
             }
         }
         return .none
