@@ -22,6 +22,7 @@ struct AllergèneCreateView: View {
         self.ingredientListViewModel = vmIngredient
         self.allergène = AllergèneViewModel()
         self.intent.addObserver(self.allergène)
+
     }
     
     var body : some View {
@@ -92,10 +93,17 @@ struct AllergèneCreateView: View {
             Spacer()
             Button("Ajout"){
                 intent.intentToAddAllergène()
-                intent.intentToUpdateIngredientFromAllergène()
                 self.presentationMode.wrappedValue.dismiss()
             }.padding(20)
         }
+       /* .onAppear(){
+            intent.intentToUpdateIngredientFromAllergène()
+        }.onDisappear(){
+            intent.intentToUpdateIngredientFromAllergène()
+
+        }*/
         .navigationBarTitle(Text("Ajout d'allergène"),displayMode: .inline)
         
-    }}
+    }
+    
+}

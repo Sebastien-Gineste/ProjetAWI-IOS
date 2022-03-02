@@ -93,7 +93,7 @@ struct IngredientListView : View {
                 case let .success(msg):
                     self.alertMessage = msg
                     self.showingAlert = true
-                    self.intentAllergène.intentToUpdateIngredientFromAllergène()
+                    //self.intentAllergène.intentToUpdateIngredientFromAllergène()
                 case let .failure(error):
                     switch error {
                     case .noError :

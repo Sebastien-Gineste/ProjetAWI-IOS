@@ -110,7 +110,7 @@ struct IngredientDetailView: View {
                     case let .success(msg):
                         self.alertMessage = "\(msg)"
                         self.showingAlert.toggle()
-                        self.intentAllergène.intentToUpdateIngredientFromAllergène()
+                        //self.intentAllergène.intentToUpdateIngredientFromAllergène()
                     case let .failure(error):
                         switch error {
                         case .updateError, .createError :

@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 struct AllergèneDetailView: View {
+    @Environment(\.presentationMode) var presentationMode
     var intent : AllergèneIntent
     @ObservedObject var allergène : AllergèneViewModel
     @ObservedObject var ingredientListViewModel : IngredientListViewModel
@@ -42,7 +43,6 @@ struct AllergèneDetailView: View {
                             case let .success(msg):
                                 self.alertMessage = msg
                                 self.showingAlert = true
-                                self.intent.intentToUpdateIngredientFromAllergène()
                             case let .failure(error):
                                 switch error {
                                 case .updateError, .createError :
@@ -92,8 +92,16 @@ struct AllergèneDetailView: View {
             Spacer()
             Button("Modifier"){
                 intent.intentToUpdateDatabase()
+                self.presentationMode.wrappedValue.dismiss()
+
             }.padding(20)
         }
+       /* .onAppear(){
+            intent.intentToUpdateIngredientFromAllergène()
+        }.onDisappear(){
+            intent.intentToUpdateIngredientFromAllergène()
+
+        }*/
         .navigationBarTitle(Text("Détails de l'allergène"),displayMode: .inline)
         
     }}

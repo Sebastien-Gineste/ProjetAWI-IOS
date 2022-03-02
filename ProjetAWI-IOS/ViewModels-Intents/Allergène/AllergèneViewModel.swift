@@ -29,16 +29,19 @@ class AllergèneViewModel : ObservableObject, Subscriber, AllergèneServiceObser
     @Published var nom : String
     @Published var listIngredient : [String]
     @Published var result : Result<String, AllergèneViewModelError> = .failure(.noError)
+    private var oldListIngredient : [String]
     
     init(allergèneListViewModel : AllergèneListViewModel? = nil, indice : Int? = nil) {
         if let indice = indice , let allergèneListViewModel = allergèneListViewModel{
             self.allergène = allergèneListViewModel.tabAllergène[indice]
             self.nom = allergèneListViewModel.tabAllergène[indice].nom
             self.listIngredient = allergèneListViewModel.tabAllergène[indice].listIngredient
+            self.oldListIngredient = allergèneListViewModel.tabIngredientFromAllergène[allergèneListViewModel.tabAllergène[indice].nom] ?? []
         } else {
             self.allergène = Allergène(nom: "",listIngredient: [])
             self.nom = ""
             self.listIngredient = []
+            self.oldListIngredient = []
         }
         self.allergèneService.addObserver(observer: self)
         self.allergène.observer = self
@@ -69,7 +72,8 @@ class AllergèneViewModel : ObservableObject, Subscriber, AllergèneServiceObser
                 self.nom = self.allergène.nom
             }
         case .updateDatabase:
-           self.allergèneService.updateAllergène(allergène: self.allergène)
+            print("att")
+            self.allergèneService.updateAllergène(allergène: self.allergène, oldIngredient:  self.oldListIngredient)
         case .addAllergène:
             self.allergèneService.addAllergène(allergène: self.allergène)
         case .changingListIngredient(let listIngredient):

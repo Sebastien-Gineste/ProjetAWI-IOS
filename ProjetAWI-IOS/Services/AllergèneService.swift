@@ -69,11 +69,12 @@ class AllergèneService {
                                  nom: doc["nom"] as? String ?? "" ,
                                 listIngredient: []))
             }
-            self.getIngredientsByAllergène()
+            //self.getIngredientsByAllergène()
         }
     }
     
-    func updateAllergène(allergène : Allergène){
+    func updateAllergène(allergène : Allergène, oldIngredient : [String]){
+        //self.updateAllergèneIntoIngrédient(allergène: allergène, oldIngredient : oldIngredient)
         let ref = firestore.collection("allergenes").document(allergène.id!)
         ref.updateData(AllergèneDTO.transformToDTO(allergène)) {
             (error) in
@@ -99,9 +100,6 @@ class AllergèneService {
     }
     
     func addAllergène(allergène : Allergène){
-        for ingredientName in allergène.listIngredient {
-            self.addAllergèneIntoIngredient(allergèneName: allergène.nom, ingredientName: ingredientName)
-        }
         firestore.collection("allergenes").addDocument(data: AllergèneDTO.transformToDTO(allergène)){
             (error) in if let _ = error {
                 self.sendResultElement(result: .failure(.createError))
@@ -126,26 +124,73 @@ class AllergèneService {
             }
         }
     }
-    
-    private func addAllergèneIntoIngredient(allergèneName : String, ingredientName : String){
+    /*
+    private func addAllergèneIntoIngredient(allergèneName : String, ingredientName : String, action : (() -> Void)? = nil){
         self.ingredientService.getIngredientByName(ingredient: ingredientName){
             ingredient in
             ingredient.listAllergene.append(allergèneName)
-            self.ingredientService.updateIngredient(ingredient: ingredient)
+            self.ingredientService.updateIngredient(ingredient: ingredient){
+                action?()
+            }
         }
-    }
+    }*/
     
-    private func deleteAllergèneIntoIngredient(allergèneName : String, ingredientName : String){
+    private func deleteAllergèneIntoIngredient(allergèneName : String, ingredientName : String, action: (() -> Void)? = nil){
         self.ingredientService.getIngredientByName(ingredient: ingredientName){
             ingredient in
             if let index = ingredient.listAllergene.firstIndex(of: allergèneName) {
                 ingredient.listAllergene.remove(at: index)
             }
             self.ingredientService.updateIngredient(ingredient: ingredient)
+            action?()
         }
     }
     
-    // get by Id + update + check valid form
+    /*private func updateAllergèneIntoIngrédient(allergène : Allergène, oldIngredient : [String]){
+        print("1")
+        self.getAllergèneById(id: allergène.id!){ allergèneOld in
+            for ingredient in oldIngredient {
+                print("2")
+                print(allergène.nom)
+                print(allergèneOld.nom)
+                if allergène.nom == allergèneOld.nom {
+                    print("8")
+                    if !allergène.listIngredient.contains(ingredient) {
+                        if oldIngredient.contains(ingredient) {
+                            self.deleteAllergèneIntoIngredient(allergèneName: allergène.nom, ingredientName: ingredient){
+                                self.getAllAllergène()
+                            }
+                            print("9")
+                        }
+                        
+                    }
+                    // add
+                } else {
+                    print("3")
+                    print(ingredient)
+                    if allergène.listIngredient.contains(ingredient) {
+                        print("4")
+                        self.ingredientService.getIngredientByName(ingredient: ingredient){
+                            ingredientOld in
+                            if let index = ingredientOld.listAllergene.firstIndex(of: allergèneOld.nom) {
+                                ingredientOld.listAllergene.remove(at: index)
+                                print("5")
+                            }
+                            print("6")
+                            ingredientOld.listAllergene.append(allergène.nom)
+                            self.ingredientService.updateIngredient(ingredient: ingredientOld)
+                        }
+                    } else if oldIngredient.contains(ingredient){
+                        print("7")
+                        self.deleteAllergèneIntoIngredient(allergèneName: allergène.nom, ingredientName: ingredient)
+                    }
+                }
+
+            }
+        }
+    }
+     */
+    // update + check valid form
     
     // update
     // if name !=
@@ -162,8 +207,24 @@ class AllergèneService {
     
     // check
     // func in view Model
-    
-    
+    func getAllergèneById(id : String, action : ((Allergène) -> Void)?){
+        firestore.collection("allergenes").document(id).getDocument(){data,err in
+            if let err = err {
+                print("Error getting document : \(err)")
+            }
+            else{
+                guard let doc = data else {
+                    return
+                }
+                action?(AllergèneDTO.transformDTO(
+                    AllergèneDTO(id: doc.documentID,
+                                  nom: doc["nom"] as? String ?? "",
+                                  listIngredient: []))
+                )
+                
+            }
+        }
+    }
     
     // Result to observer
 

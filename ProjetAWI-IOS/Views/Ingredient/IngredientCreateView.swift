@@ -146,7 +146,7 @@ struct IngredientCreateView: View {
             Spacer()
             Button("Ajout"){
                 intent.intentToAddIngredient()
-                intentAllergène.intentToUpdateIngredientFromAllergène()
+                //intentAllergène.intentToUpdateIngredientFromAllergène()
                 self.presentationMode.wrappedValue.dismiss()
             }.padding(20)
         }

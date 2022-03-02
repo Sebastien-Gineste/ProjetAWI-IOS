@@ -65,7 +65,7 @@ class IngredientService {
 
     }
     
-    func updateIngredient(ingredient : Ingredient){
+    func updateIngredient(ingredient : Ingredient,action: (() -> Void )? = nil){
         let ref = firestore.collection("ingredients").document(ingredient.id!)
         ref.updateData(IngredientDTO.transformToDTO(ingredient)) {
             (error) in
@@ -73,6 +73,7 @@ class IngredientService {
                 self.sendResultElement(result: .failure(.updateError))
             } else {
                 self.sendResultElement(result: .success("Mise a jour effectué"))
+                action?()
             }
         }
     }
