@@ -43,7 +43,7 @@ struct IngredientCreateView: View {
                     HStack{
                         LazyVGrid(columns: columns){
                             Text("Nom :").frame(maxWidth: .infinity, alignment: .leading)
-                            TextField("",text: $ingredient.nomIngredient)
+                            TextField("Nom",text: $ingredient.nomIngredient)
                                 .onSubmit {
                                     intent.intentToChange(nomIngrédient: ingredient.nomIngredient)
                                 }
@@ -52,7 +52,7 @@ struct IngredientCreateView: View {
                     HStack{
                         LazyVGrid(columns: columns){
                             Text("Prix unitaire :").frame(maxWidth: .infinity, alignment: .leading)
-                            TextField("",value: $ingredient.prixUnitaire, formatter: formatter)
+                            TextField("Prix unitaire",value: $ingredient.prixUnitaire, formatter: formatter)
                                 .onSubmit {
                                     intent.intentToChange(prixUnitaire: ingredient.prixUnitaire)
                                 }
@@ -61,7 +61,7 @@ struct IngredientCreateView: View {
                     HStack{
                         LazyVGrid(columns: columns){
                             Text("Quantité :").frame(maxWidth: .infinity, alignment: .leading)
-                            TextField("",value: $ingredient.qteIngredient, formatter: formatter)
+                            TextField("Quantité",value: $ingredient.qteIngredient, formatter: formatter)
                                 .onSubmit {
                                     intent.intentToChange(quantité: ingredient.qteIngredient)
                                 }
@@ -70,7 +70,7 @@ struct IngredientCreateView: View {
                     HStack{
                         LazyVGrid(columns: columns){
                             Text("Unité :").frame(maxWidth: .infinity, alignment: .leading)
-                            TextField("",text: $ingredient.unite)
+                            TextField("Unité",text: $ingredient.unite)
                                 .onSubmit {
                                     intent.intentToChange(unite: ingredient.unite)
                                 }
@@ -125,7 +125,6 @@ struct IngredientCreateView: View {
                     case let .success(msg):
                        self.alertMessage = msg
                        self.showingAlert = true
-
                         break
                     case let .failure(error):
                         switch error {
@@ -146,7 +145,6 @@ struct IngredientCreateView: View {
             Spacer()
             Button("Ajout"){
                 intent.intentToAddIngredient()
-                //intentAllergène.intentToUpdateIngredientFromAllergène()
                 self.presentationMode.wrappedValue.dismiss()
             }.padding(20)
         }

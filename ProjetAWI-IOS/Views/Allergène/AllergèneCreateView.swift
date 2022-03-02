@@ -29,7 +29,7 @@ struct AllergèneCreateView: View {
                     HStack{
                         LazyVGrid(columns: columns){
                             Text("Nom de l'allergène :").frame(maxWidth: .infinity, alignment: .leading)
-                            TextField("",text: $allergène.nom)
+                            TextField("Nom de l'allergène",text: $allergène.nom)
                                 .onSubmit {
                                     intent.intentToChange(nom: allergène.nom)
                                 }

@@ -12,15 +12,14 @@ import SwiftUI
 
 struct UtilisateurDetailView : View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-
-    @StateObject var user : UtilisateurService = UtilisateurService.instance
-    var intent : UtilisateurIntent
     @ObservedObject var utilisateurViewModel : UtilisateurViewModel
+    @StateObject var user : UtilisateurService = UtilisateurService.instance
     @State private var nomButton = "Modifier"
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
     @State private var isCreate : Bool
-    
+    var intent : UtilisateurIntent
+    let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
     
     init(model : Utilisateur = Utilisateur(email: "", nom: "", prenom: "", type: .User, id: "")){
         self._isCreate = State(initialValue:  (model.email.count == 0))
@@ -36,46 +35,50 @@ struct UtilisateurDetailView : View {
     }
  
     var body : some View{
-        VStack(alignment:.center){
-            Spacer()
+        VStack{
             Form {
-                Section {
+                Section(header: Text("Informations")) {
                     HStack{
-                        Text("E-mail : ")
-                        TextField("E-mail", text : $utilisateurViewModel.email).disabled(disabledTextField).onSubmit {
-                            intent.intentToChange(email: utilisateurViewModel.email)
+                        LazyVGrid(columns: columns, alignment: .leading){
+                            Text("E-mail : ")
+                            TextField("E-mail", text : $utilisateurViewModel.email).disabled(disabledTextField).onSubmit {
+                                intent.intentToChange(email: utilisateurViewModel.email)
+                            }
                         }
-                    }.padding(10)
-                    
+                    }
                     if isCreate || nomButton == "Valider" {
                         HStack{
-                            Text("Mot de passe : ")
-                            TextField("Mot de passe", text : $utilisateurViewModel.motDePasse).disabled(disabledTextField)
-                                .onSubmit {
-                                    intent.intentToChange(password: utilisateurViewModel.motDePasse)
-                                }
-                        }.padding(10)
+                            LazyVGrid(columns: columns, alignment: .leading){
+                                Text("Mot de passe : ")
+                                TextField("Mot de passe", text : $utilisateurViewModel.motDePasse).disabled(disabledTextField)
+                                    .onSubmit {
+                                        intent.intentToChange(password: utilisateurViewModel.motDePasse)
+                                    }
+                            }
+                        }
                     }
                 }
-                
                 Section {
                     HStack{
-                        Text("Nom : ")
-                        TextField("Nom",text : $utilisateurViewModel.nom)
-                            .disabled(disabledTextField)
-                            .onSubmit {
-                                intent.intentToChange(name: utilisateurViewModel.nom)
-                            }
-                    }.padding(10)
+                        LazyVGrid(columns: columns, alignment: .leading){
+                            Text("Nom : ")
+                            TextField("Nom",text : $utilisateurViewModel.nom)
+                                .disabled(disabledTextField)
+                                .onSubmit {
+                                    intent.intentToChange(name: utilisateurViewModel.nom)
+                                }
+                        }
+                    }
                     HStack{
-                        Text("Prénom : ")
-                        TextField("Prenom",text : $utilisateurViewModel.prenom)
-                            .disabled(disabledTextField)
-                            .onSubmit {
-                                intent.intentToChange(firstName: utilisateurViewModel.prenom)
-                            }
-                    }.padding(10)
-                    
+                        LazyVGrid(columns: columns, alignment: .leading){
+                            Text("Prénom : ")
+                            TextField("Prenom",text : $utilisateurViewModel.prenom)
+                                .disabled(disabledTextField)
+                                .onSubmit {
+                                    intent.intentToChange(firstName: utilisateurViewModel.prenom)
+                                }
+                        }
+                    }
                     if user.currentUtilisateur.estAdmin(){
                         HStack{
                             Picker("Rôle", selection : $utilisateurViewModel.type){
@@ -86,22 +89,19 @@ struct UtilisateurDetailView : View {
                                     value in
                                     intent.intentToChange(type: value)
                                 })
-                        }.padding(10)
+                        }
                     }
                 }
             }
-                
-                
-            Spacer()
-                
-            HStack(spacing:10){
+            HStack{
                 
                 if !isCreate {
+                    Spacer()
                     Button("Supprimer"){
                         intent.intentToDeleteUser()
                         self.presentationMode.wrappedValue.dismiss()
                     }
-                    
+                    Spacer()
                     
                     Button(nomButton){
                         if nomButton == "Modifier" {
@@ -115,10 +115,12 @@ struct UtilisateurDetailView : View {
                     }.disabled(nomButton == "Valider" && !utilisateurViewModel.isValid)
                     
                     if !disabledTextField {
+                        Spacer()
                         Button("Annuler"){
                             nomButton = "Modifier"
                         }
                     }
+                    Spacer()
                 }
                 
                 else {
@@ -127,8 +129,6 @@ struct UtilisateurDetailView : View {
                     }
                 }
             }
-        
-            
         }.navigationTitle("Détail \(utilisateurViewModel.nom)")
             .padding()
             .onChange(of: utilisateurViewModel.result){

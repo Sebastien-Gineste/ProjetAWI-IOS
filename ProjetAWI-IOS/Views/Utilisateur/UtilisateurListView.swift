@@ -18,8 +18,7 @@ struct UtilisateurListView : View {
     @State var isActiveCreateView = false
     
     private var intent : UtilisateurIntent
-    
-    
+    let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
     var utilisateursFiltre: [Utilisateur] {
         if searchText.isEmpty {
             return utilisateurListViewModel.utilisateurs
@@ -37,25 +36,15 @@ struct UtilisateurListView : View {
     var body : some View {
         NavigationView{
             VStack{
-                
                 GestionCompteView()
-                
                     List {
-                        HStack(spacing:0){
-                            Text("Nom").frame(maxWidth:.infinity)
-                            Text("Prénom").bold().frame(maxWidth:.infinity)
-                            Text("Type").italic().frame(maxWidth:.infinity)
-                        }.frame(minWidth : 0, maxWidth: .infinity)
-                        
                         ForEach(Array(utilisateursFiltre.enumerated()), id: \.offset){index,utilisateur in
-                            HStack(spacing:0){
-                                Text(utilisateur.nom).frame(maxWidth:.infinity)
-                                Text("\(utilisateur.prenom)").bold().frame(maxWidth:.infinity)
-                                Text("\(utilisateur.type.rawValue)").italic().frame(maxWidth:.infinity)
-                                
-                                NavigationLink(destination:UtilisateurDetailView(model:utilisateur)){
-                                }.frame(maxWidth:0)
-                            }.frame(minWidth : 0, maxWidth: .infinity)
+                            NavigationLink(destination:UtilisateurDetailView(model:utilisateur)){
+                                VStack(alignment: .leading){
+                                    Text(utilisateur.nom + " \(utilisateur.prenom)").bold()
+                                    Text("\(utilisateur.type.rawValue)")
+                                }
+                            }
                         }.onDelete{indexSet in
                             for index in indexSet {
                                 intent.intentToDeleteUserFromList(id: index)
@@ -64,14 +53,14 @@ struct UtilisateurListView : View {
                     }
                     .searchable(text: $searchText,placement:.navigationBarDrawer(displayMode:.always))
                     .navigationBarTitle(Text("Liste des utilisateurs"),displayMode: .inline)
-
-                    
-                    HStack(spacing : 20){
+                HStack{
+                    LazyVGrid(columns: columns){
                         EditButton()
                         NavigationLink(destination:UtilisateurDetailView(), isActive: $isActiveCreateView){
                             Text("Créer un compte")
                         }
                     }
+                }.padding()
             }
             .onChange(of: utilisateurListViewModel.result){
                 result in
@@ -100,5 +89,4 @@ struct UtilisateurListView : View {
             }
         }
     }
-    
 }
