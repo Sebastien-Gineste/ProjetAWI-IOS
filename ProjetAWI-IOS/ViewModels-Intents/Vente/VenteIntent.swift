@@ -13,7 +13,7 @@ enum VenteIntentState : Equatable {
     case changingDateAchat(String)
     case changingIdficheReference(String)
     case changingNbrPlatVendu(Int)
-    case updateDatabase
+    case addVente
 }
 
 struct VenteIntent {
@@ -31,7 +31,11 @@ struct VenteIntent {
         self.state.send(VenteIntentState.changingNbrPlatVendu(nbrPlatVendu))
     }
     
-   /* func addObserver(_ venteViewModel : VenteViewModel){
+    func intentToChangeAddVente(){
+        self.state.send(VenteIntentState.addVente)
+    }
+    
+    func addObserver(_ venteViewModel : VenteViewModel){
         self.state.subscribe(venteViewModel)
-    }*/
+    }
 }

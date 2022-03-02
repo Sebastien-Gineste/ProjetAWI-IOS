@@ -21,6 +21,8 @@ protocol HeaderFTObserver{
     func changed(categorie : String)
 }
 
+
+
 class HeaderFT{
     
     var observer : HeaderFTObserver?

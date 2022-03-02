@@ -18,7 +18,7 @@ struct MenuView: View {
     var body: some View {
         
         TabView {
-            FicheTechniqueListView(vm :vmFicheTechnique ).tabItem {
+            FicheTechniqueListView(vm :vmFicheTechnique, vmCategorie: CategorieRecetteViewModel() ).tabItem {
                 Image(systemName: "list.bullet.below.rectangle")
                 Text("Fiche")
             }

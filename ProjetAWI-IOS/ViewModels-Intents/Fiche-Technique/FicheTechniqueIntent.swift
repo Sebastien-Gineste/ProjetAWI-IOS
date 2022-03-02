@@ -31,5 +31,12 @@ struct FicheTechniqueIntent {
     // intentToChange
     
     // addObserver
+    func addObserver (_ fiche : FicheTechniqueViewModel) {
+        self.stateElement.subscribe(fiche)
+    }
+    
+    func addObserver (_ ficheList : FicheTechniqueListViewModel){
+        self.stateList.subscribe(ficheList)
+    }
     
 }

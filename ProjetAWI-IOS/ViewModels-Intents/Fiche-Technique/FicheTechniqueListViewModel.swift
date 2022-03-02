@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-enum FicheTechniqueViewModelError : Error, Equatable, CustomStringConvertible{
+enum FicheTechniqueListViewModelError : Error, Equatable, CustomStringConvertible{
     case noError
     case deleteError
     var description: String {
@@ -24,19 +24,19 @@ class FicheTechniqueListViewModel : ObservableObject, Subscriber, FicheTechnique
     
     private var ficheTechniqueService : FicheTechniqueService = FicheTechniqueService()
     @Published var tabFicheTechnique : [FicheTechnique]
-    @Published var result : Result<String, FicheTechniqueViewModelError> = .failure(.noError)
+    @Published var result : Result<String, FicheTechniqueListViewModelError> = .failure(.noError)
     
     init(){
         self.tabFicheTechnique = []
         self.ficheTechniqueService.getAllFicheTechnique()
-        self.ficheTechniqueService.setObserverList(obs: self)
+        self.ficheTechniqueService.setObserver(obs: self)
     }
     
     func emit(to: [FicheTechnique]) {
         self.tabFicheTechnique = to
     }
     
-    func emit(to: Result<String, FicheTechniqueViewModelError>) {
+    func emit(to: Result<String, FicheTechniqueListViewModelError>) {
         self.result = to
     }
     

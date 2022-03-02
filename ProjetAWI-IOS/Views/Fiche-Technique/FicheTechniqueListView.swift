@@ -10,11 +10,13 @@ import SwiftUI
 struct FicheTechniqueListView: View {
     
     @ObservedObject var ficheTechniqueListViewModel : FicheTechniqueListViewModel
+    @ObservedObject var categorieRecetteViewModel : CategorieRecetteViewModel
     
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
     @State private var searchText : String = ""
     @State private var selectedIndex : Int = 0
+    
     let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
     var intent: FicheTechniqueIntent
     
@@ -24,28 +26,33 @@ struct FicheTechniqueListView: View {
         } else {
             if selectedIndex <= 0 {
                 return ficheTechniqueListViewModel.tabFicheTechnique.filter{ $0.header.nomPlat.uppercased().contains(searchText.uppercased()) }
-            } /*else if searchText.isEmpty {
-                return ficheTechniqueListViewModel.tabFicheTechnique.filter{ /*$0.header.categorie.uppercased().contains(categorieIngredientViewModel.tabCategorieIngredient[selectedIndex].uppercased())*/ }
+            }else if searchText.isEmpty {
+                return ficheTechniqueListViewModel.tabFicheTechnique.filter{ $0.header.categorie.uppercased().contains(categorieRecetteViewModel.tabCategorieRecette[selectedIndex].uppercased())}
             } else {
-                return ficheTechniqueListViewModel.tabFicheTechnique.filter{ $0.header.nomPlat.uppercased().contains(searchText.uppercased()) && $0.categorie.uppercased().contains(categorieIngredientViewModel.tabCategorieIngredient[selectedIndex].uppercased()) }
-            }*/
-            else {
-                return []
+                return ficheTechniqueListViewModel.tabFicheTechnique.filter{
+                    $0.header.nomPlat.uppercased().contains(searchText.uppercased()) &&
+                    $0.header.categorie.uppercased().contains(categorieRecetteViewModel.tabCategorieRecette[selectedIndex].uppercased())
+                }
             }
         }
     }
     
-    init(vm : FicheTechniqueListViewModel){
+    init(vm : FicheTechniqueListViewModel, vmCategorie : CategorieRecetteViewModel){
         self.ficheTechniqueListViewModel = vm
+        self.categorieRecetteViewModel = vmCategorie
         self.intent = FicheTechniqueIntent()
-        // add Observer
+        // add Observer intent
     }
     
     var body: some View {
         NavigationView {
             VStack {
                 Form {
-                    Text("Picker categorie")
+                    Picker(selection: $selectedIndex, label: Text("Categorie")) {
+                        ForEach(Array(self.categorieRecetteViewModel.tabCategorieRecette.enumerated()), id: \.offset) { index,categorie in
+                            Text(categorie)
+                        }
+                    }
                 }.frame(height:100)
                 
                 List {

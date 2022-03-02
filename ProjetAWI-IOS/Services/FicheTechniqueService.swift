@@ -11,7 +11,11 @@ import FirebaseFirestoreSwift
 
 protocol FicheTechniqueListServiceObserver {
     func emit(to: [FicheTechnique])
-    func emit(to: Result<String,FicheTechniqueViewModelError>)
+    func emit(to: Result<String,FicheTechniqueListViewModelError>)
+}
+
+protocol FicheTechniqueServiceObserver {
+    func emit(to : Result<String, FicheTechniqueViewModelError>)
 }
 
 class FicheTechniqueService {
@@ -24,6 +28,7 @@ class FicheTechniqueService {
     
     
     private var observerList : FicheTechniqueListServiceObserver? = nil
+    private var observerElement : FicheTechniqueServiceObserver? = nil
     
     
     
@@ -31,9 +36,21 @@ class FicheTechniqueService {
         self.tabFicheTechnique = []
     }
     
-    func setObserverList(obs : FicheTechniqueListServiceObserver){
+    func setObserver(obs : FicheTechniqueListServiceObserver){
         self.observerList = obs
         obs.emit(to: tabFicheTechnique)
+    }
+    
+    func setObserver(obs : FicheTechniqueServiceObserver){
+        self.observerElement = obs
+    }
+    
+    private func sendResultElement(result : Result<String,FicheTechniqueViewModelError>){
+        self.observerElement?.emit(to: result)
+    }
+    
+    private func sendResultList(result : Result<String,FicheTechniqueListViewModelError>){
+        self.observerList?.emit(to: result)
     }
     
     

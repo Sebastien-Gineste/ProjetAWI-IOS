@@ -39,8 +39,8 @@ class EtapeFiche {
 }
 
 protocol FicheTechniqueObserver {
-    // à compléter 
-    
+    func changed(materielDressage : String?)
+    func changed(materielSpecifique : String?)
 }
 
 class FicheTechnique {
@@ -49,6 +49,8 @@ class FicheTechnique {
     var progression : [EtapeFiche]
     var materielSpecifique : String?
     var materielDressage : String?
+    
+    var observer : FicheTechniqueObserver?
     
     init(header : HeaderFT, progression : [EtapeFiche], materielSpecifique : String? = nil, materielDressage : String? = nil){
         self.header = header
