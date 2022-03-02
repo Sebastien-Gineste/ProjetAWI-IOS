@@ -113,7 +113,7 @@ struct IngredientDetailView: View {
                         //self.intentAllergène.intentToUpdateIngredientFromAllergène()
                     case let .failure(error):
                         switch error {
-                        case .updateError, .createError :
+                        case .updateError, .createError, .inputError :
                             self.alertMessage = "\(error)"
                             self.showingAlert = true
                         case .noError :

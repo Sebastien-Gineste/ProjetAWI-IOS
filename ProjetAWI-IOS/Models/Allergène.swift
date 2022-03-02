@@ -7,7 +7,6 @@
 
 protocol AllergèneObserver {
     func changed(nom : String)
-    func changed(listIngredient : [String])
 }
 
 class Allergène {
@@ -24,17 +23,13 @@ class Allergène {
             }
         }
     }
-    var listIngredient : [String] {
-        didSet {
-            if self.listIngredient != oldValue {
-                self.observer?.changed(listIngredient: self.listIngredient)
-            }
-        }
+    
+    init(nom : String, id : String? = nil){
+        self.nom = nom
+        self.id = id
     }
     
-    init(nom : String, listIngredient : [String], id : String? = nil){
-        self.nom = nom
-        self.listIngredient = listIngredient
-        self.id = id
+    var isValid : Bool{
+        return nom.count > 1 
     }
 }

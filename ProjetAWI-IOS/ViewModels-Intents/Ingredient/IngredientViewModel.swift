@@ -13,11 +13,13 @@ enum IngredientViewModelError : Error, Equatable, CustomStringConvertible {
     case noError
     case updateError
     case createError
+    case inputError
     var description: String {
         switch self {
         case .noError : return "Aucune erreur"
         case .updateError : return "Erreur de mise à jour"
         case .createError : return "Erreur de création"
+        case .inputError : return "Input non valide"
         }
     }
 }
@@ -75,9 +77,17 @@ class IngredientViewModel : ObservableObject, Subscriber, IngredientServiceObser
                 self.nomIngredient = self.ingredient.nomIngredient
             }
         case .updateDatabase:
-            self.ingredientService.updateIngredient(ingredient: self.ingredient)
+            if self.ingredient.isValid {
+                self.ingredientService.updateIngredient(ingredient: self.ingredient)
+            } else {
+                self.result = .failure(.inputError)
+            }
         case .addIngredient:
-            self.ingredientService.addIngredient(ingredient: self.ingredient)
+            if self.ingredient.isValid {
+                self.ingredientService.addIngredient(ingredient: self.ingredient)
+            } else {
+                self.result = .failure(.inputError)
+            }
         case .changingPrix(let double):
             self.ingredient.prixUnitaire = double
             if self.ingredient.prixUnitaire != double {

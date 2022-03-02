@@ -65,7 +65,7 @@ class IngredientService {
 
     }
     
-    func updateIngredient(ingredient : Ingredient,action: (() -> Void )? = nil){
+    func updateIngredient(ingredient : Ingredient){
         let ref = firestore.collection("ingredients").document(ingredient.id!)
         ref.updateData(IngredientDTO.transformToDTO(ingredient)) {
             (error) in
@@ -73,7 +73,6 @@ class IngredientService {
                 self.sendResultElement(result: .failure(.updateError))
             } else {
                 self.sendResultElement(result: .success("Mise a jour effectué"))
-                action?()
             }
         }
     }
@@ -98,7 +97,9 @@ class IngredientService {
         }
     }
     
-    func getIngredientByAllergène(allergène : String, action : ((String) -> Void)?) {
+    // Link ingredient with allergène
+    
+    func getIngredientsByAllergène(allergène : String, action : (([Ingredient]) -> Void)?) {
             firestore.collection("ingredients").whereField("listAllergene", arrayContains: allergène)
             .getDocuments(){
                 (querySnapshot, err) in
@@ -106,38 +107,23 @@ class IngredientService {
                     print("Error getting document : \(err)")
                 }
                 else{
-                    let ingredients = querySnapshot!.documents
-                    for ingredient in ingredients {
-                        action?(ingredient["nomIngredient"] as? String ?? "")
+                    let ingredients = querySnapshot!.documents.map{
+                        (doc) -> Ingredient in
+                        return IngredientDTO.transformDTO(
+                            IngredientDTO(id: doc.documentID,
+                                          nomIngredient: doc["nomIngredient"] as? String ?? "",
+                                          prixUnitaire: doc["prixUnitaire"] as? Double ?? 0,
+                                          qteIngredient: doc["qteIngredient"] as? Double ?? 0,
+                                          unite: doc["unite"] as? String ?? "",
+                                          categorie: doc["categorie"] as? String ?? "",
+                                          listAllergene: doc["listAllergene"] as? [String] ?? []))
                     }
+                    action?(ingredients)
                 }
             }
-        
     }
     
-    func getIngredientByName(ingredient : String, action : ((Ingredient) -> Void)?){
-        firestore.collection("ingredients").whereField("nomIngredient", isEqualTo: ingredient)
-        .getDocuments(){
-            (querySnapshot, err) in
-            if let err = err {
-                print("Error getting document : \(err)")
-            }
-            else{
-                let ingredients = querySnapshot!.documents
-                for doc in ingredients {
-                    action?(IngredientDTO.transformDTO(
-                        IngredientDTO(id: doc.documentID,
-                                      nomIngredient: doc["nomIngredient"] as? String ?? "",
-                                      prixUnitaire: doc["prixUnitaire"] as? Double ?? 0,
-                                      qteIngredient: doc["qteIngredient"] as? Double ?? 0,
-                                      unite: doc["unite"] as? String ?? "",
-                                      categorie: doc["categorie"] as? String ?? "",
-                                      listAllergene: doc["listAllergene"] as? [String] ?? []))
-                    )
-                }
-            }
-        }
-    }
+    // Result to observer
     
     private func sendResultElement(result : Result<String,IngredientViewModelError>){
         for observer in self.tabObserver {

@@ -10,19 +10,16 @@ import SwiftUI
 
 struct AllergèneCreateView: View {
     @Environment(\.presentationMode) var presentationMode
-    var intent : AllergèneIntent
     @ObservedObject var allergène : AllergèneViewModel
-    @ObservedObject var ingredientListViewModel : IngredientListViewModel
-    let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
+    var intent : AllergèneIntent
+    let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
     
-    init(vmIngredient : IngredientListViewModel){
+    init(){
         self.intent = AllergèneIntent()
-        self.ingredientListViewModel = vmIngredient
         self.allergène = AllergèneViewModel()
         self.intent.addObserver(self.allergène)
-
     }
     
     var body : some View {
@@ -46,7 +43,7 @@ struct AllergèneCreateView: View {
                                 break
                             case let .failure(error):
                                 switch error {
-                                case .updateError, .createError :
+                                case .updateError, .createError, .inputError :
                                     self.alertMessage = "\(error)"
                                     self.showingAlert = true
                                 case .noError :
@@ -60,34 +57,6 @@ struct AllergèneCreateView: View {
                                 self.showingAlert = false
                             }
                         }
-                    HStack {
-                        NavigationLink(destination: MultipleSelectionIngredient(items: self.ingredientListViewModel.tabIngredient,selections: $allergène.listIngredient)){
-                            HStack {
-                                Text("Liste ingrédient :")
-                                Spacer()
-                                Text("Modifier")
-                                    .foregroundColor(Color.gray)
-                            }
-                        }.onChange(of: allergène.listIngredient, perform: { value in
-                            self.intent.intentToChange(listIngredient: value)
-                        })
-                    }
-                }
-                Section(header: Text("Ingrédient contenant cet allergène")){
-                    VStack(alignment: .leading) {
-                        if $allergène.listIngredient.count == 0 {
-                            Text("Cet allergène n'est dans aucun ingrédient")
-                        } else {
-                            List {
-                                ForEach(Array(allergène.listIngredient.enumerated()), id: \.offset) {
-                                    _, ingrédient in
-                                    VStack(alignment: .leading) {
-                                        Text(ingrédient)
-                                    }.padding(2)
-                                }
-                            }
-                        }
-                    }
                 }
             }
             Spacer()
@@ -96,14 +65,6 @@ struct AllergèneCreateView: View {
                 self.presentationMode.wrappedValue.dismiss()
             }.padding(20)
         }
-       /* .onAppear(){
-            intent.intentToUpdateIngredientFromAllergène()
-        }.onDisappear(){
-            intent.intentToUpdateIngredientFromAllergène()
-
-        }*/
         .navigationBarTitle(Text("Ajout d'allergène"),displayMode: .inline)
-        
     }
-    
 }

@@ -11,13 +11,11 @@ import Combine
 enum AllergèneListIntentState : Equatable {
     case ready
     case deleteAllergène(Int)
-    case updateIngredientFromAllergène
 }
 
 enum AllergèneIntentState : Equatable {
     case ready
     case changingNom(String)
-    case changingListIngredient([String])
     case updateDatabase
     case addAllergène
 }
@@ -30,10 +28,6 @@ struct AllergèneIntent  {
         self.stateElement.send(AllergèneIntentState.changingNom(nom))
     }
     
-    func intentToChange(listIngredient : [String]){
-        self.stateElement.send(AllergèneIntentState.changingListIngredient(listIngredient))
-    }
-    
     func intentToUpdateDatabase(){
         self.stateElement.send(AllergèneIntentState.updateDatabase)
     }
@@ -44,10 +38,6 @@ struct AllergèneIntent  {
     
     func intentToAddAllergène(){
         self.stateElement.send(AllergèneIntentState.addAllergène)
-    }
-    
-    func intentToUpdateIngredientFromAllergène(){
-        self.stateList.send(AllergèneListIntentState.updateIngredientFromAllergène)
     }
     
     func addObserver(_ allergèneListView : AllergèneListViewModel){

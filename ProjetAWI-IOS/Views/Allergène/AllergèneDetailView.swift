@@ -9,20 +9,16 @@ import Foundation
 import SwiftUI
 
 struct AllergèneDetailView: View {
-    @Environment(\.presentationMode) var presentationMode
-    var intent : AllergèneIntent
     @ObservedObject var allergène : AllergèneViewModel
-    @ObservedObject var ingredientListViewModel : IngredientListViewModel
-    let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
+    var intent : AllergèneIntent
+    let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
     
-    init(vm: AllergèneListViewModel, indice : Int, vmIngredient : IngredientListViewModel){
+    init(vm: AllergèneListViewModel, indice : Int){
         self.intent = AllergèneIntent()
-        self.ingredientListViewModel = vmIngredient
         self.allergène = AllergèneViewModel(allergèneListViewModel: vm, indice: indice)
         self.intent.addObserver(self.allergène)
-        self.intent.intentToChange(listIngredient: vm.tabIngredientFromAllergène[self.allergène.nom] ?? [])
     }
     
     var body : some View {
@@ -45,7 +41,7 @@ struct AllergèneDetailView: View {
                                 self.showingAlert = true
                             case let .failure(error):
                                 switch error {
-                                case .updateError, .createError :
+                                case .updateError, .createError, .inputError :
                                     self.alertMessage = "\(error)"
                                     self.showingAlert = true
                                 case .noError :
@@ -59,49 +55,13 @@ struct AllergèneDetailView: View {
                                 self.showingAlert = false
                             }
                         }
-                    HStack {
-                        NavigationLink(destination: MultipleSelectionIngredient(items: self.ingredientListViewModel.tabIngredient,selections: $allergène.listIngredient)){
-                            HStack {
-                                Text("Liste ingrédient :")
-                                Spacer()
-                                Text("Modifier")
-                                    .foregroundColor(Color.gray)
-                            }
-                        }.onChange(of: allergène.listIngredient, perform: { value in
-                            self.intent.intentToChange(listIngredient: value)
-                        })
-                    }
-                }
-                Section(header: Text("Ingrédient contenant cet allergène")){
-                    VStack(alignment: .leading) {
-                        if $allergène.listIngredient.count == 0 {
-                            Text("Cet allergène n'est dans aucun ingrédient")
-                        } else {
-                            List {
-                                ForEach(Array(allergène.listIngredient.enumerated()), id: \.offset) {
-                                    _, ingrédient in
-                                    VStack(alignment: .leading) {
-                                        Text(ingrédient)
-                                    }.padding(2)
-                                }
-                            }
-                        }
-                    }
                 }
             }
             Spacer()
             Button("Modifier"){
                 intent.intentToUpdateDatabase()
-                self.presentationMode.wrappedValue.dismiss()
-
             }.padding(20)
         }
-       /* .onAppear(){
-            intent.intentToUpdateIngredientFromAllergène()
-        }.onDisappear(){
-            intent.intentToUpdateIngredientFromAllergène()
-
-        }*/
         .navigationBarTitle(Text("Détails de l'allergène"),displayMode: .inline)
-        
-    }}
+    }
+}

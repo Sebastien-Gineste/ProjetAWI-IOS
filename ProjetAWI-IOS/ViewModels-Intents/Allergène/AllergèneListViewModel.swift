@@ -25,12 +25,10 @@ class AllergèneListViewModel : ObservableObject, Subscriber, AllergèneListServ
 
     private var allergèneService : AllergèneService = AllergèneService()
     @Published var tabAllergène : [Allergène]
-    @Published var tabIngredientFromAllergène : [String : [String]]
     @Published var result : Result<String, AllergèneListViewModelError> = .failure(.noError)
 
     init() {
         self.tabAllergène = []
-        self.tabIngredientFromAllergène = [:]
         self.allergèneService.addObserver(observer: self)
         self.allergèneService.getAllAllergène()
     }
@@ -41,10 +39,6 @@ class AllergèneListViewModel : ObservableObject, Subscriber, AllergèneListServ
     
     func emit(to: Result<String, AllergèneListViewModelError>) {
         self.result = to
-    }
-    
-    func emit(to: [String : [String]]) {
-        self.tabIngredientFromAllergène = to
     }
     
     typealias Input = AllergèneListIntentState
@@ -64,8 +58,6 @@ class AllergèneListViewModel : ObservableObject, Subscriber, AllergèneListServ
             break
         case .deleteAllergène(let id):
             self.allergèneService.deleteAllergène(allergène: self.tabAllergène[id])
-        case .updateIngredientFromAllergène:
-            self.allergèneService.getAllAllergène()
         }
         return .none
     }

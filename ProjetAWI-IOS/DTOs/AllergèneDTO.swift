@@ -8,9 +8,9 @@
 struct AllergèneDTO {
     var id : String
     var nom : String
-    var listIngredient : [String]
     static func transformDTO(_ allergène : AllergèneDTO) -> Allergène{
-        return Allergène(nom: allergène.nom, listIngredient: allergène.listIngredient, id: allergène.id)
+        return Allergène(nom: allergène.nom,
+                         id: allergène.id)
     }
     
     static func transformToDTO(_ allergène : Allergène) -> [String : Any]{

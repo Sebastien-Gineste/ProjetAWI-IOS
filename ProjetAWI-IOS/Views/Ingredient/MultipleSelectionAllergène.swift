@@ -20,17 +20,19 @@ struct MultipleSelectionAllergène: View {
         }
     }
     var body: some View {
-        List {
-            ForEach(Array(allergènesFiltre.enumerated()), id: \.offset) { index,allergène in
-                MultipleSelectionRow(title: allergène.nom, isSelected: self.selections.contains(allergène.nom)) {
-                    if self.selections.contains(allergène.nom) {
-                        self.selections.removeAll(where: { $0 == allergène.nom })
-                    }
-                    else {
-                        self.selections.append(allergène.nom)
+        VStack {
+            List {
+                ForEach(Array(allergènesFiltre.enumerated()), id: \.offset) { index,allergène in
+                    MultipleSelectionRow(title: allergène.nom, isSelected: self.selections.contains(allergène.nom)) {
+                        if self.selections.contains(allergène.nom) {
+                            self.selections.removeAll(where: { $0 == allergène.nom })
+                        }
+                        else {
+                            self.selections.append(allergène.nom)
+                        }
                     }
                 }
-            }
-        }.searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+            }.searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+        }
     }
 }
