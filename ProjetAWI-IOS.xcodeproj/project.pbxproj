@@ -34,6 +34,11 @@
 		6F7B5A0D27CE7C68009E59BA /* DescriptionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B5A0C27CE7C68009E59BA /* DescriptionDTO.swift */; };
 		6F7B5A1027CE8E20009E59BA /* FicheTechniqueListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B5A0F27CE8E20009E59BA /* FicheTechniqueListViewModel.swift */; };
 		6F7B5A1227CE8F3E009E59BA /* FicheTechniqueIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B5A1127CE8F3E009E59BA /* FicheTechniqueIntent.swift */; };
+		6F7B5A1427CFBEF8009E59BA /* VenteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B5A1327CFBEF8009E59BA /* VenteService.swift */; };
+		6F7B5A1627CFBF9E009E59BA /* Vente.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B5A1527CFBF9E009E59BA /* Vente.swift */; };
+		6F7B5A1827CFC6B0009E59BA /* VenteDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B5A1727CFC6B0009E59BA /* VenteDTO.swift */; };
+		6F7B5A1B27CFC86A009E59BA /* VenteIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B5A1A27CFC86A009E59BA /* VenteIntent.swift */; };
+		6F7B5A1D27CFC89E009E59BA /* VenteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B5A1C27CFC89E009E59BA /* VenteViewModel.swift */; };
 		6FB6532427C51D720074EC91 /* ConnexionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6532327C51D720074EC91 /* ConnexionView.swift */; };
 		6FB6532627C675480074EC91 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6532527C675480074EC91 /* Store.swift */; };
 		6FB6532827C675810074EC91 /* StoreDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB6532727C675810074EC91 /* StoreDTO.swift */; };
@@ -99,6 +104,11 @@
 		6F7B5A0C27CE7C68009E59BA /* DescriptionDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionDTO.swift; sourceTree = "<group>"; };
 		6F7B5A0F27CE8E20009E59BA /* FicheTechniqueListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FicheTechniqueListViewModel.swift; sourceTree = "<group>"; };
 		6F7B5A1127CE8F3E009E59BA /* FicheTechniqueIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FicheTechniqueIntent.swift; sourceTree = "<group>"; };
+		6F7B5A1327CFBEF8009E59BA /* VenteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenteService.swift; sourceTree = "<group>"; };
+		6F7B5A1527CFBF9E009E59BA /* Vente.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vente.swift; sourceTree = "<group>"; };
+		6F7B5A1727CFC6B0009E59BA /* VenteDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenteDTO.swift; sourceTree = "<group>"; };
+		6F7B5A1A27CFC86A009E59BA /* VenteIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenteIntent.swift; sourceTree = "<group>"; };
+		6F7B5A1C27CFC89E009E59BA /* VenteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenteViewModel.swift; sourceTree = "<group>"; };
 		6FB6532327C51D720074EC91 /* ConnexionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnexionView.swift; sourceTree = "<group>"; };
 		6FB6532527C675480074EC91 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		6FB6532727C675810074EC91 /* StoreDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreDTO.swift; sourceTree = "<group>"; };
@@ -203,6 +213,7 @@
 				6FB6537327CD255D0074EC91 /* Etape.swift */,
 				6FB6537527CD27BC0074EC91 /* HeaderFT.swift */,
 				6FB6537727CD2F790074EC91 /* FicheTechnique.swift */,
+				6F7B5A1527CFBF9E009E59BA /* Vente.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -242,6 +253,7 @@
 				6F7B5A0827CE7BA4009E59BA /* EtapeDTO.swift */,
 				6F7B5A0A27CE7C3A009E59BA /* DenreeDTO.swift */,
 				6F7B5A0C27CE7C68009E59BA /* DescriptionDTO.swift */,
+				6F7B5A1727CFC6B0009E59BA /* VenteDTO.swift */,
 			);
 			path = DTOs;
 			sourceTree = "<group>";
@@ -249,6 +261,7 @@
 		6F3B82A627BE7D8E00428123 /* ViewModels-Intents */ = {
 			isa = PBXGroup;
 			children = (
+				6F7B5A1927CFC852009E59BA /* Vente */,
 				6F7B5A0E27CE8DFF009E59BA /* Fiche-Technique */,
 				6FB6536427CC012B0074EC91 /* Categorie-Ingredient */,
 				6FB6534927C76B9F0074EC91 /* Allergène */,
@@ -331,6 +344,7 @@
 				6FB6534727C767B20074EC91 /* AllergèneService.swift */,
 				6FB6536227CBFE900074EC91 /* CategorieIngredientService.swift */,
 				6F7B59FE27CD3CEF009E59BA /* FicheTechniqueService.swift */,
+				6F7B5A1327CFBEF8009E59BA /* VenteService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -350,6 +364,15 @@
 				6F7B5A1127CE8F3E009E59BA /* FicheTechniqueIntent.swift */,
 			);
 			path = "Fiche-Technique";
+			sourceTree = "<group>";
+		};
+		6F7B5A1927CFC852009E59BA /* Vente */ = {
+			isa = PBXGroup;
+			children = (
+				6F7B5A1A27CFC86A009E59BA /* VenteIntent.swift */,
+				6F7B5A1C27CFC89E009E59BA /* VenteViewModel.swift */,
+			);
+			path = Vente;
 			sourceTree = "<group>";
 		};
 		6FB6532B27C675F10074EC91 /* Store */ = {
@@ -498,6 +521,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F7B5A1B27CFC86A009E59BA /* VenteIntent.swift in Sources */,
 				6FB6537227CD24120074EC91 /* Description.swift in Sources */,
 				6F3B82AA27BE916400428123 /* MenuView.swift in Sources */,
 				6FB6537627CD27BC0074EC91 /* HeaderFT.swift in Sources */,
@@ -514,6 +538,7 @@
 				6F3B82A827BE8F4E00428123 /* FicheTechniqueListView.swift in Sources */,
 				6FB6533C27C6798C0074EC91 /* IngredientService.swift in Sources */,
 				6FB6535827C8C3170074EC91 /* GestionCompteView.swift in Sources */,
+				6F7B5A1627CFBF9E009E59BA /* Vente.swift in Sources */,
 				6F3B82AE27BFBB0C00428123 /* Theme.swift in Sources */,
 				6FB6535027C76DAD0074EC91 /* AllergèneListView.swift in Sources */,
 				6F3B82B327BFC47600428123 /* Color.swift in Sources */,
@@ -521,6 +546,7 @@
 				6FB6535427C7BDCA0074EC91 /* AllergèneViewModel.swift in Sources */,
 				6F3B82C827C1196700428123 /* UtilisateurIntent.swift in Sources */,
 				6F3B82BF27C10F8400428123 /* UtilisateurDTO.swift in Sources */,
+				6F7B5A1827CFC6B0009E59BA /* VenteDTO.swift in Sources */,
 				6F7B5A1027CE8E20009E59BA /* FicheTechniqueListViewModel.swift in Sources */,
 				6F3B82D627C12A7500428123 /* UtilisateurDetailView.swift in Sources */,
 				6FB6534627C6DB870074EC91 /* String.swift in Sources */,
@@ -544,6 +570,7 @@
 				6FB6536627CC016E0074EC91 /* CategorieIngredientViewModel.swift in Sources */,
 				6F3B82AC27BFB98200428123 /* UIColor.swift in Sources */,
 				6F7B5A0B27CE7C3A009E59BA /* DenreeDTO.swift in Sources */,
+				6F7B5A1D27CFC89E009E59BA /* VenteViewModel.swift in Sources */,
 				6FB6536327CBFE900074EC91 /* CategorieIngredientService.swift in Sources */,
 				6FB6533627C678230074EC91 /* Allergène.swift in Sources */,
 				6FB6535227C7BC9C0074EC91 /* AllergèneDetailView.swift in Sources */,
@@ -554,6 +581,7 @@
 				6F3B82DD27C4C45600428123 /* UtilisateurService.swift in Sources */,
 				6FB6532F27C676210074EC91 /* StoreViewModel.swift in Sources */,
 				6FB6537827CD2F790074EC91 /* FicheTechnique.swift in Sources */,
+				6F7B5A1427CFBEF8009E59BA /* VenteService.swift in Sources */,
 				6F7B5A0927CE7BA4009E59BA /* EtapeDTO.swift in Sources */,
 				6FB6532A27C675C30074EC91 /* StoreService.swift in Sources */,
 			);
