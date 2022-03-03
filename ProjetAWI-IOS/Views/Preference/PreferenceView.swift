@@ -29,6 +29,8 @@ struct PreferenceView : View {
         self.intent.addObserver(vm)
     }
     
+    @State var link : String = ""
+    @State var show : Bool = false
     var body : some View {
         NavigationView {
             VStack {
@@ -92,6 +94,8 @@ struct PreferenceView : View {
                         Button("OK", role: .cancel){
                             storeModel.result = .failure(.noError)
                         }
+                    }.sheet(isPresented: $show){
+                        ShareSheet(activityItems: [URL(string: link)])
                     }
                 Spacer()
                 Button("Modifier"){
@@ -100,11 +104,17 @@ struct PreferenceView : View {
                         print("j'open")
                         print(link)
                         //openURL(URL(string: link)!)
+                        self.link = link
+                        //self.show.toggle()
+                        let url = URL(string: link)
+                                let activityController = UIActivityViewController(activityItems: [url!], applicationActivities: nil)
+
+                                UIApplication.shared.windows.first?.rootViewController!.present(activityController, animated: true, completion: nil)
                     }
+                    
                 }.padding(20)
-                Link("Learn SwiftUI", destination: URL(string: "file:///Users/m1/Library/Developer/CoreSimulator/Devices/F27F5C9C-CB88-4BFD-9478-EEFD393559EE/data/Containers/Data/Application/FFB56E36-A781-4B66-937A-AE5DB39FEFAE/Downloads/")!)
             }
             .navigationBarTitle(Text("Préférences de calculs"),displayMode: .inline)
-        }.navigationViewStyle(StackNavigationViewStyle()) // résoud erreur de contrainte
+        }
     }
 }

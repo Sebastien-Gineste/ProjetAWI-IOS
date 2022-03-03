@@ -100,6 +100,7 @@
 		6F124F1227D01F9A00DF8BE9 /* EtiquetteIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EtiquetteIntent.swift; sourceTree = "<group>"; };
 		6F124F1427D01FAF00DF8BE9 /* EtiquetteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EtiquetteViewModel.swift; sourceTree = "<group>"; };
 		6F124F1627D0340800DF8BE9 /* PDF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDF.swift; sourceTree = "<group>"; };
+		6F124F1827D109E900DF8BE9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		6F3B829127BE7B6D00428123 /* ProjetAWI-IOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ProjetAWI-IOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F3B829427BE7B6D00428123 /* ProjetAWI_IOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjetAWI_IOSApp.swift; sourceTree = "<group>"; };
 		6F3B829827BE7B6E00428123 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -218,6 +219,7 @@
 		6F3B829327BE7B6D00428123 /* ProjetAWI-IOS */ = {
 			isa = PBXGroup;
 			children = (
+				6F124F1827D109E900DF8BE9 /* Info.plist */,
 				6F3B82DA27C4C3F900428123 /* Services */,
 				6F3B82B727C10DCC00428123 /* GoogleService-Info.plist */,
 				6F3B82A627BE7D8E00428123 /* ViewModels-Intents */,
@@ -776,6 +778,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"ProjetAWI-IOS/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "ProjetAWI-IOS/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -804,6 +807,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"ProjetAWI-IOS/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "ProjetAWI-IOS/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
