@@ -25,7 +25,7 @@ enum FicheTechniqueViewModelError : Error, Equatable, CustomStringConvertible {
 }
 
 class FicheTechniqueViewModel : ObservableObject, Subscriber, FicheTechniqueServiceObserver, HeaderFTObserver {
-    private var ficheTechniqueService : FicheTechniqueService = FicheTechniqueService()
+    private var ficheTechniqueService : FicheTechniqueService
     private var ficheTechnique : FicheTechnique
     
     @Published var nomPlat : String
@@ -45,16 +45,18 @@ class FicheTechniqueViewModel : ObservableObject, Subscriber, FicheTechniqueServ
     
     @Published var result : Result<String, FicheTechniqueViewModelError> = .failure(.noError)
     
-    init(ficheTechniqueListViewModel : FicheTechniqueListViewModel? = nil, indice : Int? = nil) {
+    init(ficheService : FicheTechniqueService, ficheTechniqueListViewModel : FicheTechniqueListViewModel? = nil, indice : Int? = nil) {
         if let indice = indice , let ficheTechniqueListViewModel = ficheTechniqueListViewModel{
             self.ficheTechnique = ficheTechniqueListViewModel.tabFicheTechnique[indice]
         } else {
             self.ficheTechnique = FicheTechnique(header: HeaderFT(nomPlat: "Fiche technique", nomAuteur: "", nbrCouvert: 1), progression: [])
         }
         
+        self.ficheTechniqueService = ficheService
+        
         self.nomPlat = self.ficheTechnique.header.nomPlat
         self.categorie = self.ficheTechnique.header.categorie
-        self.nomAuteur = self.ficheTechnique.header.nomPlat
+        self.nomAuteur = self.ficheTechnique.header.nomAuteur
         self.couvert = self.ficheTechnique.header.nbrCouvert
         self.isCalculCharge = self.ficheTechnique.header.isCalculCharge
         self.coutMatiere = self.ficheTechnique.header.coutMatiere
@@ -67,8 +69,15 @@ class FicheTechniqueViewModel : ObservableObject, Subscriber, FicheTechniqueServ
         self.header = self.ficheTechnique.header
         self.progression = self.ficheTechnique.progression
         
-        self.ficheTechniqueService.setObserver(obs: self)
         self.ficheTechnique.header.observer = self
+    }
+    
+    func setObserverService(){
+        self.ficheTechniqueService.setObserver(obs: self)
+    }
+    
+    func removeObserverService(){
+        self.ficheTechniqueService.removeObserver(obs: self)
     }
     
     func emit(to: Result<String, FicheTechniqueViewModelError>) {
@@ -91,11 +100,90 @@ class FicheTechniqueViewModel : ObservableObject, Subscriber, FicheTechniqueServ
         case .ready:
             break
         case .addFicheTechnique:
-            break
-        case.updateDatabase:
-            break
-        }
+            // if is valid
+            self.ficheTechniqueService.addFicheTechnique(fiche: self.ficheTechnique)
         
+            break
+        case .deleteFicheTechnique:
+            //
+            self.ficheTechniqueService.removeFicheTechnique(id: self.ficheTechnique.header.id)
+            
+            break
+        case .updateFicheTechnique:
+            // if is valid
+            self.ficheTechniqueService.updateFicheTechnique(fiche: self.ficheTechnique)
+            
+            break
+        case .changingNomAuteur(let nom):
+            self.ficheTechnique.header.nomAuteur = nom
+            if self.ficheTechnique.header.nomAuteur != nom {
+                self.nomAuteur = self.ficheTechnique.header.nomAuteur
+                self.result = .failure(.inputError)
+            }
+        case .changingNomPlat(let nom):
+                self.ficheTechnique.header.nomPlat = nom
+                if self.ficheTechnique.header.nomPlat != nom {
+                    self.nomPlat = self.ficheTechnique.header.nomPlat
+                    self.result = .failure(.inputError)
+                }
+        case .changingCategorie(let nomCate):
+            self.ficheTechnique.header.categorie = nomCate
+            if self.ficheTechnique.header.categorie != nomCate {
+                self.categorie = self.ficheTechnique.header.categorie
+                self.result = .failure(.inputError)
+            }
+        case .changingNbrCouvert(let nbr):
+            self.ficheTechnique.header.nbrCouvert = nbr
+            if self.ficheTechnique.header.nbrCouvert != nbr {
+                self.couvert = self.ficheTechnique.header.nbrCouvert
+                self.result = .failure(.inputError)
+            }
+            
+        // gestion etape
+        case .addEtape:
+            let count = self.ficheTechnique.progression.count
+            self.ficheTechnique.progression.append(EtapeFiche(etapes: [Etape()]))
+            if count < self.ficheTechnique.progression.count {
+                self.progression.append(self.ficheTechnique.progression[count])
+            }
+            else{
+                self.result = .failure(.inputError)
+            }
+        
+        
+        case .addSousFicheTechnique(let idFiche):
+            if let fiche : FicheTechnique = self.ficheTechniqueService.getFicheTechnique(id: idFiche){
+                let count = self.ficheTechnique.progression.count
+                self.ficheTechnique.progression.append(EtapeFiche(etapes: fiche.progression.map{(etapeFiche : EtapeFiche) -> Etape in
+                    return etapeFiche.etapes[0] // que la première case car elle ne contient pas de sous fiche technique
+                }, nomSousFicheTechnique: fiche.header.nomPlat))
+                if count < self.ficheTechnique.progression.count {
+                    self.progression.append(self.ficheTechnique.progression[count])
+                    self.ficheTechnique.calculDenreeEtCoutMatiere()
+                }
+                else{
+                    self.result = .failure(.inputError)
+                }
+            }
+            else{
+                self.result = .failure(.inputError)
+            }
+            
+        case .deleteEtape(let id):
+            let count = self.ficheTechnique.progression.count
+            self.ficheTechnique.progression.remove(at: id)
+            if count > self.ficheTechnique.progression.count {
+                self.progression.remove(at: id)
+                self.ficheTechnique.calculDenreeEtCoutMatiere()
+            }
+            else{
+                self.result = .failure(.inputError)
+            }
+        
+        case .moveEtape(let from, let to):
+            self.ficheTechnique.progression.move(fromOffsets: from, toOffset: to)
+            self.progression.move(fromOffsets: from, toOffset: to)
+        }
         return .none
     }
     

@@ -56,7 +56,7 @@ class HeaderFT{
     var nbrCouvert : Int {
         didSet {
             if self.nbrCouvert != oldValue {
-                if nbrCouvert > 0 {
+                if nbrCouvert >= 0 {
                     self.observer?.changed(nbrCouvert: self.nbrCouvert)
                 }
                 else{
@@ -75,7 +75,7 @@ class HeaderFT{
     var coutMatiere : Double {
         didSet {
             if self.coutMatiere != oldValue {
-                if coutMatiere > 0 {
+                if coutMatiere >= 0 {
                     self.observer?.changed(coutMatiere: self.coutMatiere)
                 }
                 else{
@@ -88,7 +88,7 @@ class HeaderFT{
     var dureeTotal : Double {
         didSet {
             if self.dureeTotal != oldValue {
-                if dureeTotal > 0 {
+                if dureeTotal >= 0 {
                     self.observer?.changed(dureeTotal: self.dureeTotal)
                 }
                 else{
@@ -101,7 +101,7 @@ class HeaderFT{
     var coutMoyenHoraire : Double {
         didSet {
             if self.coutMoyenHoraire != oldValue {
-                if coutMoyenHoraire > 0 {
+                if coutMoyenHoraire >= 0 {
                     self.observer?.changed(coutMoyenHoraire: self.coutMoyenHoraire)
                 }
                 else{
@@ -114,7 +114,7 @@ class HeaderFT{
     var coutForfaitaire : Double {
         didSet {
             if self.coutForfaitaire != oldValue {
-                if coutForfaitaire > 0 {
+                if coutForfaitaire >= 0 {
                     self.observer?.changed(coutForfaitaire: self.coutForfaitaire)
                 }
                 else{
@@ -127,7 +127,7 @@ class HeaderFT{
     var coefCoutProduction : Double {
         didSet {
             if self.coefCoutProduction != oldValue {
-                if coefCoutProduction > 0 {
+                if coefCoutProduction >= 0 {
                     self.observer?.changed(coefCoutProduction: self.coefCoutProduction)
                 }
                 else{
@@ -140,7 +140,7 @@ class HeaderFT{
     var coefPrixDeVente : Double {
         didSet {
             if self.coefPrixDeVente != oldValue {
-                if coefPrixDeVente > 0 {
+                if coefPrixDeVente >= 0 {
                     self.observer?.changed(coefPrixDeVente: self.coefPrixDeVente)
                 }
                 else{

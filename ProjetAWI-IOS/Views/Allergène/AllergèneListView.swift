@@ -83,6 +83,6 @@ struct AllergèneListView : View {
                     allergèneListViewModel.result = .failure(.noError)
                 }
             }
-        }
+        }.navigationViewStyle(StackNavigationViewStyle()) // résoud erreur de contrainte
     }
 }

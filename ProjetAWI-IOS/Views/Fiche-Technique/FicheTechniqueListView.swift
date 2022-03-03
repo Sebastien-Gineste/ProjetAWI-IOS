@@ -41,7 +41,7 @@ struct FicheTechniqueListView: View {
         self.ficheTechniqueListViewModel = vm
         self.categorieRecetteViewModel = vmCategorie
         self.intent = FicheTechniqueIntent()
-        // add Observer intent
+        self.intent.addObserver(vm)
     }
     
     var body: some View {
@@ -59,20 +59,25 @@ struct FicheTechniqueListView: View {
                     ForEach(Array(ficheTechniqueFiltre.enumerated()), id : \.offset) {
                         index, fiche in
                         HStack {
-                            // navigationLink
-                            VStack(alignment: .leading){
-                                Text(fiche.header.nomPlat).bold()
-                                HStack {
-                                    Text(fiche.header.nomAuteur).italic()
-                                    Text(" (\(fiche.header.nbrCouvert) couverts - ")
-                                    Text("\(String(format: "%.2f",fiche.header.coutProduction).replaceComa())€ )")
+                            NavigationLink(destination: FicheTechniqueDetailView(
+                                vm: self.ficheTechniqueListViewModel,
+                                indice: index,
+                                vmCategorie: self.categorieRecetteViewModel,
+                                ficheService: self.ficheTechniqueListViewModel.ficheTechniqueService)){
+                                VStack(alignment: .leading){
+                                    Text(fiche.header.nomPlat).bold()
+                                    HStack {
+                                        Text(fiche.header.nomAuteur).italic()
+                                        Text(" (\(fiche.header.nbrCouvert) couverts - ")
+                                        Text("\(String(format: "%.2f",fiche.header.coutProduction).replaceComa())€ )")
+                                    }
                                 }
                             }
                         }
                     }.onDelete{
                         IndexSet in
                         for index in IndexSet {
-                            intent.intentToDeleteFicheTechnique(id: index)
+                            intent.intentToDeleteFicheTechniqueFromList(id: index)
                         }
                     }
                 }
@@ -81,8 +86,13 @@ struct FicheTechniqueListView: View {
                 HStack{
                     LazyVGrid(columns: columns){
                         EditButton()
-                        // navigationLink ajout
-                        Button("Ajout"){}
+                        NavigationLink(destination: FicheTechniqueDetailView(
+                            vm: self.ficheTechniqueListViewModel,
+                            vmCategorie: self.categorieRecetteViewModel,
+                            ficheService: self.ficheTechniqueListViewModel.ficheTechniqueService)){
+                            Text("Ajout")
+                        }
+                        
                     }
                 }.padding()
             }
@@ -96,7 +106,7 @@ struct FicheTechniqueListView: View {
                     switch error {
                     case .noError :
                         return
-                    case .deleteError:
+                    case .deleteError, .updateError, .addError:
                         self.alertMessage = "\(error)"
                         self.showingAlert = true
                     }
@@ -107,6 +117,7 @@ struct FicheTechniqueListView: View {
                     ficheTechniqueListViewModel.result = .failure(.noError)
                 }
             }
-        }
+            
+        }.navigationViewStyle(StackNavigationViewStyle()) // résoud erreur de contrainte
     }
 }

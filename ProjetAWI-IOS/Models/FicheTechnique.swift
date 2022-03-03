@@ -23,6 +23,10 @@ class EtapeFiche {
         self.nomSousFicheTechnique = nomSousFicheTechnique
     }
     
+    var estSousFicheTechnique : Bool {
+        return nomSousFicheTechnique != nil
+    }
+    
     var getDureeTotal : Double {
         if self.nomSousFicheTechnique != nil {
             var temps : Double = 0
@@ -76,16 +80,21 @@ class FicheTechnique {
             Calcul la durée total des étapes ainsi que le coût matière
      */
     func calculDenreeEtCoutMatiere(){
-        self.header.dureeTotal = 0
-        self.header.coutMatiere = 0
+        var coutMatiere : Double = 0
+        var dureeTotal : Double = 0
+        
         for etapeFiche in self.progression{
             for etape in etapeFiche.etapes {
-                self.header.dureeTotal += etape.description.tempsPreparation
+                dureeTotal += etape.description.tempsPreparation
                 for denree in etape.contenu{
-                    self.header.coutMatiere += denree.ingredient.prixUnitaire * denree.nombre
+                    coutMatiere += denree.ingredient.prixUnitaire * denree.nombre
+                   
                 }
             }
         }
+        
+        self.header.dureeTotal = dureeTotal
+        self.header.coutMatiere = coutMatiere
     }
     
     /**

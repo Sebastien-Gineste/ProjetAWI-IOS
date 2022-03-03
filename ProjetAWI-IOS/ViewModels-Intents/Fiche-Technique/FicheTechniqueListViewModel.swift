@@ -7,14 +7,19 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 enum FicheTechniqueListViewModelError : Error, Equatable, CustomStringConvertible{
     case noError
     case deleteError
+    case addError
+    case updateError
     var description: String {
         switch self {
         case .noError : return "Aucune erreur"
         case .deleteError : return "Erreur de supression"
+        case .addError : return "Erreur d'addition"
+        case .updateError : return "Erreur d'update"
         }
     }
 }
@@ -22,11 +27,12 @@ enum FicheTechniqueListViewModelError : Error, Equatable, CustomStringConvertibl
 
 class FicheTechniqueListViewModel : ObservableObject, Subscriber, FicheTechniqueListServiceObserver {
     
-    private var ficheTechniqueService : FicheTechniqueService = FicheTechniqueService()
+    var ficheTechniqueService : FicheTechniqueService
     @Published var tabFicheTechnique : [FicheTechnique]
     @Published var result : Result<String, FicheTechniqueListViewModelError> = .failure(.noError)
     
-    init(){
+    init(ficheService : FicheTechniqueService = FicheTechniqueService()){
+        self.ficheTechniqueService = ficheService
         self.tabFicheTechnique = []
         self.ficheTechniqueService.getAllFicheTechnique()
         self.ficheTechniqueService.setObserver(obs: self)
@@ -59,7 +65,7 @@ class FicheTechniqueListViewModel : ObservableObject, Subscriber, FicheTechnique
             break
         case .deleteFicheTechnique(let id):
             // faire action
-            print("deleteFicheTechnique : \(id)")
+            self.ficheTechniqueService.removeFicheTechnique(id : self.tabFicheTechnique[id].header.id)
         }
         return .none
     }

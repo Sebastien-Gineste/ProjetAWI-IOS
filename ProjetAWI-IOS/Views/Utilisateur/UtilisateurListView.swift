@@ -87,6 +87,6 @@ struct UtilisateurListView : View {
                     utilisateurListViewModel.result = .failure(.noError)
                 }
             }
-        }
+        }.navigationViewStyle(StackNavigationViewStyle()) // résoud erreur de contrainte
     }
 }

@@ -105,6 +105,6 @@ struct PreferenceView : View {
                 Link("Learn SwiftUI", destination: URL(string: "file:///Users/m1/Library/Developer/CoreSimulator/Devices/F27F5C9C-CB88-4BFD-9478-EEFD393559EE/data/Containers/Data/Application/FFB56E36-A781-4B66-937A-AE5DB39FEFAE/Downloads/")!)
             }
             .navigationBarTitle(Text("Préférences de calculs"),displayMode: .inline)
-        }
+        }.navigationViewStyle(StackNavigationViewStyle()) // résoud erreur de contrainte
     }
 }

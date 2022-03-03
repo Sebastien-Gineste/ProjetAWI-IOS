@@ -109,7 +109,7 @@ struct IngredientListView : View {
                     ingredientListViewModel.result = .failure(.noError)
                 }
             }
-        }
+        }.navigationViewStyle(StackNavigationViewStyle()) // résoud erreur de contrainte
 
         
     }

@@ -45,6 +45,10 @@ class FicheTechniqueService {
         self.observerElement = obs
     }
     
+    func removeObserver(obs : FicheTechniqueServiceObserver){
+        self.observerElement = nil
+    }
+    
     private func sendResultElement(result : Result<String,FicheTechniqueViewModelError>){
         self.observerElement?.emit(to: result)
     }
@@ -66,8 +70,39 @@ class FicheTechniqueService {
                     FicheTechniqueDTO.docToDTO(doc: doc))
             }
         }
-
     }
+    
+    func addFicheTechnique(fiche : FicheTechnique){
+        print("add Fiche")
+        sendResultList(result: .success("Ajout effectuée : (nom : \(fiche.header.nomPlat)"))
+    }
+    
+    func removeFicheTechnique(id : String){
+        print("remove Fiche")
+        sendResultList(result: .success("Supression effectuée (id : \(id)"))
+    }
+    
+    func updateFicheTechnique(fiche : FicheTechnique){
+        print("udpate fiche")
+        sendResultList(result: .success("Modification enregistrée (nom : \(fiche.header.nomPlat)"))
+    }
+    
+    // Récupère une fiche technique pour la mettre en étape d'une autre fiche
+    // Elle ne doit pas contenir de sous-fiche technique
+    func getFicheTechnique(id : String) -> FicheTechnique?{
+        let fiches : [FicheTechnique] = tabFicheTechnique.filter{ (fiche) -> Bool in
+            fiche.header.id == id && fiche.progression.filter { (etapeFiche) -> Bool in
+                etapeFiche.estSousFicheTechnique
+            }.count == 0 // on est sûr qu'elle ne contient pas de sous fiche technique
+        }
+        if fiches.count == 1 {
+            return fiches[0]
+        }
+        else {
+            return nil
+        }
+    }
+    
     
     
 
