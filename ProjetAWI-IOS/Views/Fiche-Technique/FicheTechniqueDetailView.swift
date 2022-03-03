@@ -157,18 +157,21 @@ struct FicheTechniqueDetailView : View{
                     }
                     
                     Section(header : Text("Materiel")){
-                        // navigationLink materiel
-                        Text("Materiels")
+                        NavigationLink(destination:MaterielView(vm : ficheTechniqueVM, intent : intent)){
+                            Text("Gestion des matériels")
+                        }
                     }
                     
-                    Section(header : Text("Liste des denrées")){
-                        // navigationLink materiel
-                        Text("List des denrées")
+                    Section(header : Text("Denrées")){
+                        NavigationLink(destination:DenreesView(vm : ficheTechniqueVM)){
+                            Text("Liste des denrées")
+                        }
                     }
                     
-                    Section(header: Text("Liste des coûts")){
-                        // navigationLink materiel
-                        Text("Gestion des coûts")
+                    Section(header: Text("Coûts")){
+                        NavigationLink(destination:GestionCoutView(vm : ficheTechniqueVM, intent : intent)){
+                            Text("Gestion des coûts")
+                        }
                     }
                 }
             }
@@ -182,6 +185,7 @@ struct FicheTechniqueDetailView : View{
                 case let .failure(error):
                     switch error {
                     case .updateError, .createError, .inputError :
+                        print("error : \(error)")
                         self.alertMessage = "\(error)"
                         self.showingAlert = true
                     case .noError :
@@ -203,21 +207,15 @@ struct FicheTechniqueDetailView : View{
             }
             else{
                 HStack{
-                    Button("\(isUpdate ? "Valider" : "Modifier")"){
-                        if isUpdate {
-                            intent.intentToUpdateFicheTechnique()
-                        }
-                        self.isUpdate = !self.isUpdate
-                        editMode?.wrappedValue.toggle()
                     
+                    Button("Enregistrer"){
+                        intent.intentToUpdateFicheTechnique()
                     }.padding(20)
                     
-                    if isUpdate {
-                        Button("Annuler"){
-                            self.isUpdate = !self.isUpdate
-                            editMode?.wrappedValue.toggle()
-                        }
-                    }
+                    Button("\(isUpdate ? "Terminer" : "Modifier")"){
+                        self.isUpdate = !self.isUpdate
+                        editMode?.wrappedValue.toggle()
+                    }.padding(20)
                     
                     Button("Supprimer"){
                         intent.intentToDeleteFicheTechniqueFromDetail()

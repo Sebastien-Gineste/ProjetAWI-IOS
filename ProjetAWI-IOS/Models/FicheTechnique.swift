@@ -51,8 +51,26 @@ class FicheTechnique {
     
     var header : HeaderFT
     var progression : [EtapeFiche]
-    var materielSpecifique : String?
-    var materielDressage : String?
+    var materielSpecifique : String? {
+        didSet {
+            if self.materielSpecifique != oldValue {
+                if self.materielSpecifique == "" {
+                    self.materielSpecifique = nil
+                }
+                self.observer?.changed(materielSpecifique: self.materielSpecifique)
+            }
+        }
+    }
+    var materielDressage : String?{
+        didSet {
+            if self.materielDressage != oldValue {
+                if self.materielDressage == "" {
+                    self.materielSpecifique = nil
+                }
+                self.observer?.changed(materielDressage: self.materielDressage)
+            }
+        }
+    }
     
     var observer : FicheTechniqueObserver?
     

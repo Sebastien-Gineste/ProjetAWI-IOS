@@ -24,7 +24,7 @@ enum FicheTechniqueViewModelError : Error, Equatable, CustomStringConvertible {
     }
 }
 
-class FicheTechniqueViewModel : ObservableObject, Subscriber, FicheTechniqueServiceObserver, HeaderFTObserver {
+class FicheTechniqueViewModel : ObservableObject, Subscriber, FicheTechniqueServiceObserver, HeaderFTObserver, FicheTechniqueObserver {
     private var ficheTechniqueService : FicheTechniqueService
     private var ficheTechnique : FicheTechnique
     
@@ -42,6 +42,8 @@ class FicheTechniqueViewModel : ObservableObject, Subscriber, FicheTechniqueServ
     
     @Published var header : HeaderFT
     @Published var progression : [EtapeFiche]
+    @Published var materielSpecifique : String
+    @Published var materielDressage : String
     
     @Published var result : Result<String, FicheTechniqueViewModelError> = .failure(.noError)
     
@@ -68,8 +70,14 @@ class FicheTechniqueViewModel : ObservableObject, Subscriber, FicheTechniqueServ
         
         self.header = self.ficheTechnique.header
         self.progression = self.ficheTechnique.progression
+        self.materielSpecifique = self.ficheTechnique.materielSpecifique == nil ? "" : self.ficheTechnique.materielSpecifique!
+        self.materielDressage = self.ficheTechnique.materielDressage == nil ? "" : self.ficheTechnique.materielDressage!
         
         self.ficheTechnique.header.observer = self
+    }
+    
+    func getListDenree() -> [Denree]{
+        return ficheTechnique.getListDenree
     }
     
     func setObserverService(){
@@ -136,6 +144,58 @@ class FicheTechniqueViewModel : ObservableObject, Subscriber, FicheTechniqueServ
             self.ficheTechnique.header.nbrCouvert = nbr
             if self.ficheTechnique.header.nbrCouvert != nbr {
                 self.couvert = self.ficheTechnique.header.nbrCouvert
+                self.result = .failure(.inputError)
+            }
+            
+        case .changingMaterielSpecifique(let mat):
+            let newVal : String? = mat == "" ? nil : mat
+            self.ficheTechnique.materielSpecifique = newVal
+            if self.ficheTechnique.materielSpecifique != newVal {
+                self.materielSpecifique = self.ficheTechnique.materielSpecifique == nil ? "" : self.ficheTechnique.materielSpecifique!
+                self.result = .failure(.inputError)
+            }
+            
+        case .changingMaterielDressage(let mat):
+            let newVal : String? = mat == "" ? nil : mat
+            self.ficheTechnique.materielDressage = newVal
+            if self.ficheTechnique.materielDressage != newVal {
+                self.materielDressage = self.ficheTechnique.materielDressage == nil ? "" : self.ficheTechnique.materielDressage!
+                self.result = .failure(.inputError)
+            }
+          
+        case .changingCoefProd(let coef):
+            self.ficheTechnique.header.coefCoutProduction = coef
+            if self.ficheTechnique.header.coefCoutProduction != coef {
+                self.coefCoutProduction = self.ficheTechnique.header.coefCoutProduction
+                self.result = .failure(.inputError)
+                print("\(self.result)")
+            }
+            
+        case .changingCoefVente(let coef):
+            self.ficheTechnique.header.coefPrixDeVente = coef
+            if self.ficheTechnique.header.coefPrixDeVente != coef {
+                self.coefPrixDeVente = self.ficheTechnique.header.coefPrixDeVente
+                self.result = .failure(.inputError)
+            }
+            
+        case .changingCoutForfaitaire(let cout):
+            self.ficheTechnique.header.coutForfaitaire = cout
+            if self.ficheTechnique.header.coutForfaitaire != cout {
+                self.coutForfaitaire = self.ficheTechnique.header.coutForfaitaire
+                self.result = .failure(.inputError)
+            }
+            
+        case .changingIsCalculCharge(let bool):
+            self.ficheTechnique.header.isCalculCharge = bool
+            if self.ficheTechnique.header.isCalculCharge != bool {
+                self.isCalculCharge = self.ficheTechnique.header.isCalculCharge
+                self.result = .failure(.inputError)
+            }
+            
+        case .changingCoutMoyenHoraire(let cout):
+            self.ficheTechnique.header.coutMoyenHoraire = cout
+            if self.ficheTechnique.header.coutMoyenHoraire != cout {
+                self.coutMoyenHoraire = self.ficheTechnique.header.coutMoyenHoraire
                 self.result = .failure(.inputError)
             }
             
@@ -230,6 +290,24 @@ class FicheTechniqueViewModel : ObservableObject, Subscriber, FicheTechniqueServ
     
     func changed(categorie: String) {
         self.categorie = categorie
+    }
+    
+    func changed(materielDressage: String?) {
+        if let m = materielDressage {
+            self.materielDressage = m
+        }
+        else{
+            self.materielDressage = ""
+        }
+    }
+    
+    func changed(materielSpecifique: String?) {
+        if let m = materielSpecifique {
+            self.materielSpecifique = m
+        }
+        else{
+            self.materielSpecifique = ""
+        }
     }
     
     

@@ -24,6 +24,13 @@ enum FicheTechniqueIntentState : Equatable {
     case changingNomAuteur(String)
     case changingCategorie(String)
     case changingNbrCouvert(Int)
+    case changingMaterielSpecifique(String)
+    case changingMaterielDressage(String)
+    case changingCoefProd(Double)
+    case changingCoefVente(Double)
+    case changingCoutForfaitaire(Double)
+    case changingCoutMoyenHoraire(Double)
+    case changingIsCalculCharge(Bool)
     
     case moveEtape(IndexSet,Int)
     case deleteEtape(Int)
@@ -71,6 +78,15 @@ struct FicheTechniqueIntent {
     func intentToChange(nbrCouvert : Int){
         self.stateElement.send(FicheTechniqueIntentState.changingNbrCouvert(nbrCouvert))
     }
+    
+    func intentToChange(materielDressage : String){
+        self.stateElement.send(FicheTechniqueIntentState.changingMaterielDressage(materielDressage))
+    }
+    
+    func intentToChange(materielSpecifique : String){
+        self.stateElement.send(FicheTechniqueIntentState.changingMaterielSpecifique(materielSpecifique))
+        print("intent to materiel spec")
+    }
 
     func intentToMoveEtape(from : IndexSet, to : Int){
         self.stateElement.send(FicheTechniqueIntentState.moveEtape(from, to))
@@ -86,6 +102,26 @@ struct FicheTechniqueIntent {
     
     func intentToRemoveEtape(id : Int){
         self.stateElement.send(FicheTechniqueIntentState.deleteEtape(id))
+    }
+    
+    func intentToChange(coefProd : Double){
+        self.stateElement.send(FicheTechniqueIntentState.changingCoefProd(coefProd))
+    }
+    
+    func intentToChange(coutMoyenHoraire : Double){
+        self.stateElement.send(FicheTechniqueIntentState.changingCoutMoyenHoraire(coutMoyenHoraire))
+    }
+    
+    func intentToChange(coefVente : Double){
+        self.stateElement.send(FicheTechniqueIntentState.changingCoefVente(coefVente))
+    }
+    
+    func intentToChange(coutForfaitaire : Double){
+        self.stateElement.send(FicheTechniqueIntentState.changingCoutForfaitaire(coutForfaitaire))
+    }
+    
+    func intentToChange(isCalculCharge : Bool){
+        self.stateElement.send(FicheTechniqueIntentState.changingIsCalculCharge(isCalculCharge))
     }
     
     
