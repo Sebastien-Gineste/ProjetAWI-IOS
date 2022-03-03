@@ -1,0 +1,32 @@
+
+</tbody>
+</table>
+<table width="100%" border="1" bordercolor="black">
+<thead>
+<tr class="text-center table-dark">
+  <th>Matériels spécifiques</th>
+  <th>Matériels de dressage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>
+    {{(globalFT.materielSpecifique=="") ? "Aucun" : ""}}
+    <div *ngIf="globalFT.materielSpecifique==undefined">
+      Aucun
+    </div>
+    <div *ngIf="globalFT.materielSpecifique!==undefined">
+      <div *ngFor="let val of globalFT.materielSpecifique!.split('\n')!">{{val}}</div>
+    </div>
+  </td>
+  <td>
+    <div *ngIf="globalFT.materielDressage==undefined">
+      Aucun
+    </div>
+    <div *ngIf="globalFT.materielDressage!=undefined">
+      <div *ngFor="let val of globalFT.materielDressage!.split('\n')!">{{val}}</div>
+    </div>
+  </td>
+</tr>
+</tbody>
+</table>

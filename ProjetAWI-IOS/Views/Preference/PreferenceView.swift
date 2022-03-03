@@ -29,8 +29,6 @@ struct PreferenceView : View {
         self.intent.addObserver(vm)
     }
     
-    @State var link : String = ""
-    @State var show : Bool = false
     var body : some View {
         NavigationView {
             VStack {
@@ -94,27 +92,56 @@ struct PreferenceView : View {
                         Button("OK", role: .cancel){
                             storeModel.result = .failure(.noError)
                         }
-                    }.sheet(isPresented: $show){
-                        ShareSheet(activityItems: [URL(string: link)])
                     }
                 Spacer()
                 Button("Modifier"){
                     //intent.intentToUpdateDatabase()
-                    PDF.createPDF(){ link in
-                        print("j'open")
-                        print(link)
-                        //openURL(URL(string: link)!)
-                        self.link = link
-                        //self.show.toggle()
-                        let url = URL(string: link)
-                                let activityController = UIActivityViewController(activityItems: [url!], applicationActivities: nil)
-
-                                UIApplication.shared.windows.first?.rootViewController!.present(activityController, animated: true, completion: nil)
-                    }
-                    
+                    createFichePDF()
                 }.padding(20)
             }
             .navigationBarTitle(Text("Préférences de calculs"),displayMode: .inline)
+        }
+    }
+    
+    func createFichePDF(){
+        var html = ""
+        if let fileURL = Bundle.main.url(forResource: "head", withExtension: "html") {
+            // we found the file in our bundle!
+            if let fileContents = try? String(contentsOf: fileURL) {
+                // we loaded the file into a string!
+                html = fileContents
+            }
+        }
+        
+        var etapeHTML = ""
+        if let fileURL = Bundle.main.url(forResource: "etape", withExtension: "html") {
+            // we found the file in our bundle!
+            if let fileContents = try? String(contentsOf: fileURL) {
+                // we loaded the file into a string!
+                etapeHTML = fileContents
+            }
+        }
+        
+        for i in 0...12 {
+            html += etapeHTML
+        }
+        
+        
+        var materielHTML = ""
+        if let fileURL = Bundle.main.url(forResource: "materiel", withExtension: "html") {
+            // we found the file in our bundle!
+            if let fileContents = try? String(contentsOf: fileURL) {
+                // we loaded the file into a string!
+                materielHTML = fileContents
+            }
+        }
+        
+        html += materielHTML
+        PDF.createPDF(html: html){ link in
+            let url = URL(string: link)
+                    let activityController = UIActivityViewController(activityItems: [url!], applicationActivities: nil)
+
+                    UIApplication.shared.windows.first?.rootViewController!.present(activityController, animated: true, completion: nil)
         }
     }
 }
