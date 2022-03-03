@@ -96,7 +96,7 @@ struct PreferenceView : View {
                 Spacer()
                 Button("Modifier"){
                     //intent.intentToUpdateDatabase()
-                    createFichePDF()
+                    createEtiquette()
                 }.padding(20)
             }
             .navigationBarTitle(Text("Préférences de calculs"),displayMode: .inline)
@@ -105,7 +105,7 @@ struct PreferenceView : View {
     
     func createFichePDF(){
         var html = ""
-        if let fileURL = Bundle.main.url(forResource: "head", withExtension: "html") {
+        if let fileURL = Bundle.main.url(forResource: "head-fiche", withExtension: "html") {
             // we found the file in our bundle!
             if let fileContents = try? String(contentsOf: fileURL) {
                 // we loaded the file into a string!
@@ -137,6 +137,48 @@ struct PreferenceView : View {
         }
         
         html += materielHTML
+        PDF.createPDF(html: html){ link in
+            let url = URL(string: link)
+                    let activityController = UIActivityViewController(activityItems: [url!], applicationActivities: nil)
+
+                    UIApplication.shared.windows.first?.rootViewController!.present(activityController, animated: true, completion: nil)
+        }
+    }
+    
+    func createEtiquette(){
+        var html = ""
+        if let fileURL = Bundle.main.url(forResource: "head-etiquette", withExtension: "html") {
+            // we found the file in our bundle!
+            if let fileContents = try? String(contentsOf: fileURL) {
+                // we loaded the file into a string!
+                html = fileContents
+            }
+        }
+        
+        var denreeHTML = ""
+        if let fileURL = Bundle.main.url(forResource: "denree", withExtension: "html") {
+            // we found the file in our bundle!
+            if let fileContents = try? String(contentsOf: fileURL) {
+                // we loaded the file into a string!
+                denreeHTML = fileContents
+            }
+        }
+        
+        for i in 0...12 {
+            html += denreeHTML
+        }
+        
+        
+        var footerHTML = ""
+        if let fileURL = Bundle.main.url(forResource: "footer-etiquette", withExtension: "html") {
+            // we found the file in our bundle!
+            if let fileContents = try? String(contentsOf: fileURL) {
+                // we loaded the file into a string!
+                footerHTML = fileContents
+            }
+        }
+        
+        html += footerHTML
         PDF.createPDF(html: html){ link in
             let url = URL(string: link)
                     let activityController = UIActivityViewController(activityItems: [url!], applicationActivities: nil)
