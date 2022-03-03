@@ -9,7 +9,8 @@ import SwiftUI
 
 
 struct PreferenceView : View {
-    
+    @Environment(\.openURL) var openURL
+
     @ObservedObject var storeModel : StoreViewModel = StoreViewModel()
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
@@ -21,7 +22,7 @@ struct PreferenceView : View {
         return formatter
     }()
     var intent: StoreIntent
-    
+
     init(vm : StoreViewModel){
         self.storeModel = vm
         self.intent = StoreIntent()
@@ -94,8 +95,14 @@ struct PreferenceView : View {
                     }
                 Spacer()
                 Button("Modifier"){
-                    intent.intentToUpdateDatabase()
+                    //intent.intentToUpdateDatabase()
+                    PDF.createPDF(){ link in
+                        print("j'open")
+                        print(link)
+                        //openURL(URL(string: link)!)
+                    }
                 }.padding(20)
+                Link("Learn SwiftUI", destination: URL(string: "file:///Users/m1/Library/Developer/CoreSimulator/Devices/F27F5C9C-CB88-4BFD-9478-EEFD393559EE/data/Containers/Data/Application/FFB56E36-A781-4B66-937A-AE5DB39FEFAE/Downloads/")!)
             }
             .navigationBarTitle(Text("Préférences de calculs"),displayMode: .inline)
         }
