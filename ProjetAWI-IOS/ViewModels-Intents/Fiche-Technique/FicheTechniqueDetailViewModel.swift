@@ -14,12 +14,14 @@ enum FicheTechniqueViewModelError : Error, Equatable, CustomStringConvertible {
     case updateError
     case createError
     case inputError
+    case addEtapeError
     var description: String {
         switch self {
         case .noError : return "Aucune erreur"
         case .updateError : return "Erreur de mise à jour"
         case .createError : return "Erreur de création"
         case .inputError : return "Input non valide"
+        case .addEtapeError : return "L'ajout de l'étape a été refusé (duplication)"
         }
     }
 }
@@ -52,7 +54,6 @@ class FicheTechniqueViewModel : ObservableObject, Subscriber, FicheTechniqueServ
     @Published var coefCoutProduction : Double
     @Published var coefPrixDeVente : Double
     
-    @Published var header : HeaderFT
     @Published var progression : [EtapeFiche]
     @Published var materielSpecifique : String
     @Published var materielDressage : String
@@ -80,7 +81,6 @@ class FicheTechniqueViewModel : ObservableObject, Subscriber, FicheTechniqueServ
         self.coefCoutProduction = self.ficheTechnique.header.coefCoutProduction
         self.coefPrixDeVente = self.ficheTechnique.header.coefPrixDeVente
         
-        self.header = self.ficheTechnique.header
         self.progression = self.ficheTechnique.progression
         self.materielSpecifique = self.ficheTechnique.materielSpecifique == nil ? "" : self.ficheTechnique.materielSpecifique!
         self.materielDressage = self.ficheTechnique.materielDressage == nil ? "" : self.ficheTechnique.materielDressage!
@@ -229,16 +229,17 @@ class FicheTechniqueViewModel : ObservableObject, Subscriber, FicheTechniqueServ
                 self.ficheTechnique.progression.append(EtapeFiche(etapes: fiche.progression.map{(etapeFiche : EtapeFiche) -> Etape in
                     return etapeFiche.etapes[0] // que la première case car elle ne contient pas de sous fiche technique
                 }, nomSousFicheTechnique: fiche.header.nomPlat))
-                if count < self.ficheTechnique.progression.count {
-                    self.progression.append(self.ficheTechnique.progression[count])
+                if count < self.ficheTechnique.progression.count { // modification effectué
+                    self.progression.append(self.ficheTechnique.progression[count]) // on l'ajoute au model du ViewModel
                     self.ficheTechnique.calculDenreeEtCoutMatiere()
+                    
                 }
                 else{
-                    self.result = .failure(.inputError)
+                    self.result = .failure(.addEtapeError)
                 }
             }
             else{
-                self.result = .failure(.inputError)
+                self.result = .failure(.addEtapeError)
             }
             
         case .deleteEtape(let id):
@@ -321,7 +322,5 @@ class FicheTechniqueViewModel : ObservableObject, Subscriber, FicheTechniqueServ
             self.materielSpecifique = ""
         }
     }
-    
-    
     
 }

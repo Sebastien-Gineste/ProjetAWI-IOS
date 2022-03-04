@@ -85,7 +85,6 @@ struct FicheTechniqueIntent {
     
     func intentToChange(materielSpecifique : String){
         self.stateElement.send(FicheTechniqueIntentState.changingMaterielSpecifique(materielSpecifique))
-        print("intent to materiel spec")
     }
 
     func intentToMoveEtape(from : IndexSet, to : Int){

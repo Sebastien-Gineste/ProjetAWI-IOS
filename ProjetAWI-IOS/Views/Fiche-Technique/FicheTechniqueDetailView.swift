@@ -23,7 +23,7 @@ struct FicheTechniqueDetailView : View{
     @State var isEditMode : Bool = false
     
     var intent : FicheTechniqueIntent
-   
+    var ficheListVM : FicheTechniqueListViewModel
     
     let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
     let formatter : NumberFormatter = {
@@ -35,6 +35,8 @@ struct FicheTechniqueDetailView : View{
     
     
     init(vm : FicheTechniqueListViewModel, indice : Int? = nil, vmCategorie : CategorieRecetteViewModel, ficheService : FicheTechniqueService){
+        
+        self.ficheListVM = vm
         
         self.intent = FicheTechniqueIntent()
      
@@ -57,7 +59,6 @@ struct FicheTechniqueDetailView : View{
        
         self.intent.addObserver(self.ficheTechniqueVM)
     }
-    
     
     var body: some View {
         VStack {
@@ -114,35 +115,37 @@ struct FicheTechniqueDetailView : View{
                                 Button {
                                     editMode?.wrappedValue.toggle()
                                 } label : {
-                                    Label("Modifier", systemImage: "pencil")
+                                    editMode?.wrappedValue.isActive() ?? false ?  Label("Terminer", systemImage: "pencil.slash") : Label("Modifier", systemImage: "pencil")
                                 }.padding(.trailing, 8)
                                 
-                                Button {
-                                    intent.intentToAddEtape()
-                                } label: {
+                                NavigationLink(destination:ChoixAjoutEtapeView(vm: ficheListVM, intent: intent)){
                                     Label("Ajouter", systemImage: "plus.circle.fill")
                                 }.padding(.trailing, 8)
+                                
                             }
                         }
                     ){
                         List {
-                            ForEach(Array(ficheTechniqueVM.progression.enumerated()), id: \.offset) { index, etapeFiche in
+                            ForEach(Array(self.ficheTechniqueVM.progression.enumerated()), id: \.offset) { index, etapeFiche in
                                 HStack {
-                                    // navigationLink
-                                    VStack(alignment: .leading){
-                                        HStack{
-                                            Image(systemName:"\(index+1).circle")
-                                            if etapeFiche.estSousFicheTechnique {
-                                                Image(systemName:"f.circle")
+                                    if etapeFiche.estSousFicheTechnique {
+                                        NavigationLink(destination : EtapeFicheView(vm: ficheTechniqueVM, intent: intent, indice: index)){
+                                            VStack(alignment: .leading){
+                                                HStack{
+                                                    Image(systemName:"\(index+1).circle")
+                                                    Image(systemName:"f.circle")
+                                                }
+                                                Text("\(etapeFiche.nomSousFicheTechnique!)")
                                             }
-                                            else{
+                                        }
+                                    }
+                                    else {
+                                        // navigationLink
+                                        VStack(alignment: .leading){
+                                            HStack{
+                                                Image(systemName:"\(index+1).circle")
                                                 Image(systemName:"e.circle")
                                             }
-                                        }
-                                        if etapeFiche.estSousFicheTechnique {
-                                            Text("\(etapeFiche.nomSousFicheTechnique!)")
-                                        }
-                                        else{
                                             Text("\(etapeFiche.etapes[0].description.nom)")
                                         }
                                     }
@@ -160,7 +163,7 @@ struct FicheTechniqueDetailView : View{
                             .onMove {
                                 intent.intentToMoveEtape(from: $0, to: $1)
                             }
-                        }.disabled(!isUpdate)
+                        }
                     }
                     
                     Section(header : Text("Materiel")){
@@ -192,7 +195,7 @@ struct FicheTechniqueDetailView : View{
                     self.showingAlert.toggle()
                 case let .failure(error):
                     switch error {
-                    case .updateError, .createError, .inputError :
+                    case .updateError, .createError, .inputError, .addEtapeError :
                         print("error : \(error)")
                         self.alertMessage = "\(error)"
                         self.showingAlert = true
@@ -245,6 +248,10 @@ extension EditMode {
 
     mutating func toggle() {
         self = self == .active ? .inactive : .active
+    }
+    
+    func isActive() -> Bool{
+        return self == .active
     }
     
     mutating func setFalse() {

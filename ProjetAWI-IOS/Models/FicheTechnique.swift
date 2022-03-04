@@ -50,7 +50,36 @@ protocol FicheTechniqueObserver {
 class FicheTechnique {
     
     var header : HeaderFT
-    var progression : [EtapeFiche]
+    var progression : [EtapeFiche] {
+        didSet {
+            let taille : Int = self.progression.count
+            if taille > oldValue.count { // ajout d'étape
+                if self.progression[taille-1].estSousFicheTechnique{ // on a ajouter une sous-fiche technique
+                    // il faut vérifier qu'elle n'est pas déjà présente, et qu'on ne s'est pas ajouter nous-même
+                    let nom : String = self.progression[taille-1].nomSousFicheTechnique!
+                    
+                    if nom == self.header.nomPlat { // on s'est ajouter nous-même => erreur
+                        self.progression = oldValue
+                        return
+                    }
+                    
+                    let nbrFicheMemeNom : Int = self.progression.filter({ (etapeFiche) -> Bool in
+                        if etapeFiche.estSousFicheTechnique {
+                            return etapeFiche.nomSousFicheTechnique! == nom
+                        }
+                        else {
+                            return false
+                        }
+                    }).count
+                    
+                    if nbrFicheMemeNom > 1 { // il y a une occurence => dupplication => erreur
+                        self.progression = oldValue
+                        return
+                    }
+                }
+            }
+        }
+    }
     var materielSpecifique : String? {
         didSet {
             if self.materielSpecifique != oldValue {
@@ -65,7 +94,7 @@ class FicheTechnique {
         didSet {
             if self.materielDressage != oldValue {
                 if self.materielDressage == "" {
-                    self.materielSpecifique = nil
+                    self.materielDressage = nil
                 }
                 self.observer?.changed(materielDressage: self.materielDressage)
             }

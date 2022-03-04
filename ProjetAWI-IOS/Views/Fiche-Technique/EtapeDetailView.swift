@@ -6,3 +6,17 @@
 //
 
 import Foundation
+import SwiftUI
+
+struct EtapeDetailView : View{
+    
+    @Binding var etape : Etape
+    
+    
+    var body: some View{
+        VStack{
+            
+        }
+    }
+    
+}
