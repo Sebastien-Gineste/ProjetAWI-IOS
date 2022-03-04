@@ -92,7 +92,7 @@ struct UtilisateurDetailView : View {
                         }
                     }
                 }
-            }
+            }.autocapitalization(.none).padding(10)
             HStack{
                 
                 if !isCreate {

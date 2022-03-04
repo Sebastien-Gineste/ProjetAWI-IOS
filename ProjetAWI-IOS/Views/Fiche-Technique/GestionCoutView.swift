@@ -30,48 +30,97 @@ struct GestionCoutView : View {
     var body: some View {
         VStack {
             Form{
-                Section(header: Text("Gestions des coûts")){
+                Section(header : Text("Calculs des charges")){
                     HStack {
-                        LazyVGrid(columns: columns){
-                            Text("Coefficient Coût de Production :").frame(maxWidth: .infinity, alignment: .leading)
-                            TextField("",value: $ficheVM.coefCoutProduction, formatter: formatter)
-                                .onSubmit {
-                                    intent.intentToChange(coefProd: ficheVM.coefCoutProduction)
-                                    // corrige bug input error view précédente
-                                }
-                        }
+                        Text("Coût Matiere : " + String(format: "%.2f",ficheVM.coutMatiereTotal).replaceComa() + "€ (ASS 5% : " + String(format: "%.2f",ficheVM.ASS).replaceComa() + "€)")
                     }
                     HStack {
-                        LazyVGrid(columns: columns){
-                            Text("Coefficient Prix de Vente :").frame(maxWidth: .infinity, alignment: .leading)
-                            TextField("",value: $ficheVM.coefPrixDeVente, formatter: formatter)
-                                .onSubmit {
-                                    intent.intentToChange(coefVente: ficheVM.coefPrixDeVente)
-                                }
-                        }
+                        Text("Coût Personnel : " + String(format: "%.2f",ficheVM.coutPersonnel).replaceComa() + "€ (Durée : " + String(format: "%.2f",ficheVM.dureeTotal).replaceComa() + " min)")
                     }
                     HStack {
-                        LazyVGrid(columns: columns){
-                            Text("Coefficient Coût Forfaitaire :").frame(maxWidth: .infinity, alignment: .leading)
-                            TextField("",value: $ficheVM.coutForfaitaire, formatter: formatter)
-                                .onSubmit {
-                                    intent.intentToChange(coutForfaitaire: ficheVM.coutForfaitaire)
-                                }
-                        }
+                        Text("Coût Fluide : " + String(format: "%.2f",ficheVM.coutForfaitaire).replaceComa() + "€")
+                    }
+                }
+                
+                Section(header : Text("Résultat total")){
+                    HStack {
+                        Text("Coût Production : " + String(format: "%.2f",ficheVM.coutProductionTotal).replaceComa() + "€" )
                     }
                     HStack {
-                        LazyVGrid(columns: columns){
-                            Text("Coefficient Coût Moyen :").frame(maxWidth: .infinity, alignment: .leading)
-                            TextField("",value: $ficheVM.coutMoyenHoraire, formatter: formatter)
-                                .onSubmit {
-                                    intent.intentToChange(coutMoyenHoraire: ficheVM.coutMoyenHoraire)
-                                }
+                        Text("Prix de vente (HT) : " + String(format: "%.2f",ficheVM.prixDeVente).replaceComa() + "€")
+                    }
+                    HStack {
+                        Text("Bénéfice : " + String(format: "%.2f",ficheVM.beneficeTotal).replaceComa() + "€")
+                    }
+                    HStack {
+                        Text("Seuil de rentabilité : \(ficheVM.seuilRentabilité)/\(ficheVM.couvert) portions" )
+                    }
+                }
+                
+                Section(header : Text("Résultat par portion")){
+                    HStack {
+                        Text("Coût Production : " + String(format: "%.2f",ficheVM.coutProductionPortion).replaceComa() + "€")
+                    }
+                    HStack {
+                        Text("Prix de vente (HT)  : " + String(format: "%.2f",ficheVM.prixDeVentePortion).replaceComa() + "€")
+                    }
+                    HStack {
+                        Text("Bénéfice : " + String(format: "%.2f",ficheVM.beneficePortion).replaceComa() + "€")
+                    }
+                }
+                
+                Section(header: VStack{
+                    Text("Gestions des coûts")
+                    Toggle("Avec charges", isOn: $ficheVM.isCalculCharge).onChange(of : ficheVM.isCalculCharge){
+                        value in intent.intentToChange(isCalculCharge: ficheVM.isCalculCharge)
+                    }
+                }){
+                    if !ficheVM.isCalculCharge {
+                        HStack {
+                            LazyVGrid(columns: columns){
+                                Text("Coefficient Prix de Vente :").frame(maxWidth: .infinity, alignment: .leading)
+                                TextField("",value: $ficheVM.coefPrixDeVente, formatter: formatter)
+                                    .onSubmit {
+                                        intent.intentToChange(coefVente: ficheVM.coefPrixDeVente)
+                                    }
+                            }
+                        }
+                    }
+                    else {
+                        HStack {
+                            LazyVGrid(columns: columns){
+                                Text("Coefficient Coût de Production :").frame(maxWidth: .infinity, alignment: .leading)
+                                TextField("",value: $ficheVM.coefCoutProduction, formatter: formatter)
+                                    .onSubmit {
+                                        intent.intentToChange(coefProd: ficheVM.coefCoutProduction)
+                                        // corrige bug input error view précédente
+                                    }
+                            }
+                        }
+                       
+                        HStack {
+                            LazyVGrid(columns: columns){
+                                Text("Coefficient Coût Forfaitaire :").frame(maxWidth: .infinity, alignment: .leading)
+                                TextField("",value: $ficheVM.coutForfaitaire, formatter: formatter)
+                                    .onSubmit {
+                                        intent.intentToChange(coutForfaitaire: ficheVM.coutForfaitaire)
+                                    }
+                            }
+                        }
+                        HStack {
+                            LazyVGrid(columns: columns){
+                                Text("Coefficient Coût Moyen :").frame(maxWidth: .infinity, alignment: .leading)
+                                TextField("",value: $ficheVM.coutMoyenHoraire, formatter: formatter)
+                                    .onSubmit {
+                                        intent.intentToChange(coutMoyenHoraire: ficheVM.coutMoyenHoraire)
+                                    }
+                            }
                         }
                     }
                 }
+                
             }
-            
-            // List recap coût
+        
             
         }
         

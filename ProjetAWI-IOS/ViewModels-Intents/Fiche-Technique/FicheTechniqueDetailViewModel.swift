@@ -28,6 +28,18 @@ class FicheTechniqueViewModel : ObservableObject, Subscriber, FicheTechniqueServ
     private var ficheTechniqueService : FicheTechniqueService
     private var ficheTechnique : FicheTechnique
     
+    var coutMatiereTotal : Double { return ficheTechnique.header.coutMatiereTotal }
+    var ASS : Double {return ficheTechnique.header.coutMatiere * 0.05 }
+    var coutPersonnel : Double { return ficheTechnique.header.coutPersonnel}
+    var coutProductionTotal : Double {return ficheTechnique.header.coutProduction}
+    var coutProductionPortion : Double {return ficheTechnique.header.coutProductionPortion}
+    var seuilRentabilité : Int {return ficheTechnique.header.seuilRentabilite}
+    var prixDeVente : Double {return ficheTechnique.header.prixDeVenteTotalHT}
+    var prixDeVentePortion : Double {return ficheTechnique.header.prixDeVentePortionHT}
+    var beneficeTotal : Double {return ficheTechnique.header.beneficeTotal}
+    var beneficePortion : Double {return ficheTechnique.header.beneficeParPortion}
+    
+    
     @Published var nomPlat : String
     @Published var categorie : String
     @Published var nomAuteur : String

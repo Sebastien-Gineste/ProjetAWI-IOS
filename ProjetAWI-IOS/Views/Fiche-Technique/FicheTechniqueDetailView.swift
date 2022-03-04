@@ -20,6 +20,7 @@ struct FicheTechniqueDetailView : View{
     @State private var selectedIndex : Int
     @State var isCreate : Bool
     @State var isUpdate : Bool = false
+    @State var isEditMode : Bool = false
     
     var intent : FicheTechniqueIntent
    
@@ -111,6 +112,12 @@ struct FicheTechniqueDetailView : View{
                             Spacer()
                             if isUpdate {
                                 Button {
+                                    editMode?.wrappedValue.toggle()
+                                } label : {
+                                    Label("Modifier", systemImage: "pencil")
+                                }.padding(.trailing, 8)
+                                
+                                Button {
                                     intent.intentToAddEtape()
                                 } label: {
                                     Label("Ajouter", systemImage: "plus.circle.fill")
@@ -162,17 +169,18 @@ struct FicheTechniqueDetailView : View{
                         }
                     }
                     
+                    Section(header: Text("Coûts")){
+                        NavigationLink(destination:GestionCoutView(vm : ficheTechniqueVM, intent : intent)){
+                            Text("Gestion des coûts")
+                        }
+                    }
+                    
                     Section(header : Text("Denrées")){
                         NavigationLink(destination:DenreesView(vm : ficheTechniqueVM)){
                             Text("Liste des denrées")
                         }
                     }
                     
-                    Section(header: Text("Coûts")){
-                        NavigationLink(destination:GestionCoutView(vm : ficheTechniqueVM, intent : intent)){
-                            Text("Gestion des coûts")
-                        }
-                    }
                 }
             }
             
@@ -214,7 +222,7 @@ struct FicheTechniqueDetailView : View{
                     
                     Button("\(isUpdate ? "Terminer" : "Modifier")"){
                         self.isUpdate = !self.isUpdate
-                        editMode?.wrappedValue.toggle()
+                        editMode?.wrappedValue.setFalse()
                     }.padding(20)
                     
                     Button("Supprimer"){
@@ -237,6 +245,10 @@ extension EditMode {
 
     mutating func toggle() {
         self = self == .active ? .inactive : .active
+    }
+    
+    mutating func setFalse() {
+        self = .inactive
     }
 }
 
