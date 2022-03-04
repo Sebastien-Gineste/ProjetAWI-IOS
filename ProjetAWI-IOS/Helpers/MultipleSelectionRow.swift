@@ -21,7 +21,6 @@ struct MultipleSelectionRow: View {
                 if self.isSelected {
                     Spacer()
                     Image(systemName: "checkmark")
-                        .foregroundColor(Color.black)
                 }
             }
         }

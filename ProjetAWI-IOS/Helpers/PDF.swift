@@ -10,7 +10,7 @@ import WebKit
 import SwiftUI
 
 struct PDF {
-    static func createPDF(html : String, action : ((String) -> Void)?) {
+    static func createPDF(nom: String, html : String, action : ((String) -> Void)?) {
         let fmt = UIMarkupTextPrintFormatter(markupText: html)
         // Assign print formatter to UIPrintPageRenderer
         let render = UIPrintPageRenderer()
@@ -33,7 +33,7 @@ struct PDF {
         UIGraphicsEndPDFContext();
         // Save PDF file
         let path = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)[0]
-        pdfData.write(toFile: "\(path)/file.pdf", atomically: true)
-        action?("file://\(path)/file.pdf")
+        pdfData.write(toFile: "\(path)/\(nom).pdf", atomically: true)
+        action?("file://\(path)/\(nom).pdf")
     }
 }

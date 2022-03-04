@@ -32,8 +32,7 @@ struct FicheTechniqueDetailView : View{
         formatter.decimalSeparator = ","
         return formatter
     }()
-    
-    
+        
     init(vm : FicheTechniqueListViewModel, indice : Int? = nil, vmCategorie : CategorieRecetteViewModel, ficheService : FicheTechniqueService){
         
         self.ficheListVM = vm
@@ -64,7 +63,7 @@ struct FicheTechniqueDetailView : View{
         VStack {
             ScrollViewReader { p in
                 Form {
-                    Section(header : Text("Informations générales")){
+                    Section(header :Text("Informations générales") ){
                         HStack{
                             LazyVGrid(columns: columns){
                                 Text("Nom du plat :").frame(maxWidth: .infinity, alignment: .leading)
@@ -168,24 +167,30 @@ struct FicheTechniqueDetailView : View{
                         }
                     }
                     
-                    Section(header : Text("Materiel")){
+                    Section(header : Text("Gestion")){
                         NavigationLink(destination:MaterielView(vm : ficheTechniqueVM, intent : intent)){
                             Text("Gestion des matériels")
                         }
-                    }
-                    
-                    Section(header: Text("Coûts")){
                         NavigationLink(destination:GestionCoutView(vm : ficheTechniqueVM, intent : intent)){
                             Text("Gestion des coûts")
                         }
-                    }
-                    
-                    Section(header : Text("Denrées")){
                         NavigationLink(destination:DenreesView(vm : ficheTechniqueVM)){
                             Text("Liste des denrées")
                         }
                     }
                     
+                    Section(header : Text("Options")){
+                        NavigationLink(destination:PrintFicheView()){
+                            Text("Imprimer Fiche")
+                        }
+                        NavigationLink(destination:PrintEtiquetteView()){
+                            Text("Imprimer Etiquette")
+                        }
+                        NavigationLink(destination:VenteView()){
+                            Text("Vendre")
+                        }
+                        
+                    }
                 }
             }
             
