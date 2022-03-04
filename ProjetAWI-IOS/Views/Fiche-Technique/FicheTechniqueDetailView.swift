@@ -140,14 +140,16 @@ struct FicheTechniqueDetailView : View{
                                         }
                                     }
                                     else {
-                                        // navigationLink
-                                        VStack(alignment: .leading){
-                                            HStack{
-                                                Image(systemName:"\(index+1).circle")
-                                                Image(systemName:"e.circle")
+                                        NavigationLink(destination : EtapeDetailView(vm: ficheTechniqueVM, indice: index, intent: intent)){
+                                            VStack(alignment: .leading){
+                                                HStack{
+                                                    Image(systemName:"\(index+1).circle")
+                                                    Image(systemName:"e.circle")
+                                                }
+                                                Text("\(etapeFiche.etapes[0].description.nom)")
                                             }
-                                            Text("\(etapeFiche.etapes[0].description.nom)")
                                         }
+                                       
                                     }
                                 }
                             }

@@ -18,6 +18,7 @@ struct EtapeFicheView : View {
     
     var intent : FicheTechniqueIntent
     private var indice : Int
+
     
     init(vm : FicheTechniqueViewModel, intent : FicheTechniqueIntent, indice : Int){
         self.ficheVM = vm
@@ -38,13 +39,14 @@ struct EtapeFicheView : View {
                     List {
                         ForEach(Array(ficheVM.progression[self.indice].etapes.enumerated()), id: \.offset) { index, etape in
                             HStack {
-                                // navigationLink
-                                VStack(alignment: .leading){
-                                    HStack{
-                                        Image(systemName:"\(index+1).circle")
-                                        Image(systemName:"e.circle")
+                                NavigationLink(destination : EtapeDetailView(vm: ficheVM, indice: self.indice, intent: intent, indiceSousFicheTechnique: index)){
+                                    VStack(alignment: .leading){
+                                        HStack{
+                                            Image(systemName:"\(index+1).circle")
+                                            Image(systemName:"e.circle")
+                                        }
+                                        Text("\(etape.description.nom)")
                                     }
-                                    Text("\(etape.description.nom)")
                                 }
                             }
                         }
