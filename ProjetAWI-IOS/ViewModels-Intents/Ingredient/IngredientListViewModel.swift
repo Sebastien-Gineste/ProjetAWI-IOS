@@ -22,7 +22,7 @@ enum IngredientListViewModelError : Error, Equatable, CustomStringConvertible {
 
 class IngredientListViewModel : ObservableObject, Subscriber, IngredientListServiceObserver {
 
-    private var ingredientService : IngredientService = IngredientService()
+    var ingredientService : IngredientService = IngredientService()
     @Published var tabIngredient : [Ingredient]
     @Published var result : Result<String, IngredientListViewModelError> = .failure(.noError)
 

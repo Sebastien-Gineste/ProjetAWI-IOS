@@ -20,9 +20,9 @@ struct ChoixAjoutEtapeView : View {
     @State private var selectedIndex : Int = -2
     
     
-    init(vm : FicheTechniqueListViewModel, intent : FicheTechniqueIntent){
-        self.tabFiche = vm.tabFicheTechnique
+    init(intent : FicheTechniqueIntent, lvmFiche : FicheTechniqueListViewModel){
         self.intent = intent
+        self.tabFiche = lvmFiche.tabFicheTechnique
     }
     
     var tabFicheFiltre : [FicheTechnique] {
@@ -64,7 +64,8 @@ struct ChoixAjoutEtapeView : View {
                    }
                }
             }
-        }.searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+        }
+        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
             .navigationBarTitle(Text("Choix de l'ajout d'étape"), displayMode: .inline)
             .onChange(of: selectedIndex){
                 index in

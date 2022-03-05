@@ -123,6 +123,19 @@ class IngredientService {
             }
     }
     
+    // Récupère un ingrédient par son id ou retourn nil si il ne le trouve pas 
+    func getIngredient(id : String) -> Ingredient?{
+        let ingredients : [Ingredient] = tabIngredient.filter{ (ingredient) -> Bool in
+            ingredient.id == id
+        }
+        if ingredients.count == 1 {
+            return ingredients[0]
+        }
+        else {
+            return nil
+        }
+    }
+    
     // Result to observer
     
     private func sendResultElement(result : Result<String,IngredientViewModelError>){

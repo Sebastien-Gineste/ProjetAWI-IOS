@@ -73,18 +73,49 @@ class FicheTechniqueService {
     }
     
     func addFicheTechnique(fiche : FicheTechnique){
-        print("add Fiche")
-        sendResultList(result: .success("Ajout effectuée : (nom : \(fiche.header.nomPlat)"))
+        if fiche.isValid {
+            firestore.collection("fiche-techniques").addDocument(data: FicheTechniqueDTO.transformToDTO(fiche)){
+                (error) in
+                if let _ = error {
+                    self.sendResultElement(result: .failure(.createError))
+                }
+                else{
+                    self.sendResultList(result: .success("Ajout effectuée : (nom : \(fiche.header.nomPlat)"))
+                }
+            }
+        }
+        else{
+            self.sendResultElement(result: .failure(.noValid))
+        }
     }
     
     func removeFicheTechnique(id : String){
-        print("remove Fiche")
-        sendResultList(result: .success("Supression effectuée (id : \(id)"))
+        firestore.collection("fiche-techniques").document("\(id)").delete() {
+            (error) in if let _ = error {
+                self.sendResultElement(result: .failure(.deleteError))
+            }
+            else{
+                self.sendResultList(result: .success("Supression effectuée !"))
+            }
+        }
+      
     }
     
     func updateFicheTechnique(fiche : FicheTechnique){
-        print("udpate fiche")
-        sendResultList(result: .success("Modification enregistrée (nom : \(fiche.header.nomPlat)"))
+        if fiche.isValid {
+            firestore.collection("fiche-techniques").document("\(fiche.header.id)").updateData(FicheTechniqueDTO.transformToDTO(fiche)){
+                (error) in
+                if let _ = error {
+                    self.sendResultElement(result: .failure(.createError))
+                }
+                else{
+                    self.sendResultList(result: .success("Modification enregistrée (nom : \(fiche.header.nomPlat)"))
+                }
+            }
+        }
+        else{
+            self.sendResultElement(result: .failure(.noValid))
+        }
     }
     
     // Récupère une fiche technique pour la mettre en étape d'une autre fiche

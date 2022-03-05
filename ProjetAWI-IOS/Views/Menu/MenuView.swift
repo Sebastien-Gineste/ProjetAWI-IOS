@@ -12,13 +12,14 @@ import SwiftUI
 struct MenuView: View {
     
     @StateObject var user : UtilisateurService = UtilisateurService.instance
-    var vmAllergene : AllergèneListViewModel = AllergèneListViewModel()
-    var vmIngredient : IngredientListViewModel = IngredientListViewModel()
-    var vmFicheTechnique : FicheTechniqueListViewModel = FicheTechniqueListViewModel()
+    @StateObject var vmAllergene : AllergèneListViewModel = AllergèneListViewModel()
+    @StateObject var vmIngredient : IngredientListViewModel = IngredientListViewModel()
+    @StateObject var vmFicheTechnique : FicheTechniqueListViewModel = FicheTechniqueListViewModel()
     var body: some View {
         
         TabView {
-            FicheTechniqueListView(vm :vmFicheTechnique, vmCategorie: CategorieRecetteViewModel() ).tabItem {
+            FicheTechniqueListView(vm :vmFicheTechnique,vmIngredient: vmIngredient, vmCategorie: CategorieRecetteViewModel() )
+                .tabItem {
                 Image(systemName: "list.bullet.below.rectangle")
                 Text("Fiche")
             }

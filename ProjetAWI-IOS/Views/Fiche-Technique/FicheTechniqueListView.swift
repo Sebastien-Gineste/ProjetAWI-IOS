@@ -8,40 +8,47 @@
 import SwiftUI
 
 struct FicheTechniqueListView: View {
-    
     @ObservedObject var ficheTechniqueListViewModel : FicheTechniqueListViewModel
     @ObservedObject var categorieRecetteViewModel : CategorieRecetteViewModel
+    @ObservedObject var ingredientLVM : IngredientListViewModel
     
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
     @State private var searchText : String = ""
     @State private var selectedIndex : Int = 0
+    @State var listIngredient : [String] = []
     
     let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
     var intent: FicheTechniqueIntent
     
     var ficheTechniqueFiltre : [FicheTechnique] {
-        if searchText.isEmpty &&  selectedIndex <= 0 {
-            return ficheTechniqueListViewModel.tabFicheTechnique
-        } else {
-            if selectedIndex <= 0 {
-                return ficheTechniqueListViewModel.tabFicheTechnique.filter{ $0.header.nomPlat.uppercased().contains(searchText.uppercased()) }
-            }else if searchText.isEmpty {
-                return ficheTechniqueListViewModel.tabFicheTechnique.filter{ $0.header.categorie.uppercased().contains(categorieRecetteViewModel.tabCategorieRecette[selectedIndex].uppercased())}
-            } else {
-                return ficheTechniqueListViewModel.tabFicheTechnique.filter{
-                    $0.header.nomPlat.uppercased().contains(searchText.uppercased()) &&
-                    $0.header.categorie.uppercased().contains(categorieRecetteViewModel.tabCategorieRecette[selectedIndex].uppercased())
-                }
+        var tabFiche : [FicheTechnique] = self.ficheTechniqueListViewModel.tabFicheTechnique
+        
+        if !searchText.isEmpty {
+                tabFiche = tabFiche.filter{ $0.header.nomPlat.uppercased().contains(searchText.uppercased())
             }
         }
+        
+        if selectedIndex > 0{ // erreur selection categorie : une categorie avant 
+            tabFiche = tabFiche.filter{ $0.header.categorie.uppercased().contains(categorieRecetteViewModel.tabCategorieRecette[(selectedIndex - 1)].uppercased())
+            }
+        }
+        
+        if !listIngredient.isEmpty {
+            tabFiche = tabFiche.filter{
+                $0.contientIngrédients(tabIngrédient: listIngredient)
+            }
+        }
+        
+        return tabFiche
     }
     
-    init(vm : FicheTechniqueListViewModel, vmCategorie : CategorieRecetteViewModel){
+    init(vm : FicheTechniqueListViewModel, vmIngredient : IngredientListViewModel, vmCategorie : CategorieRecetteViewModel){
         self.ficheTechniqueListViewModel = vm
         self.categorieRecetteViewModel = vmCategorie
         self.intent = FicheTechniqueIntent()
         self.intent.addObserver(vm)
+        self.ingredientLVM = vmIngredient
     }
     
     var body: some View {
@@ -53,7 +60,17 @@ struct FicheTechniqueListView: View {
                             Text(categorie)
                         }
                     }
-                }.frame(height:100)
+                    HStack {
+                        NavigationLink(destination: MultipleSelectionIngredient(items: self.ingredientLVM.tabIngredient, selections: $listIngredient)){
+                            HStack {
+                                Text("Liste ingrédient :")
+                                Spacer()
+                                Text("Sélectionner")
+                                    .foregroundColor(Color.gray)
+                            }
+                        }
+                    }
+                }.frame(height:150)
                 
                 List {
                     ForEach(Array(ficheTechniqueFiltre.enumerated()), id : \.offset) {
@@ -61,8 +78,9 @@ struct FicheTechniqueListView: View {
                         HStack {
                             NavigationLink(destination: FicheTechniqueDetailView(
                                 vm: self.ficheTechniqueListViewModel,
-                                indice: index,
+                                id: fiche.header.id,
                                 vmCategorie: self.categorieRecetteViewModel,
+                                vmIngredient: ingredientLVM,
                                 ficheService: self.ficheTechniqueListViewModel.ficheTechniqueService)){
                                 VStack(alignment: .leading){
                                     Text(fiche.header.nomPlat).bold()
@@ -89,8 +107,9 @@ struct FicheTechniqueListView: View {
                         NavigationLink(destination: FicheTechniqueDetailView(
                             vm: self.ficheTechniqueListViewModel,
                             vmCategorie: self.categorieRecetteViewModel,
+                            vmIngredient: ingredientLVM,
                             ficheService: self.ficheTechniqueListViewModel.ficheTechniqueService)){
-                            Text("Ajout")
+                            Text("Créer une fiche")
                         }
                         
                     }

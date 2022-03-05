@@ -21,9 +21,7 @@ class CategorieRecetteViewModel : ObservableObject, CategorieRecetteServiceObser
     }
     
     func emit(to: [String]) {
-        self.tabCategorieRecette = ["Choisir"]
         self.tabCategorieRecette.append(contentsOf: to)
-        print("tab : \(self.tabCategorieRecette)")
     }
    
 }

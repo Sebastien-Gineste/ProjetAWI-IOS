@@ -14,6 +14,7 @@ struct FicheTechniqueDetailView : View{
     
     @ObservedObject var ficheTechniqueVM : FicheTechniqueViewModel
     @ObservedObject var categorieRecetteVM : CategorieRecetteViewModel
+    @ObservedObject var vmIngredient : IngredientListViewModel
     
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
@@ -33,24 +34,35 @@ struct FicheTechniqueDetailView : View{
         return formatter
     }()
         
-    init(vm : FicheTechniqueListViewModel, indice : Int? = nil, vmCategorie : CategorieRecetteViewModel, ficheService : FicheTechniqueService){
+    init(vm : FicheTechniqueListViewModel, id : String? = nil, vmCategorie : CategorieRecetteViewModel, vmIngredient : IngredientListViewModel, ficheService : FicheTechniqueService){
+        
         
         self.ficheListVM = vm
+        let index : Int?
+        
+        if id != nil {
+            index = self.ficheListVM.tabFicheTechnique.firstIndex{$0.header.id == id}
+        }
+        else{
+            index = nil
+        }
+        
+        self.vmIngredient = vmIngredient
         
         self.intent = FicheTechniqueIntent()
      
         self.ficheTechniqueVM = FicheTechniqueViewModel(
             ficheService: ficheService,
             ficheTechniqueListViewModel: vm,
-            indice: indice)
+            indice: index)
         
         self.categorieRecetteVM = vmCategorie
         
-        self._isCreate = State(initialValue: indice == nil)
+        self._isCreate = State(initialValue: id == nil)
 
         
-        if let indice = indice, let index = vmCategorie.tabCategorieRecette.firstIndex(of:vm.tabFicheTechnique[indice].header.categorie) {
-            self._selectedIndex = State(initialValue: index)
+        if let id = id, let indexCate = vmCategorie.tabCategorieRecette.firstIndex(of:vm.tabFicheTechnique[index!].header.categorie) {
+            self._selectedIndex = State(initialValue: indexCate)
         } else {
             self._selectedIndex = State(initialValue: 0)
         }
@@ -59,38 +71,49 @@ struct FicheTechniqueDetailView : View{
         self.intent.addObserver(self.ficheTechniqueVM)
     }
     
+    func changeColor(isValid : Bool) -> Color{
+        if isValid {
+            return Color.green
+        }
+        else {
+            return Color.red
+        }
+    }
+    
+    
     var body: some View {
         VStack {
             ScrollViewReader { p in
                 Form {
-                    Section(header :Text("Informations générales") ){
+                    Section(header :Text("Informations générales").underline(isUpdate || isCreate, color: changeColor(isValid: ficheTechniqueVM.headerValid)) ){
                         HStack{
                             LazyVGrid(columns: columns){
                                 Text("Nom du plat :").frame(maxWidth: .infinity, alignment: .leading)
                                 TextField("Nom", text : $ficheTechniqueVM.nomPlat).onSubmit {
                                     intent.intentToChange(nomPlat: ficheTechniqueVM.nomPlat)
-                                }.disabled(!isUpdate)
+                                }.textFieldStyle(.roundedBorder)
+                                .disabled(!isUpdate && !isCreate)
                             }
                         }
                         HStack{
                             LazyVGrid(columns: columns){
                                 Text("Responsable :").frame(maxWidth: .infinity, alignment: .leading)
                                 TextField("Nom", text : $ficheTechniqueVM.nomAuteur).onSubmit {
-                                    intent.intentToChange(nomAuteur: ficheTechniqueVM.nomPlat)
-                                }.disabled(!isUpdate)
+                                    intent.intentToChange(nomAuteur: ficheTechniqueVM.nomAuteur)
+                                }.disabled(!isUpdate && !isCreate).textFieldStyle(.roundedBorder)
                             }
                         }
                         HStack{
                             LazyVGrid(columns: columns){
                                 Text("Nombre de couvert :").frame(maxWidth: .infinity, alignment: .leading)
                                 
-                                if isUpdate {
+                                if isUpdate || isCreate {
                                     Stepper("\(ficheTechniqueVM.couvert)",
                                             onIncrement: {intent.intentToChange(nbrCouvert: ficheTechniqueVM.couvert+1)},
-                                            onDecrement: {intent.intentToChange(nbrCouvert: ficheTechniqueVM.couvert-1)})
+                                            onDecrement: {intent.intentToChange(nbrCouvert: ficheTechniqueVM.couvert-1)}).textFieldStyle(.roundedBorder)
                                 }
                                 else{
-                                    TextField("Nom", value: $ficheTechniqueVM.couvert, formatter: formatter).disabled(!isUpdate)
+                                    TextField("Nom", value: $ficheTechniqueVM.couvert, formatter: formatter).disabled(!isUpdate && !isCreate).textFieldStyle(.roundedBorder)
                                 }
                             }
                         }
@@ -102,22 +125,22 @@ struct FicheTechniqueDetailView : View{
                             }.onChange(of: selectedIndex, perform: {
                                 value in
                                 self.intent.intentToChange(categorie: self.categorieRecetteVM.tabCategorieRecette[value])
-                            }).disabled(!isUpdate)
+                            }).disabled(!isUpdate && !isCreate).textFieldStyle(.roundedBorder)
                         }
                     }
                     
                     Section(header:
                         HStack {
-                            Text("Liste des étapes")
+                            Text("Liste des étapes").underline(isUpdate || isCreate, color: changeColor(isValid: ficheTechniqueVM.progressionValid))
                             Spacer()
-                            if isUpdate {
+                            if isUpdate || isCreate {
                                 Button {
                                     editMode?.wrappedValue.toggle()
                                 } label : {
                                     editMode?.wrappedValue.isActive() ?? false ?  Label("Terminer", systemImage: "pencil.slash") : Label("Modifier", systemImage: "pencil")
                                 }.padding(.trailing, 8)
                                 
-                                NavigationLink(destination:ChoixAjoutEtapeView(vm: ficheListVM, intent: intent)){
+                                NavigationLink(destination:ChoixAjoutEtapeView(intent: intent, lvmFiche: ficheListVM)){
                                     Label("Ajouter", systemImage: "plus.circle.fill")
                                 }.padding(.trailing, 8)
                                 
@@ -128,7 +151,7 @@ struct FicheTechniqueDetailView : View{
                             ForEach(Array(self.ficheTechniqueVM.progression.enumerated()), id: \.offset) { index, etapeFiche in
                                 HStack {
                                     if etapeFiche.estSousFicheTechnique {
-                                        NavigationLink(destination : EtapeFicheView(vm: ficheTechniqueVM, intent: intent, indice: index)){
+                                        NavigationLink(destination : EtapeFicheView(vm: ficheTechniqueVM, vmIngredient: vmIngredient, intent: intent, indice: index)){
                                             VStack(alignment: .leading){
                                                 HStack{
                                                     Image(systemName:"\(index+1).circle")
@@ -139,13 +162,13 @@ struct FicheTechniqueDetailView : View{
                                         }
                                     }
                                     else {
-                                        NavigationLink(destination : EtapeDetailView(vm: ficheTechniqueVM, indice: index, intent: intent)){
+                                        NavigationLink(destination : EtapeDetailView(vm: ficheTechniqueVM,indice: index, vmIngredient: vmIngredient, isCreate: isCreate)){
                                             VStack(alignment: .leading){
                                                 HStack{
                                                     Image(systemName:"\(index+1).circle")
                                                     Image(systemName:"e.circle")
                                                 }
-                                                Text("\(etapeFiche.etapes[0].description.nom)")
+                                                Text("\(etapeFiche.etapes[0].description.nom)").underline(isUpdate || isCreate, color: changeColor(isValid: ficheTechniqueVM.isValidEtape(id: index)))
                                             }
                                         }
                                        
@@ -202,7 +225,7 @@ struct FicheTechniqueDetailView : View{
                     self.showingAlert.toggle()
                 case let .failure(error):
                     switch error {
-                    case .updateError, .createError, .inputError, .addEtapeError :
+                    case .updateError, .createError, .inputError, .addEtapeError, .noValid, .deleteError :
                         print("error : \(error)")
                         self.alertMessage = "\(error)"
                         self.showingAlert = true

@@ -7,16 +7,33 @@
 
 import Foundation
 
-protocol EtapeObserver{
-    func changed(contenu : [Denree])
-    func changed(description : Description)
-}
-
-
-class Etape {
-    var observer : EtapeObserver?
+class Etape {    
+    var contenu : [Denree] {
+        didSet {
+            let taille : Int = self.contenu.count
+            if taille > oldValue.count { // ajout de denrée
+                let nom : String = self.contenu[taille-1].ingredient.nomIngredient
+                
+                let nbrIngredientMemeNom : Int = self.contenu.filter({ (denree) -> Bool in
+                    return denree.ingredient.nomIngredient == nom
+                }).count
+                
+                print("nbr occurence (\(nom)) : \(nbrIngredientMemeNom)")
+                
+                if nbrIngredientMemeNom > 1 { // il y a une occurence => dupplication => erreur
+                    self.contenu = oldValue
+                    return
+                }
+            }
+        }
+    }
     
-    var contenu : [Denree]
+    var isValid : Bool {
+        return description.isValid && contenu.count > 0 && contenu.filter {
+            $0.isValid // toutes les denrées doivent être valide
+        }.count == contenu.count
+    }
+    
     var description : Description
     
     init(contenu : [Denree] = [], description : Description = Description(nom: "etape", description: "description", tempsPreparation: 10)){

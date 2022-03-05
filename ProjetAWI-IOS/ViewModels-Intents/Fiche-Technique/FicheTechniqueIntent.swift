@@ -39,23 +39,12 @@ enum FicheTechniqueIntentState : Equatable {
     // changing
 }
 
-enum EtapeIntentState : Equatable{
-    case ready
-    
-    case changingNom(String)
-    case changingDuree(Double)
-    case changingDescription(String)
-    
-    case addDenree(String)
-    case deleteDenree(Int)
-    case changingDenreeNumber(Int, Double)
-}
 
 
 struct FicheTechniqueIntent {
     private var stateList = PassthroughSubject<FicheTechniqueListIntentState, Never>()
     private var stateElement = PassthroughSubject<FicheTechniqueIntentState, Never>()
-    private var stateEtape = PassthroughSubject<EtapeIntentState, Never>()
+
     
     /* Function for update the database */
     
@@ -137,37 +126,7 @@ struct FicheTechniqueIntent {
         self.stateElement.send(FicheTechniqueIntentState.changingIsCalculCharge(isCalculCharge))
     }
     
-    /* ---- Etape ----*/
-    
-    func intentToChange(nomEtape : String){
-        self.stateEtape.send(EtapeIntentState.changingNom(nomEtape))
-    }
-    
-    func intentToChange(dureeEtape : Double){
-        self.stateEtape.send(EtapeIntentState.changingDuree(dureeEtape))
-    }
-    
-    func intentToChange(descriptionEtape : String){
-        self.stateEtape.send(EtapeIntentState.changingDescription(descriptionEtape))
-    }
-    
-    func intentToChange(id : Int, denreeNumber : Double){
-        self.stateEtape.send(EtapeIntentState.changingDenreeNumber(id, denreeNumber))
-    }
-    
-    func intentToAddDenree(id : String){
-        self.stateEtape.send(EtapeIntentState.addDenree(id))
-    }
-    
-    func intentToRemoveDenree(id : Int){
-        self.stateEtape.send(EtapeIntentState.deleteDenree(id))
-    }
-    
-    
-    
-    
-    
-    
+  
     // addObserver
     func addObserver (_ fiche : FicheTechniqueViewModel) {
         self.stateElement.subscribe(fiche)
@@ -175,10 +134,6 @@ struct FicheTechniqueIntent {
     
     func addObserver (_ ficheList : FicheTechniqueListViewModel){
         self.stateList.subscribe(ficheList)
-    }
-    
-    func addObserver (_ etape : EtapeViewModel){
-        self.stateEtape.subscribe(etape)
     }
     
 }

@@ -34,10 +34,10 @@ struct DenreesView : View {
                        VStack(alignment: .leading){
                            Text(denree.ingredient.nomIngredient).bold()
                            HStack {
-                               Text(String(format: "%.2f",denree.nombre).replaceComa() + " " + denree.ingredient.unite)
-                               Text("à " + String(format: "%.2f",denree.ingredient.prixUnitaire).replaceComa())
+                               Text(String(format: "%.3f",denree.nombre).replaceComa() + " " + denree.ingredient.unite)
+                               Text("à " + String(format: "%.3f",denree.ingredient.prixUnitaire).replaceComa())
                                Text("€/" + denree.ingredient.unite)
-                               Text(" (" + String(format: "%.2f",denree.ingredient.prixUnitaire * denree.nombre).replaceComa()+"€)")
+                               Text(" (" + String(format: "%.3f",denree.ingredient.prixUnitaire * denree.nombre).replaceComa()+"€)")
                            }
                        }
                    }

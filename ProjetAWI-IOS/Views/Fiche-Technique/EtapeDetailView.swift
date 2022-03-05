@@ -10,14 +10,18 @@ import SwiftUI
 
 struct EtapeDetailView : View{
     @Environment(\.editMode) var editMode
+    @Environment(\.presentationMode) var presentationMode
     
     @ObservedObject var etapeVM : EtapeViewModel
+    @ObservedObject var ingredientLVM : IngredientListViewModel
     
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
     @State var isUpdate : Bool = false
+    @State var isCreate : Bool
+    @State var isEtapeSousFicheTechnique : Bool
     
-    var intent : FicheTechniqueIntent
+    var intent : EtapeIntent
     let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
     let formatter : NumberFormatter = {
        let formatter = NumberFormatter()
@@ -26,10 +30,18 @@ struct EtapeDetailView : View{
        return formatter
     }()
     
-    init(vm : FicheTechniqueViewModel, indice : Int, intent : FicheTechniqueIntent, indiceSousFicheTechnique : Int? = nil){
-        self.intent = intent
-        self.etapeVM = EtapeViewModel(ficheTechViewModel: vm, indice: indice,indiceSousFiche: indiceSousFicheTechnique)
-        self.intent.addObserver(self.etapeVM)
+    init(vm : FicheTechniqueViewModel, indice : Int, vmIngredient : IngredientListViewModel,indiceSousFicheTechnique : Int? = nil, isCreate : Bool = false){
+        self.intent = EtapeIntent()
+        self.ingredientLVM = vmIngredient
+        self.etapeVM = EtapeViewModel(ficheTechViewModel: vm, ingredientVM: vmIngredient, indice: indice,indiceSousFiche: indiceSousFicheTechnique)
+        if indiceSousFicheTechnique != nil {
+            self._isEtapeSousFicheTechnique = State(initialValue: true)
+        }
+        else{
+            self._isEtapeSousFicheTechnique = State(initialValue: false)
+        }
+        self._isCreate = State(initialValue: isCreate)
+        self.intent.addObserver(etapeVM)
     }
     
     var body: some View{
@@ -40,8 +52,8 @@ struct EtapeDetailView : View{
                         LazyVGrid(columns: columns){
                             Text("Nom de l'étape :").frame(maxWidth: .infinity, alignment: .leading)
                             TextField("Nom", text : $etapeVM.nomEtape).onSubmit {
-                                intent.intentToChange(nomPlat: etapeVM.nomEtape)
-                            }.disabled(!isUpdate)
+                                intent.intentToChange(nomEtape: etapeVM.nomEtape)
+                            }.disabled(!isUpdate && !isCreate || isEtapeSousFicheTechnique).textFieldStyle(.roundedBorder)
                         }
                     }
                     HStack{
@@ -49,31 +61,31 @@ struct EtapeDetailView : View{
                             Text("Temps préparation :").frame(maxWidth: .infinity, alignment: .leading)
                             TextField("Nom",value: $etapeVM.dureeEtape,formatter:formatter).onSubmit {
                                 intent.intentToChange(dureeEtape: etapeVM.dureeEtape)
-                            }.disabled(!isUpdate)
+                            }.disabled(!isUpdate && !isCreate || isEtapeSousFicheTechnique).textFieldStyle(.roundedBorder)
                         }
                     }
                     VStack{
                         Text("Description : ")
                         TextEditor(text: $etapeVM.descriptionEtape)
                             .foregroundColor(.white)
-                            .disabled(!isUpdate)
                             .frame(minHeight:100)
+                            .textFieldStyle(.roundedBorder)
                     }
                 }
             
                 Section(header:HStack {
                         Text("Liste des denrées")
                         Spacer()
-                        if isUpdate {
+                        if isUpdate || isCreate && !isEtapeSousFicheTechnique {
                             Button {
                                 editMode?.wrappedValue.toggle()
                             } label : {
                                 editMode?.wrappedValue.isActive() ?? false ?  Label("Terminer", systemImage: "pencil.slash") : Label("Modifier", systemImage: "pencil")
                             }.padding(.trailing, 8)
                             
-                           /* NavigationLink(destination:ChoixAjoutEtapeView(vm: ficheListVM, intent: intent)){
+                            NavigationLink(destination:ChoixAjoutIngredientView(intent: intent, lvmIngredient: ingredientLVM)){
                                 Label("Ajouter", systemImage: "plus.circle.fill")
-                            }.padding(.trailing, 8)*/
+                            }.padding(.trailing, 8)
                             
                         }
                     }
@@ -82,20 +94,20 @@ struct EtapeDetailView : View{
                         ForEach(Array(self.etapeVM.contenu.enumerated()), id: \.offset) {
                             index, denree in
                             VStack(alignment: .leading){
-                                Text("\(denree.ingredient.nomIngredient)")
-                                HStack{
+                                Text("\(denree.ingredient.nomIngredient)").bold()
+                                LazyVGrid(columns: columns){
                                     TextField("Nombre ",value: $etapeVM.contenu[index].nombre,formatter:formatter).onSubmit {
+                                        print("submit for \(denree.ingredient.nomIngredient)")
                                         intent.intentToChange(id: index, denreeNumber: etapeVM.contenu[index].nombre )
-                                    }.disabled(!isUpdate)
-                                    Text(" \(denree.ingredient.unite)")
+                                    }.disabled(!isUpdate && !isCreate || isEtapeSousFicheTechnique).textFieldStyle(.roundedBorder)
+                                    Text(" \(denree.ingredient.unite) à \(String(format: "%.2f",denree.ingredient.prixUnitaire).replaceComa())€/U")
                                 }
-                               
                             }
                         }
                         .onDelete{ indexSet in
                             for index in indexSet {
                                 print("\(index)")
-                                if isUpdate {
+                                if isUpdate || isCreate {
                                     intent.intentToRemoveDenree(id: index)
                                 }
                               
@@ -104,7 +116,8 @@ struct EtapeDetailView : View{
                     }
                 }
                 
-            }.onChange(of: etapeVM.result){
+            }
+            .onChange(of: etapeVM.result){
                 result in
                 switch result {
                 case let .success(msg):
@@ -126,19 +139,24 @@ struct EtapeDetailView : View{
                     self.showingAlert = false
                 }
             }
-
+            
+            if !isEtapeSousFicheTechnique {
                 HStack{
-                    Button("Enregistrer"){
+                    Button("Enregistrer l'étape"){
                         intent.intentToChange(descriptionEtape: etapeVM.descriptionEtape)
-                    }.padding(20)
-    
-                    Button("\(isUpdate ? "Terminer" : "Modifier")"){
-                        self.isUpdate = !self.isUpdate
-                        editMode?.wrappedValue.setFalse()
+                        self.presentationMode.wrappedValue.dismiss()
                     }.padding(20)
                     
+                    if !isCreate {
+                        Button("\(isUpdate ? "Terminer" : "Modifier")"){
+                            self.isUpdate = !self.isUpdate
+                            editMode?.wrappedValue.setFalse()
+                        }.padding(20)
+                    }
                 }.padding(20)
-        }
+            }
+        }.navigationBarTitle(Text("Détails de l'étape"),displayMode: .inline)
+
     }
     
 }

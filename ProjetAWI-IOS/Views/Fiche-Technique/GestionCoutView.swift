@@ -82,7 +82,7 @@ struct GestionCoutView : View {
                                 TextField("",value: $ficheVM.coefPrixDeVente, formatter: formatter)
                                     .onSubmit {
                                         intent.intentToChange(coefVente: ficheVM.coefPrixDeVente)
-                                    }
+                                    }.textFieldStyle(.roundedBorder)
                             }
                         }
                     }
@@ -94,7 +94,7 @@ struct GestionCoutView : View {
                                     .onSubmit {
                                         intent.intentToChange(coefProd: ficheVM.coefCoutProduction)
                                         // corrige bug input error view précédente
-                                    }
+                                    }.textFieldStyle(.roundedBorder)
                             }
                         }
                        
@@ -104,7 +104,7 @@ struct GestionCoutView : View {
                                 TextField("",value: $ficheVM.coutForfaitaire, formatter: formatter)
                                     .onSubmit {
                                         intent.intentToChange(coutForfaitaire: ficheVM.coutForfaitaire)
-                                    }
+                                    }.textFieldStyle(.roundedBorder)
                             }
                         }
                         HStack {
@@ -113,7 +113,7 @@ struct GestionCoutView : View {
                                 TextField("",value: $ficheVM.coutMoyenHoraire, formatter: formatter)
                                     .onSubmit {
                                         intent.intentToChange(coutMoyenHoraire: ficheVM.coutMoyenHoraire)
-                                    }
+                                    }.textFieldStyle(.roundedBorder)
                             }
                         }
                     }

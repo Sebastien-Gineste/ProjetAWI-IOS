@@ -27,6 +27,10 @@ class Denree {
         }
     }
     
+    var isValid : Bool {
+        return nombre > 0 
+    }
+    
     init(ingredient : Ingredient, nombre : Double){
         self.ingredient = ingredient
         self.nombre = nombre

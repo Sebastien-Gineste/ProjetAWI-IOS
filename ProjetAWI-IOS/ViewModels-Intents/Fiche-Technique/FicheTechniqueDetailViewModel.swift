@@ -14,12 +14,16 @@ enum FicheTechniqueViewModelError : Error, Equatable, CustomStringConvertible {
     case updateError
     case createError
     case inputError
+    case deleteError
     case addEtapeError
+    case noValid
     var description: String {
         switch self {
         case .noError : return "Aucune erreur"
         case .updateError : return "Erreur de mise à jour"
         case .createError : return "Erreur de création"
+        case .deleteError : return "Erreur de suppression"
+        case .noValid : return "Erreur : Il manque des champs à remplir pour la fiche technique"
         case .inputError : return "Input non valide"
         case .addEtapeError : return "L'ajout de l'étape a été refusé (duplication)"
         }
@@ -46,6 +50,11 @@ class FicheTechniqueViewModel : ObservableObject, Subscriber, FicheTechniqueServ
     @Published var categorie : String
     @Published var nomAuteur : String
     @Published var couvert : Int
+    
+    var headerValid : Bool {
+        return ficheTechnique.header.isValid
+    }
+    
     @Published var isCalculCharge : Bool
     @Published var coutMatiere : Double
     @Published var dureeTotal : Double
@@ -55,6 +64,10 @@ class FicheTechniqueViewModel : ObservableObject, Subscriber, FicheTechniqueServ
     @Published var coefPrixDeVente : Double
     
     @Published var progression : [EtapeFiche]
+    var progressionValid : Bool{
+        return ficheTechnique.isProgressionValid
+    }
+    
     @Published var materielSpecifique : String
     @Published var materielDressage : String
     
@@ -65,6 +78,7 @@ class FicheTechniqueViewModel : ObservableObject, Subscriber, FicheTechniqueServ
             self.ficheTechnique = ficheTechniqueListViewModel.tabFicheTechnique[indice]
         } else {
             self.ficheTechnique = FicheTechnique(header: HeaderFT(nomPlat: "Fiche technique", nomAuteur: "", nbrCouvert: 1), progression: [])
+            ficheTechnique.header.setStore(store: StoreService.instance.store)
         }
         
         self.ficheTechniqueService = ficheService
@@ -86,6 +100,10 @@ class FicheTechniqueViewModel : ObservableObject, Subscriber, FicheTechniqueServ
         self.materielDressage = self.ficheTechnique.materielDressage == nil ? "" : self.ficheTechnique.materielDressage!
         
         self.ficheTechnique.header.observer = self
+    }
+    
+    func isValidEtape(id : Int) -> Bool{
+        return self.ficheTechnique.progression[id].isValid
     }
     
     func getListDenree() -> [Denree]{
@@ -258,6 +276,10 @@ class FicheTechniqueViewModel : ObservableObject, Subscriber, FicheTechniqueServ
             self.progression.move(fromOffsets: from, toOffset: to)
         }
         return .none
+    }
+    
+    func calculDenreeEtCoutMatiere(){
+        self.ficheTechnique.calculDenreeEtCoutMatiere()
     }
     
     

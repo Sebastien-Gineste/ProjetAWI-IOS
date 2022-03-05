@@ -18,6 +18,11 @@ class EtapeFiche {
     
     var nomSousFicheTechnique : String? // nom de la sous-fiche technique si présente
     
+    var isValid : Bool {
+        let validSousFiche : Bool = (nomSousFicheTechnique == nil && etapes.count == 1) || nomSousFicheTechnique != nil
+        return validSousFiche && etapes.filter{$0.isValid}.count == etapes.count
+    }
+    
     init(etapes : [Etape], nomSousFicheTechnique : String? = nil){
         self.etapes = etapes
         self.nomSousFicheTechnique = nomSousFicheTechnique
@@ -48,6 +53,14 @@ protocol FicheTechniqueObserver {
 }
 
 class FicheTechnique {
+    
+    var isProgressionValid : Bool {
+        return progression.filter{$0.isValid}.count == progression.count && progression.count > 0
+    }
+    
+    var isValid : Bool {
+        return header.isValid && isProgressionValid
+    }
     
     var header : HeaderFT
     var progression : [EtapeFiche] {

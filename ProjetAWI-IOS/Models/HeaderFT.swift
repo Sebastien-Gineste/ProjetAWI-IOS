@@ -25,6 +25,10 @@ protocol HeaderFTObserver{
 
 class HeaderFT{
     
+    var isValid : Bool {
+        return nomPlat.count > 1 && nomAuteur.count > 1 && nbrCouvert > 0 && coutMatiere > 0 && dureeTotal > 0 && categorie.count > 1
+    }
+    
     var observer : HeaderFTObserver?
     
     var nomPlat : String {

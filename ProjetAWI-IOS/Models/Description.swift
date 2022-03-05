@@ -16,6 +16,11 @@ protocol DescriptionObserver {
 
 class Description {
     var observer : DescriptionObserver?
+    
+    var isValid : Bool {
+        return nom.count > 1 && description.count > 1 && tempsPreparation > 0
+    }
+    
     var nom : String {
         didSet {
             if self.nom != oldValue {

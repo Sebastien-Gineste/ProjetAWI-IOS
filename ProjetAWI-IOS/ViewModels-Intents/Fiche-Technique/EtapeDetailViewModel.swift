@@ -24,9 +24,12 @@ enum EtapeViewModelError : Error, Equatable, CustomStringConvertible {
 
 class EtapeViewModel : ObservableObject, Subscriber, DescriptionObserver {
 
+    @ObservedObject var ficheVM : FicheTechniqueViewModel
+    
     private var etape : Etape
     private var indice : Int
     private var indiceSousFicheTechnique : Int? = nil
+    private var ingredientService : IngredientService
     
     var estEtapeSousFicheTechnique : Bool = false
     
@@ -38,7 +41,11 @@ class EtapeViewModel : ObservableObject, Subscriber, DescriptionObserver {
     
     @Published var result : Result<String, EtapeViewModelError> = .failure(.noError)
     
-    init(ficheTechViewModel : FicheTechniqueViewModel, indice : Int, indiceSousFiche : Int?  = nil){
+    init(ficheTechViewModel : FicheTechniqueViewModel,ingredientVM : IngredientListViewModel,  indice : Int, indiceSousFiche : Int?  = nil){
+        
+        self.ficheVM = ficheTechViewModel
+        
+        self.ingredientService = ingredientVM.ingredientService
         
         if let indiceSousFiche = indiceSousFiche {
             self.etape = ficheTechViewModel.progression[indice].etapes[indiceSousFiche]
@@ -76,21 +83,65 @@ class EtapeViewModel : ObservableObject, Subscriber, DescriptionObserver {
             break
             
         case .changingNom(let nom):
+            self.etape.description.nom = nom
+            if self.etape.description.nom != nom {
+                self.nomEtape = self.etape.description.nom
+                self.result = .failure(.inputError)
+            }
             break
             
         case .changingDuree(let duree):
+            self.etape.description.tempsPreparation = duree
+            if self.etape.description.tempsPreparation != duree {
+                self.dureeEtape = self.etape.description.tempsPreparation
+                self.result = .failure(.inputError)
+            }
             break
             
         case .changingDescription(let desc):
+            self.etape.description.description = desc
+            if self.etape.description.description != desc {
+                self.descriptionEtape = self.etape.description.description
+                self.result = .failure(.inputError)
+            }
             break
             
         case .addDenree(let idIngredient):
-            break
+            if let ingredient : Ingredient = self.ingredientService.getIngredient(id: idIngredient){
+               let count = self.etape.contenu.count
+               self.etape.contenu.append(Denree(ingredient: ingredient, nombre: 1))
+               if count < self.etape.contenu.count { // modification effectué
+                   self.contenu.append(self.etape.contenu[count]) // on l'ajoute au model du ViewModel
+                   self.ficheVM.calculDenreeEtCoutMatiere()
+               }
+               else{
+                   self.result = .failure(.addDenreeError)
+               }
+           }
+           else{
+               self.result = .failure(.addDenreeError)
+           }
             
         case .deleteDenree(let idTab):
-            break
+            let count = self.etape.contenu.count
+            self.etape.contenu.remove(at: idTab)
+            if count > self.etape.contenu.count {
+                self.contenu.remove(at: idTab)
+                self.ficheVM.calculDenreeEtCoutMatiere()
+            }
+            else{
+                self.result = .failure(.inputError)
+            }
             
         case .changingDenreeNumber(let idTab, let nombre):
+            self.etape.contenu[idTab].nombre = nombre
+            if self.etape.contenu[idTab].nombre != nombre {
+                self.contenu[idTab].nombre = self.etape.contenu[idTab].nombre
+                self.result = .failure(.inputError)
+            }
+            else{
+                self.ficheVM.calculDenreeEtCoutMatiere()
+            }
             break
         }
         
