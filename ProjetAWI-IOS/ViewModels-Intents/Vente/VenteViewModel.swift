@@ -30,8 +30,11 @@ class VenteViewModel : ObservableObject, VenteObserver, Subscriber, VenteService
     @Published var nbrPlatVendu: Int
     @Published var result : Result<String, VenteViewModelError> = .failure(.noError)
     
-    init(){
-        self.vente = Vente(dateAchat: "", idficheReference: "", nbrPlatVendu: 0)
+    init(idficheReference: String){
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-YYYY"
+        self.vente = Vente(dateAchat: dateFormatter.string(from: date), idficheReference: idficheReference, nbrPlatVendu: 1)
         self.dateAchat = vente.dateAchat
         self.idficheReference = vente.idficheReference
         self.nbrPlatVendu = vente.nbrPlatVendu

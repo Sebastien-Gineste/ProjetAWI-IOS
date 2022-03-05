@@ -201,18 +201,19 @@ struct FicheTechniqueDetailView : View{
                             Text("Liste des denrées")
                         }
                     }
-                    
-                    Section(header : Text("Options")){
-                        NavigationLink(destination:PrintFicheView()){
-                            Text("Imprimer Fiche")
+                    if self.isUpdate {
+                        Section(header : Text("Options")){
+                            NavigationLink(destination:PrintFicheView()){
+                                Text("Imprimer Fiche")
+                            }
+                            NavigationLink(destination:PrintEtiquetteView()){
+                                Text("Imprimer Etiquette")
+                            }
+                            NavigationLink(destination:VenteView()){
+                                Text("Vendre")
+                            }
+                            
                         }
-                        NavigationLink(destination:PrintEtiquetteView()){
-                            Text("Imprimer Etiquette")
-                        }
-                        NavigationLink(destination:VenteView()){
-                            Text("Vendre")
-                        }
-                        
                     }
                 }
             }

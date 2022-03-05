@@ -24,7 +24,7 @@ class VenteService {
             (error) in if let _ = error {
                 self.sendResult(result: .failure(.createError))
             } else {
-                self.sendResult(result: .success("Création effectué"))
+                self.sendResult(result: .success("Vente effectué"))
             }
         }
     }

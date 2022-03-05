@@ -23,6 +23,7 @@ class EtiquetteService {
             (error) in if let _ = error {
                 self.sendResult(result: .failure(.createError))
             } else {
+                // TO DO : Create Vente
                 self.sendResult(result: .success("Création effectué"))
             }
         }
