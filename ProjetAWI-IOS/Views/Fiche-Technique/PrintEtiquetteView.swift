@@ -12,7 +12,9 @@ struct PrintEtiquetteView : View {
 
     @ObservedObject var etiquette : EtiquetteViewModel
     @State var isChecked:Bool = false
-    @State var idEtiquette : String = ""
+    @State var idEtiquette : String = "Sans vente"
+    @State var alertMessage = ""
+    @State var showingAlert : Bool = false
     let columnsFlexible : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
     let columns : [GridItem] = [GridItem(.flexible()),GridItem(.fixed(50))]
     let formatter : NumberFormatter = {
@@ -24,7 +26,7 @@ struct PrintEtiquetteView : View {
     func toggle(){isChecked = !isChecked}
     
     init(){
-        self.etiquette = EtiquetteViewModel()
+        self.etiquette = EtiquetteViewModel(idficheReference: "test", nomPlat: "test", listDenree: [])
         self.intent = EtiquetteIntent()
         self.intent.addObserver(etiquette)
     }
@@ -46,10 +48,30 @@ struct PrintEtiquetteView : View {
                         Text("Nombre d'étiquette : ")
                         TextField("Nombre", value : $etiquette.nombreEtiquete, formatter: formatter)
                             .onSubmit {
-                                print("je passe")
                                 intent.intentToChange(nombreEtiquete: etiquette.nombreEtiquete)
                             }
                     }
+                }
+            }.onChange(of: etiquette.result){
+                result in
+                switch result {
+                case .success(_):
+                    self.idEtiquette = self.etiquette.idEtiquette
+                    self.isChecked = false
+                    createEtiquette()
+                case let .failure(error):
+                    switch error {
+                    case .createError, .inputError :
+                        self.alertMessage = "\(error)"
+                        self.showingAlert = true
+                    case .noError :
+                        return
+                    }
+                }
+            }.alert(Text(alertMessage), isPresented: $showingAlert){
+                Button("OK", role: .cancel){
+                    etiquette.result = .failure(.noError)
+                    self.showingAlert = false
                 }
             }
             Spacer()
@@ -68,7 +90,7 @@ struct PrintEtiquetteView : View {
             var headHTML = ""
             if let fileURL = Bundle.main.url(forResource: "head-etiquette", withExtension: "html") {
                 if let fileContents = try? String(contentsOf: fileURL) {
-                    headHTML = fileContents
+                    headHTML = fileContents.replacingOccurrences(of: "{{idEtiquette}}", with: self.idEtiquette)
                 }
             }
             var denreeHTML = ""
@@ -96,12 +118,15 @@ struct PrintEtiquetteView : View {
                         let activityController = UIActivityViewController(activityItems: [url!], applicationActivities: nil)
                         UIApplication.shared.windows.first?.rootViewController!.present(activityController, animated: true, completion: nil)
             }
+            self.idEtiquette = "Sans vente"
+            self.etiquette.nombreEtiquete = 1
+            self.intent.intentToChange(nombreEtiquete: self.etiquette.nombreEtiquete)
+            self.etiquette.result = .failure(.noError)
         }
     }
     
     func makeVente(){
-        // TO DO : Vente
-        print("c'est une vente")
+        intent.intentToAddEtiquette()
     }
     
 }

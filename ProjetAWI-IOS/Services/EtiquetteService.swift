@@ -18,14 +18,15 @@ class EtiquetteService {
     private let firestore = Firestore.firestore()
     private var tabObserver : [EtiquetteServiceObserver] = []
 
-    func addEtiquette(etiquette : Etiquette){
-        firestore.collection("etiquettes").addDocument(data: EtiquetteDTO.transformToDTO(etiquette)){
+    func addEtiquette(etiquette : Etiquette) -> String{
+        let ref = firestore.collection("etiquettes").addDocument(data: EtiquetteDTO.transformToDTO(etiquette)){
             (error) in if let _ = error {
                 self.sendResult(result: .failure(.createError))
             } else {
                 self.sendResult(result: .success("Création effectué"))
             }
         }
+        return ref.documentID
     }
     
     func addObserver(observer : EtiquetteServiceObserver){

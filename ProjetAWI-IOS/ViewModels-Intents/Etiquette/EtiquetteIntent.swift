@@ -40,7 +40,7 @@ struct EtiquetteIntent {
         self.state.send(EtiquetteIntentState.changingListDenree(listDenree))
     }
     
-    func intentToChangeAddEtiquette(){
+    func intentToAddEtiquette(){
         self.state.send(EtiquetteIntentState.addEtiquette)
     }
     

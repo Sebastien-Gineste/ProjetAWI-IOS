@@ -31,9 +31,13 @@ class EtiquetteViewModel : ObservableObject, EtiquetteObserver, Subscriber, Etiq
     @Published var nomPlat : String
     @Published var listDenree : [DenreeEtiquette]
     @Published var result : Result<String, EtiquetteViewModelError> = .failure(.noError)
+    @Published var idEtiquette : String = ""
     
-    init(){
-        self.etiquette = Etiquette(dateCreation: "", idficheReference: "", nombreEtiquete: 0, nomPlat: "", listDenree: [])
+    init(idficheReference : String, nomPlat : String,  listDenree : [DenreeEtiquette]){
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-YYYY"
+        self.etiquette = Etiquette(dateCreation: dateFormatter.string(from: date), idficheReference: idficheReference, nombreEtiquete: 1, nomPlat: nomPlat, listDenree: listDenree)
         self.dateCreation = etiquette.dateCreation
         self.idficheReference = etiquette.idficheReference
         self.nombreEtiquete = etiquette.nombreEtiquete
@@ -111,7 +115,7 @@ class EtiquetteViewModel : ObservableObject, EtiquetteObserver, Subscriber, Etiq
             }
         case .addEtiquette:
             if self.etiquette.isValid {
-                self.etiquetteService.addEtiquette(etiquette: self.etiquette)
+                self.idEtiquette = self.etiquetteService.addEtiquette(etiquette: self.etiquette)
             } else {
                 self.result = .failure(.inputError)
             }
