@@ -11,21 +11,10 @@
 <tbody>
 <tr>
   <td>
-    {{(globalFT.materielSpecifique=="") ? "Aucun" : ""}}
-    <div *ngIf="globalFT.materielSpecifique==undefined">
-      Aucun
-    </div>
-    <div *ngIf="globalFT.materielSpecifique!==undefined">
-      <div *ngFor="let val of globalFT.materielSpecifique!.split('\n')!">{{val}}</div>
-    </div>
+      {{spécifiques}}
   </td>
   <td>
-    <div *ngIf="globalFT.materielDressage==undefined">
-      Aucun
-    </div>
-    <div *ngIf="globalFT.materielDressage!=undefined">
-      <div *ngFor="let val of globalFT.materielDressage!.split('\n')!">{{val}}</div>
-    </div>
+      {{dressage}}
   </td>
 </tr>
 </tbody>

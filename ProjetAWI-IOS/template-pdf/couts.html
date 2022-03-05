@@ -14,7 +14,7 @@
         Bénéfice par portion
       </td>
       <td>
-        {{roundNumber(globalFT.header.beneficeParPortion)}} €
+        {{beneficeParPortion}} €
       </td>
     </tr>
     <tr class="text-center">
@@ -22,7 +22,7 @@
         Bénéfice total
       </td>
       <td>
-        {{roundNumber(globalFT.header.beneficeTotal)}} €
+        {{beneficeTotal}} €
       </td>
     </tr>
     <tr class="text-center">
@@ -30,7 +30,7 @@
         Coefficient coût de production
       </td>
       <td>
-        {{roundNumber(globalFT.header.coefCoutProduction)}} %
+        {{coefCoutProduction}} %
       </td>
     </tr>
     <tr class="text-center">
@@ -38,7 +38,7 @@
         Coefficient prix de vente
       </td>
       <td>
-        {{roundNumber(globalFT.header.coefPrixDeVente)}} %
+        {{coefPrixDeVente}} %
       </td>
     </tr>
     <tr class="text-center">
@@ -46,7 +46,7 @@
         Coût fluide (forfaitaire)
       </td>
       <td>
-        {{roundNumber(globalFT.header.coutFluide)}} €
+        {{coutFluide}} €
       </td>
     </tr>
     <tr class="text-center">
@@ -54,7 +54,7 @@
         Coût matière
       </td>
       <td>
-        {{roundNumber(globalFT.header.coutMatiere)}} €
+        {{coutMatiere}} €
       </td>
     </tr>
     <tr class="text-center">
@@ -62,7 +62,7 @@
         Coût matière total (avec ASS 5%)
       </td>
       <td>
-        {{roundNumber(globalFT.header.coutMatiereTotal)}} €
+        {{coutMatiereTotal}} €
       </td>
     </tr>
     <tr class="text-center">
@@ -70,7 +70,7 @@
         Coût moyen horaire
       </td>
       <td>
-        {{roundNumber(globalFT.header.coutMoyenHorraire)}} €
+        {{coutMoyenHorraire}} €
       </td>
     </tr>
     <tr class="text-center">
@@ -78,7 +78,7 @@
         Coût personnel
       </td>
       <td>
-        {{roundNumber(globalFT.header.coutPersonnel)}} €
+        {{coutPersonnel}} €
       </td>
     </tr>
     <tr class="text-center">
@@ -86,7 +86,7 @@
         Coût production
       </td>
       <td>
-        {{(globalFT.header.coutProduction==undefined) ? "0" : roundNumber(globalFT.header.coutProduction)}} €
+        {{coutProduction}} €
       </td>
     </tr>
     <tr class="text-center">
@@ -94,7 +94,7 @@
         Coût production par portion
       </td>
       <td>
-        {{roundNumber(globalFT.header.coutProductionPortion)}} €
+        {{coutProductionPortion}} €
       </td>
     </tr>
     <tr class="text-center">
@@ -102,7 +102,7 @@
         Prix de vente par portion HT
       </td>
       <td>
-        {{roundNumber(globalFT.header.prixDeVentePortionHT)}} €
+        {{prixDeVentePortionHT}} €
       </td>
     </tr>
     <tr class="text-center">
@@ -110,7 +110,7 @@
         Prix de vente total HT
       </td>
       <td>
-        {{roundNumber(globalFT.header.prixDeVenteTotalHT)}} €
+        {{prixDeVenteTotalHT}} €
       </td>
     </tr>
     <tr class="text-center">
@@ -118,7 +118,7 @@
         Prix de vente par portion TTC
       </td>
       <td>
-        {{roundNumber(globalFT.header.prixDeVentePortionTTC)}} €
+        {{prixDeVentePortionTTC}} €
       </td>
     </tr>
     <tr class="text-center">
@@ -126,7 +126,7 @@
         Prix de vente total TTC
       </td>
       <td>
-        {{roundNumber(globalFT.header.prixDeVenteTotalTTC)}} €
+        {{prixDeVenteTotalTTC}} €
       </td>
     </tr>
     <tr  class="text-center">
@@ -134,7 +134,7 @@
         Seuil de rentabilité
       </td>
       <td>
-        {{globalFT.header.seuilRentabilite}} portions
+        {{seuilRentabilite}} portions
       </td>
     </tr>
     <tr class="text-center">
@@ -142,7 +142,7 @@
         Durée totale
       </td>
       <td>
-        {{roundNumber(globalFT.header.dureeTotal)}} min
+        {{dureeTotal}} min
       </td>
     </tr>
   </tbody>

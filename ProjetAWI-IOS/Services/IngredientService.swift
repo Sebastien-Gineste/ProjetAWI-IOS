@@ -78,6 +78,7 @@ class IngredientService {
     }
     
     func deleteIngredient(id : String){
+        // TO DO : impact catégorie
         firestore.collection("ingredients").document(id).delete() {
             (error) in if let _ = error {
                 self.sendResultList(result: .failure(.deleteError))

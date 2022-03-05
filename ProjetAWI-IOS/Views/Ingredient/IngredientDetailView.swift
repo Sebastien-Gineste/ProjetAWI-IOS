@@ -91,6 +91,7 @@ struct IngredientDetailView: View {
                             self.intent.intentToChange(categorie: self.categorieIngredientViewModel.tabCategorieIngredient[value])
                         })
                     }
+                    // TO DO : Add catégorie
                     HStack {
                         NavigationLink(destination: MultipleSelectionAllergène(items: self.allergèneViewModel.tabAllergène,selections: $ingredient.listAllergene)){
                             HStack {

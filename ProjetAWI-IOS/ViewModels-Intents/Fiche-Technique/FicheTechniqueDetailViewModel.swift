@@ -44,7 +44,8 @@ class FicheTechniqueViewModel : ObservableObject, Subscriber, FicheTechniqueServ
     var prixDeVentePortion : Double {return ficheTechnique.header.prixDeVentePortionHT}
     var beneficeTotal : Double {return ficheTechnique.header.beneficeTotal}
     var beneficePortion : Double {return ficheTechnique.header.beneficeParPortion}
-    
+    var coutFluide : Double {return ficheTechnique.header.coutFluide}
+
     
     @Published var nomPlat : String
     @Published var categorie : String

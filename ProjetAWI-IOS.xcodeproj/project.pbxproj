@@ -106,6 +106,7 @@
 		6FBF527427D34A3F00EB79E8 /* ChoixAjoutIngredientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBF527327D34A3F00EB79E8 /* ChoixAjoutIngredientView.swift */; };
 		6FBF527627D36D1500EB79E8 /* EtapeIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBF527527D36D1500EB79E8 /* EtapeIntent.swift */; };
 		6FBF527827D393AD00EB79E8 /* MutipleSelectionIngredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBF527727D393AD00EB79E8 /* MutipleSelectionIngredient.swift */; };
+		6FBF527A27D41CED00EB79E8 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBF527927D41CED00EB79E8 /* Double.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -208,6 +209,7 @@
 		6FBF527327D34A3F00EB79E8 /* ChoixAjoutIngredientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoixAjoutIngredientView.swift; sourceTree = "<group>"; };
 		6FBF527527D36D1500EB79E8 /* EtapeIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EtapeIntent.swift; sourceTree = "<group>"; };
 		6FBF527727D393AD00EB79E8 /* MutipleSelectionIngredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutipleSelectionIngredient.swift; sourceTree = "<group>"; };
+		6FBF527927D41CED00EB79E8 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -336,6 +338,7 @@
 				6FB6534527C6DB870074EC91 /* String.swift */,
 				6FB6536927CCF0710074EC91 /* MultipleSelectionRow.swift */,
 				6F124F1627D0340800DF8BE9 /* PDF.swift */,
+				6FBF527927D41CED00EB79E8 /* Double.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -692,6 +695,7 @@
 				6FB6534627C6DB870074EC91 /* String.swift in Sources */,
 				6FB6534427C67CE90074EC91 /* IngredientListView.swift in Sources */,
 				6FB6532D27C676010074EC91 /* StoreIntent.swift in Sources */,
+				6FBF527A27D41CED00EB79E8 /* Double.swift in Sources */,
 				6F124F0C27D0125A00DF8BE9 /* DenreeEtiquette.swift in Sources */,
 				6FB6533227C676510074EC91 /* PreferenceView.swift in Sources */,
 				6FB6536127CBE6980074EC91 /* IngredientCreateView.swift in Sources */,
