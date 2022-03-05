@@ -203,13 +203,13 @@ struct FicheTechniqueDetailView : View{
                     }
                     if self.isUpdate {
                         Section(header : Text("Options")){
-                            NavigationLink(destination:PrintFicheView()){
+                            NavigationLink(destination:PrintFicheView(fiche: ficheTechniqueVM)){
                                 Text("Imprimer Fiche")
                             }
-                            NavigationLink(destination:PrintEtiquetteView()){
+                            NavigationLink(destination:PrintEtiquetteView(fiche: ficheTechniqueVM)){
                                 Text("Imprimer Etiquette")
                             }
-                            NavigationLink(destination:VenteView()){
+                            NavigationLink(destination:VenteView(fiche: ficheTechniqueVM)){
                                 Text("Vendre")
                             }
                             

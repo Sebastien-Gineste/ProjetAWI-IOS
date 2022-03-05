@@ -25,8 +25,12 @@ struct PrintEtiquetteView : View {
 
     func toggle(){isChecked = !isChecked}
     
-    init(){
-        self.etiquette = EtiquetteViewModel(idficheReference: "test", nomPlat: "test", listDenree: [])
+    init(fiche : FicheTechniqueViewModel){
+        let listDenree : [DenreeEtiquette] = fiche.getListDenree().map{
+            (value) -> DenreeEtiquette in
+            return DenreeEtiquette(nom: value.ingredient.nomIngredient, isAllergene: value.ingredient.listAllergene.count != 0)
+        }
+        self.etiquette = EtiquetteViewModel(idficheReference: fiche.id, nomPlat: fiche.nomPlat, listDenree: listDenree)
         self.intent = EtiquetteIntent()
         self.intent.addObserver(etiquette)
     }
@@ -90,13 +94,23 @@ struct PrintEtiquetteView : View {
             var headHTML = ""
             if let fileURL = Bundle.main.url(forResource: "head-etiquette", withExtension: "html") {
                 if let fileContents = try? String(contentsOf: fileURL) {
-                    headHTML = fileContents.replacingOccurrences(of: "{{idEtiquette}}", with: self.idEtiquette)
+                    let idHTML = fileContents.replacingOccurrences(of: "{{idEtiquette}}", with: self.idEtiquette)
+                    let nameHTML = idHTML.replacingOccurrences(of: "{{name}}", with: self.etiquette.nomPlat)
+                    let dateHTML = nameHTML.replacingOccurrences(of: "{{date}}", with: self.etiquette.dateCreation)
+                    headHTML = dateHTML
                 }
             }
             var denreeHTML = ""
             if let fileURL = Bundle.main.url(forResource: "denree", withExtension: "html") {
                 if let fileContents = try? String(contentsOf: fileURL) {
-                    denreeHTML = fileContents
+                    let denreeFileHTML = fileContents
+                    for denree in self.etiquette.listDenree {
+                        if denree.isAllergene {
+                            denreeHTML += denreeFileHTML.replacingOccurrences(of: "{{nomIngredient}}", with: "<b>"+denree.nom+"</b>")
+                        } else {
+                            denreeHTML += denreeFileHTML.replacingOccurrences(of: "{{nomIngredient}}", with: denree.nom)
+                        }
+                    }
                 }
             }
             var footerHTML = ""
@@ -107,10 +121,7 @@ struct PrintEtiquetteView : View {
             }
             for _ in 0..<self.etiquette.nombreEtiquete{
                 html += headHTML
-                // TO DO : Iterate étape
-                for _ in 0...12 {
-                    html += denreeHTML
-                }
+                html += denreeHTML
                 html += footerHTML
             }
             PDF.createPDF(nom : "etiquette", html: html){ link in

@@ -55,6 +55,10 @@ class FicheTechniqueViewModel : ObservableObject, Subscriber, FicheTechniqueServ
         return ficheTechnique.header.isValid
     }
     
+    var id : String {
+        return ficheTechnique.header.id
+    }
+    
     @Published var isCalculCharge : Bool
     @Published var coutMatiere : Double
     @Published var dureeTotal : Double

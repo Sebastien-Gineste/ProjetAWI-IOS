@@ -17,13 +17,14 @@ protocol EtiquetteServiceObserver{
 class EtiquetteService {
     private let firestore = Firestore.firestore()
     private var tabObserver : [EtiquetteServiceObserver] = []
+    private let venteService : VenteService = VenteService()
 
     func addEtiquette(etiquette : Etiquette) -> String{
         let ref = firestore.collection("etiquettes").addDocument(data: EtiquetteDTO.transformToDTO(etiquette)){
             (error) in if let _ = error {
                 self.sendResult(result: .failure(.createError))
             } else {
-                // TO DO : Create Vente
+                self.venteService.addVente(vente: Vente(dateAchat: etiquette.dateCreation, idficheReference: etiquette.idficheReference, nbrPlatVendu: etiquette.nombreEtiquete))
                 self.sendResult(result: .success("Création effectué"))
             }
         }

@@ -19,8 +19,8 @@ struct VenteView : View {
         return formatter
     }()
         
-    init(){
-        self.vente = VenteViewModel(idficheReference: "test")
+    init(fiche : FicheTechniqueViewModel){
+        self.vente = VenteViewModel(idficheReference: fiche.id)
         self.intent = VenteIntent()
         self.intent.addObserver(vente)
     }

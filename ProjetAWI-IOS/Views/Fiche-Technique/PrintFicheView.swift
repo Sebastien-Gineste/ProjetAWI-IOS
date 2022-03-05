@@ -11,11 +11,11 @@ import SwiftUI
 struct PrintFicheView : View {
 
     @State var isChecked:Bool = false
-
+    var fiche : FicheTechniqueViewModel
     func toggle(){isChecked = !isChecked}
     
-    init(){
-        
+    init(fiche : FicheTechniqueViewModel){
+        self.fiche = fiche
     }
     
     var body: some View {
