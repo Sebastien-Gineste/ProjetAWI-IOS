@@ -1,31 +1,24 @@
 
-<tr *ngFor="let progression of globalFT.progression ; let index = index">
+<tr>
   <td>
-    <div *ngFor="let etapeSousglobalFT of progression.etapes"> <!-- une seule si étape normale -->
-      <p *ngFor="let denree of etapeSousglobalFT.contenu">{{degft}}<br></p>
-    </div>
+    {{denree}}
   </td>
-  <td class="text-center" >
-    <div *ngFor="let etapeSousglobalFT of progression.etapes"> <!-- une seule si étape normale -->
-      <p *ngFor="let denree of etapeSousglobalFT.contenu">{{dgfe}}<br></p>
-    </div>
+  <td>
+    {{unité}}
   </td>
-  <td class="text-center" >
-    <div *ngFor="let etapeSousglobalFT of progression.etapes"> <!-- une seule si étape normale -->
-      <p *ngFor="let denree of etapeSousglobalFT.contenu">{{degfr}}<br></p>
-    </div>
+  <td>
+    {{quantité}}
   </td>
-  <td class="text-center">
-    {{index+1}}
+  <td>
+    {{phase}}
   </td>
   <td >
-    <span *ngIf="progression.identification !== undefined" class="font-weight-bold " style="text-decoration: underline">{{psion.}} :</span>
-    <p *ngFor="let etapeSousglobalFT of progression.etapes"> <!-- une seule si étape normale -->
-      <span class="font-weight-bold">{{etSnom}} :</span><br>
-      {{iption}}
+    <span style="text-decoration: underline">{{nom}} :</span>
+    <p>
+      {{description}}
     </p>
   </td>
-  <td class="text-center">
-    {{proeTotal}}'
+  <td>
+    {{temps}}'
   </td>
 </tr>

@@ -86,33 +86,41 @@ struct PrintEtiquetteView : View {
             .navigationBarTitle(Text("Impression Etiquette"), displayMode: .inline)
     }
     
+    fileprivate func headEtiquette(_ headHTML: inout String) {
+        if let fileURL = Bundle.main.url(forResource: "head-etiquette", withExtension: "html") {
+            if let fileContents = try? String(contentsOf: fileURL) {
+                let idHTML = fileContents.replacingOccurrences(of: "{{idEtiquette}}", with: self.idEtiquette)
+                let nameHTML = idHTML.replacingOccurrences(of: "{{name}}", with: self.etiquette.nomPlat)
+                let dateHTML = nameHTML.replacingOccurrences(of: "{{date}}", with: self.etiquette.dateCreation)
+                headHTML = dateHTML
+            }
+        }
+    }
+    
+    fileprivate func denreeEtiquette(_ denreeHTML: inout String) {
+        if let fileURL = Bundle.main.url(forResource: "denree", withExtension: "html") {
+            if let fileContents = try? String(contentsOf: fileURL) {
+                let denreeFileHTML = fileContents
+                for denree in self.etiquette.listDenree {
+                    if denree.isAllergene {
+                        denreeHTML += denreeFileHTML.replacingOccurrences(of: "{{nomIngredient}}", with: "<b>"+denree.nom+"</b>")
+                    } else {
+                        denreeHTML += denreeFileHTML.replacingOccurrences(of: "{{nomIngredient}}", with: denree.nom)
+                    }
+                }
+            }
+        }
+    }
+    
     func createEtiquette(){
         if isChecked {
             makeVente()
         } else {
             var html = ""
             var headHTML = ""
-            if let fileURL = Bundle.main.url(forResource: "head-etiquette", withExtension: "html") {
-                if let fileContents = try? String(contentsOf: fileURL) {
-                    let idHTML = fileContents.replacingOccurrences(of: "{{idEtiquette}}", with: self.idEtiquette)
-                    let nameHTML = idHTML.replacingOccurrences(of: "{{name}}", with: self.etiquette.nomPlat)
-                    let dateHTML = nameHTML.replacingOccurrences(of: "{{date}}", with: self.etiquette.dateCreation)
-                    headHTML = dateHTML
-                }
-            }
+            headEtiquette(&headHTML)
             var denreeHTML = ""
-            if let fileURL = Bundle.main.url(forResource: "denree", withExtension: "html") {
-                if let fileContents = try? String(contentsOf: fileURL) {
-                    let denreeFileHTML = fileContents
-                    for denree in self.etiquette.listDenree {
-                        if denree.isAllergene {
-                            denreeHTML += denreeFileHTML.replacingOccurrences(of: "{{nomIngredient}}", with: "<b>"+denree.nom+"</b>")
-                        } else {
-                            denreeHTML += denreeFileHTML.replacingOccurrences(of: "{{nomIngredient}}", with: denree.nom)
-                        }
-                    }
-                }
-            }
+            denreeEtiquette(&denreeHTML)
             var footerHTML = ""
             if let fileURL = Bundle.main.url(forResource: "footer-etiquette", withExtension: "html") {
                 if let fileContents = try? String(contentsOf: fileURL) {
