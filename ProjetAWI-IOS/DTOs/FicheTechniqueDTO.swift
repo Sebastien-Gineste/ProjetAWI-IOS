@@ -87,6 +87,16 @@ struct FicheTechniqueDTO {
         return tab
     }
     
+    static func docToDTO(doc : [String : Any], id : String) -> FicheTechniqueDTO {
+        return FicheTechniqueDTO(header: HeaderFTDTO.docToDTO(doc: doc["header"] as! NSDictionary),
+                                 id: id,
+                                 materielSpecifique: doc["materielSpecifique"] as? String ?? nil,
+                                 materielDressage: doc["materielDressage"] as? String ?? nil,
+                                 progression: (doc["progression"] as! [NSDictionary] ).map{
+             (docEtapeFiche )-> EtapeFicheDTO in
+            return EtapeFicheDTO.docToDTO(doc: docEtapeFiche)
+        })
+    }
     
     static func docToDTO(doc : QueryDocumentSnapshot) -> FicheTechniqueDTO {
         return FicheTechniqueDTO(header: HeaderFTDTO.docToDTO(doc: doc["header"] as! NSDictionary),

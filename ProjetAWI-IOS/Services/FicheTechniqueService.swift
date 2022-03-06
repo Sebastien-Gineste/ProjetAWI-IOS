@@ -118,6 +118,25 @@ class FicheTechniqueService {
         }
     }
     
+    func getFicheTechniqueBD(id : String, action : ((FicheTechnique) -> Void)?){
+        firestore.collection("fiche-techniques").document("\(id)").getDocument(){
+            (querySnapshot, err) in
+            if let err = err {
+                print("Error getting document : \(err)")
+                self.sendResultElement(result: .failure(.inputError))
+            }
+            else{
+                if let data = querySnapshot?.data() {
+                    action?(FicheTechniqueDTO.transformDTO(
+                        FicheTechniqueDTO.docToDTO(doc: data, id:querySnapshot!.documentID)))
+                }
+                else{
+                    self.sendResultElement(result: .failure(.inputError))
+                }
+            }
+        }
+    }
+    
     // Récupère une fiche technique pour la mettre en étape d'une autre fiche
     // Elle ne doit pas contenir de sous-fiche technique
     func getFicheTechnique(id : String) -> FicheTechnique?{

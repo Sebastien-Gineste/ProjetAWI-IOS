@@ -124,6 +124,36 @@ class IngredientService {
             }
     }
     
+    func getIngredientsByName(nomIngrédient : String, action : ((Ingredient?) -> Void)?) {
+            firestore.collection("ingredients").whereField("nomIngredient", isEqualTo: nomIngrédient)
+            .getDocuments(){
+                (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting document : \(err)")
+                    action?(nil)
+                }
+                else{
+                    let ingredients = querySnapshot!.documents.map{
+                        (doc) -> Ingredient in
+                        return IngredientDTO.transformDTO(
+                            IngredientDTO(id: doc.documentID,
+                                          nomIngredient: doc["nomIngredient"] as? String ?? "",
+                                          prixUnitaire: doc["prixUnitaire"] as? Double ?? 0,
+                                          qteIngredient: doc["qteIngredient"] as? Double ?? 0,
+                                          unite: doc["unite"] as? String ?? "",
+                                          categorie: doc["categorie"] as? String ?? "",
+                                          listAllergene: doc["listAllergene"] as? [String] ?? []))
+                    }
+                    if ingredients.count > 0 {
+                        action?(ingredients[0])
+                    } else {
+                        action?(nil)
+                    }
+                }
+            }
+    }
+
+    
     // Récupère un ingrédient par son id ou retourn nil si il ne le trouve pas 
     func getIngredient(id : String) -> Ingredient?{
         let ingredients : [Ingredient] = tabIngredient.filter{ (ingredient) -> Bool in
