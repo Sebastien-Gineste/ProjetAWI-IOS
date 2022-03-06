@@ -146,7 +146,7 @@ public class UtilisateurService : ObservableObject{
             (error) in if let _ = error {
                 self.sendResultList(result: .failure(.deleteError))
             } else{
-                self.sendResultList(result: .success("Suppresion effectué !"))
+                self.sendResultList(result: .success("Suppresion effectué ! "))
                 if id == self.currentUtilisateur.id {
                     self.deconnexion()
                 }
