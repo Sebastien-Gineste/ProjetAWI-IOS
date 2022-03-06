@@ -25,14 +25,12 @@ struct MaterielView : View {
             Form {
                 Section(header: Text("Materiel Spécifique")){
                     TextEditor(text: $ficheTechniqueVM.materielSpecifique)
-                        .foregroundColor(.white)
                         .disabled(!isUpdate)
                         .frame(minHeight:200)
                 }
                 
                 Section(header : Text("Materiel Dressage")){
                     TextEditor(text: $ficheTechniqueVM.materielDressage)
-                        .foregroundColor(.white)
                         .disabled(!isUpdate)
                         .frame(minHeight:200)
                 }

@@ -146,7 +146,7 @@ class FicheTechniqueViewModel : ObservableObject, Subscriber, FicheTechniqueServ
             self.ficheTechniqueService.addFicheTechnique(fiche: self.ficheTechnique, newCategorie: newCategorie)
             break
         case .deleteFicheTechnique:
-            self.ficheTechniqueService.removeFicheTechnique(id: self.ficheTechnique.header.id)
+            self.ficheTechniqueService.removeFicheTechnique(id: self.ficheTechnique.header.id, categorie: self.ficheTechnique.header.categorie)
             
             break
         case .updateFicheTechnique(let isChangeCategorie):
@@ -198,7 +198,6 @@ class FicheTechniqueViewModel : ObservableObject, Subscriber, FicheTechniqueServ
             if self.ficheTechnique.header.coefCoutProduction != coef {
                 self.coefCoutProduction = self.ficheTechnique.header.coefCoutProduction
                 self.result = .failure(.inputError)
-                print("\(self.result)")
             }
             
         case .changingCoefVente(let coef):

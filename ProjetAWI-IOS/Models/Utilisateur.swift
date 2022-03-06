@@ -28,6 +28,9 @@ class Utilisateur : ObservableObject{
         return email.isValidEmail() && nom.count > 1 && prenom.count > 1
     }
     
+    /**
+                Vérifie si le modèle est valid
+     */
     var isValid : Bool{
         return email.isValidEmail() && motDePasse.isValidPassword() && nom.count > 1 && prenom.count > 1
     }

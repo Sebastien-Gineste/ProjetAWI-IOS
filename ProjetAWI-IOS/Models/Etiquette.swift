@@ -75,6 +75,9 @@ class Etiquette {
         self.id = id
     }
     
+    /**
+                  Vérifie si un modèle est valide
+     */
     var isValid : Bool{
         return dateCreation.count == 10 && idficheReference.count > 0 && nombreEtiquete > 0 && nomPlat.count > 0
     }

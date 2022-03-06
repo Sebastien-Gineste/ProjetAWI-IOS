@@ -68,7 +68,6 @@ struct EtapeDetailView : View{
                     VStack{
                         Text("Description : ")
                         TextEditor(text: $etapeVM.descriptionEtape)
-                            .foregroundColor(.white)
                             .frame(minHeight:100)
                             .textFieldStyle(.roundedBorder)
                     }
@@ -98,7 +97,6 @@ struct EtapeDetailView : View{
                                 Text("\(denree.ingredient.nomIngredient)").bold()
                                 LazyVGrid(columns: columns){
                                     TextField("Nombre ",value: $etapeVM.contenu[index].nombre,formatter:formatter).onSubmit {
-                                        print("submit for \(denree.ingredient.nomIngredient)")
                                         intent.intentToChange(id: index, denreeNumber: etapeVM.contenu[index].nombre )
                                     }.disabled(!isUpdate && !isCreate || isEtapeSousFicheTechnique).textFieldStyle(.roundedBorder)
                                     Text(" \(denree.ingredient.unite) à \(String(format: "%.2f",denree.ingredient.prixUnitaire).replaceComa())€/U")
@@ -107,7 +105,6 @@ struct EtapeDetailView : View{
                         }
                         .onDelete{ indexSet in
                             for index in indexSet {
-                                print("\(index)")
                                 if isUpdate || isCreate {
                                     intent.intentToRemoveDenree(id: index)
                                 }
@@ -127,7 +124,6 @@ struct EtapeDetailView : View{
                 case let .failure(error):
                     switch error {
                     case .inputError, .addDenreeError :
-                        print("error : \(error)")
                         self.alertMessage = "\(error)"
                         self.showingAlert = true
                     case .noError :

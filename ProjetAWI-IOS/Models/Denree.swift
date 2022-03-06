@@ -27,6 +27,9 @@ class Denree {
         }
     }
     
+    /**
+                Vérifie si le modèle est valide
+     */
     var isValid : Bool {
         return nombre > 0 
     }

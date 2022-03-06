@@ -133,7 +133,6 @@ struct UtilisateurDetailView : View {
             .padding()
             .onChange(of: utilisateurViewModel.result){
                 result in
-                print("result : \(result)")
                 switch result {
                 case let .success(msg):
                     self.alertMessage = msg

@@ -55,7 +55,9 @@ class Vente {
         self.nbrPlatVendu = nbrPlatVendu
         self.id = id
     }
-    
+    /**
+                Vérifie si le modèle est valide
+     */
     var isValid : Bool{
         return dateAchat.count == 10 && idficheReference.count > 0 && nbrPlatVendu > 0
     }

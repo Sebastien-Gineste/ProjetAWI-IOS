@@ -89,7 +89,7 @@ public class UtilisateurService : ObservableObject{
     private init(){
         self.utilisateurs = []
         self.currentUtilisateur = Utilisateur(
-            email: "admin@gmail.com", nom: "admin", prenom: "admin", type: .Admin, id: "")
+            email: "", nom: "", prenom: "", type: .User, id: "")
     }
     
     func connexion(email : String, mdp : String){
@@ -128,7 +128,6 @@ public class UtilisateurService : ObservableObject{
     func createUtilisateur(util : Utilisateur){
         firestore.collection("users").addDocument(data: UtilisateurDTO.transformToDTO(util)){
             (error) in
-            print("création go go go ")
             if let _ = error {
                 self.sendResult(result: .failure(.createError))
             } else {
@@ -178,8 +177,8 @@ public class UtilisateurService : ObservableObject{
             (error) in if let _ = error {
                 self.sendResult(result: .failure(.updateError))
             } else {
-                self.sendResult(result: .success("Mise à jour effectué du compte from result"))
-                self.sendResultList(result: .success("Mise à jour effectué du compte from list"))
+                self.sendResult(result: .success("Mise à jour effectué du compte"))
+                self.sendResultList(result: .success("Mise à jour effectué du compte"))
             }
         }
     }

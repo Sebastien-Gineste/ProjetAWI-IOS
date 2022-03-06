@@ -17,6 +17,9 @@ protocol DescriptionObserver {
 class Description {
     var observer : DescriptionObserver?
     
+    /**
+                Vérifie si le modèle est valide
+     */
     var isValid : Bool {
         return nom.count > 1 && description.count > 1 && tempsPreparation > 0
     }

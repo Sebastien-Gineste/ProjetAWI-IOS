@@ -92,13 +92,14 @@ class FicheTechniqueService {
         }
     }
     
-    func removeFicheTechnique(id : String){
+    func removeFicheTechnique(id : String, categorie : String ){
         firestore.collection("fiche-techniques").document("\(id)").delete() {
             (error) in if let _ = error {
                 self.sendResultElement(result: .failure(.deleteError))
             }
             else{
                 self.sendResultList(result: .success("Supression effectuée !"))
+                self.checkIfDeleteCategorieRecette(categorie: categorie)
             }
         }
       

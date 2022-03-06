@@ -65,7 +65,7 @@ class FicheTechniqueListViewModel : ObservableObject, Subscriber, FicheTechnique
             break
         case .deleteFicheTechnique(let id):
             // faire action
-            self.ficheTechniqueService.removeFicheTechnique(id : self.tabFicheTechnique[id].header.id)
+            self.ficheTechniqueService.removeFicheTechnique(id : self.tabFicheTechnique[id].header.id, categorie: self.tabFicheTechnique[id].header.categorie)
         }
         return .none
     }

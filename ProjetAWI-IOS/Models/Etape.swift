@@ -18,8 +18,6 @@ class Etape {
                     return denree.ingredient.nomIngredient == nom
                 }).count
                 
-                print("nbr occurence (\(nom)) : \(nbrIngredientMemeNom)")
-                
                 if nbrIngredientMemeNom > 1 { // il y a une occurence => dupplication => erreur
                     self.contenu = oldValue
                     return
@@ -28,6 +26,9 @@ class Etape {
         }
     }
     
+    /**
+                Vérifie si le modèle est valide
+     */
     var isValid : Bool {
         return description.isValid && contenu.count > 0 && contenu.filter {
             $0.isValid // toutes les denrées doivent être valide

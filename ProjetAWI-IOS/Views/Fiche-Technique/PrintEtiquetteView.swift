@@ -127,6 +127,7 @@ struct PrintEtiquetteView : View {
                     footerHTML = fileContents
                 }
             }
+            // Cr
             for _ in 0..<self.etiquette.nombreEtiquete{
                 html += headHTML
                 html += denreeHTML

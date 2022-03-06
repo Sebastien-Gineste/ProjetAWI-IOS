@@ -26,9 +26,9 @@ struct ConnexionView : View, UserServiceResultObserver{
             Spacer()
             VStack(alignment:.center){
                 Text("E-mail : ")
-                TextField("test@gmail.com",text: $email).textFieldStyle(.roundedBorder).autocapitalization(.none).padding(10).foregroundColor(.white)
+                TextField("test@gmail.com",text: $email).textFieldStyle(.roundedBorder).autocapitalization(.none).padding(10)
                 Text("Mot de passe :")
-                SecureField("Mot de passe", text: $motDePasse).textFieldStyle(.roundedBorder).autocapitalization(.none).padding(10).foregroundColor(.white)
+                SecureField("Mot de passe", text: $motDePasse).textFieldStyle(.roundedBorder).autocapitalization(.none).padding(10)
                 
                 Button("Connexion"){
                     UtilisateurService.instance.connexion(email: email, mdp: motDePasse)
@@ -42,7 +42,6 @@ struct ConnexionView : View, UserServiceResultObserver{
         }.padding()
             .onChange(of: result){
                 result in
-                print("result : \(result)")
                 switch result {
                 case let .success(msg):
                     self.alertMessage = msg

@@ -91,7 +91,6 @@ class AllergèneService {
                 if let _ = error {
                     self.sendResultElement(result: .failure(.updateError))
                 } else {
-                    print("ok")
                     self.sendResultElement(result: .success("Mise a jour effectué"))
                 }
             }

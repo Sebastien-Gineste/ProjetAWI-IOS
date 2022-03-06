@@ -92,7 +92,10 @@ class Ingredient {
     var coutStock : Double {
         return self.qteIngredient * self.qteIngredient
     }
-    
+    /**
+                Vérifie si le model est valide
+     
+     */
     var isValid : Bool{
         return nomIngredient.count >= 1 && prixUnitaire >= 0 && prixUnitaire >= 0 && qteIngredient >= 0 && unite.count >= 1 && categorie.count >= 1
     }

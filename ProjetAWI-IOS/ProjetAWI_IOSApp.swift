@@ -9,7 +9,6 @@ import SwiftUI
 import Firebase
 
 
-
 @main
 struct ProjetAWI_IOSApp: App {
     

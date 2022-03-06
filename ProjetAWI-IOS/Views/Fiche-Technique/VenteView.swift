@@ -60,7 +60,6 @@ struct VenteView : View {
                     self.showingAlert = false
                 }
             }
-
             Spacer()
             Button("Vendre"){
                 makeVente()

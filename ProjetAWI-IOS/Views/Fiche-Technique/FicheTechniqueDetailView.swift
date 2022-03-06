@@ -152,7 +152,7 @@ struct FicheTechniqueDetailView : View{
                                 }
                             }
                             else{
-                                Picker(selection: $selectedIndex, label: Text("Categorie")) {
+                                Picker(selection: $selectedIndex, label: Text("Categorie :")) {
                                     ForEach(Array(self.categorieRecetteVM.tabCategorieRecette.enumerated()), id: \.offset) { index,categorie in
                                         Text(categorie)
                                     }
@@ -212,7 +212,6 @@ struct FicheTechniqueDetailView : View{
                             }
                             .onDelete{ indexSet in
                                 for index in indexSet {
-                                    print("\(index)")
                                     if isUpdate {
                                         intent.intentToRemoveEtape(id: index)
                                     }
@@ -241,10 +240,12 @@ struct FicheTechniqueDetailView : View{
                             NavigationLink(destination:PrintFicheView(fiche: ficheTechniqueVM, vmIngredient: vmIngredient)){
                                 Text("Imprimer Fiche")
                             }
-                            NavigationLink(destination:PrintEtiquetteView(fiche: ficheTechniqueVM)){
-                                Text("Imprimer Etiquette")
-                            }
+                           
                             if user.currentUtilisateur.estConnecte() {
+                                NavigationLink(destination:PrintEtiquetteView(fiche: ficheTechniqueVM)){
+                                    Text("Imprimer Etiquette")
+                                }
+                                
                                 NavigationLink(destination:VenteView(fiche: ficheTechniqueVM)){
                                     Text("Vendre")
                                 }

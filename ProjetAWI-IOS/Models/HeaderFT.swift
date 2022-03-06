@@ -25,8 +25,11 @@ protocol HeaderFTObserver{
 
 class HeaderFT{
     
+    /**
+                Vérifie si le modèle est valide
+     */
     var isValid : Bool {
-        return nomPlat.count > 1 && nomAuteur.count > 1 && nbrCouvert > 0 && coutMatiere > 0 && dureeTotal > 0 && categorie.count > 1
+        return nomPlat.count > 1 && nomAuteur.count > 1 && nbrCouvert > 0 && categorie.count > 1
     }
     
     var observer : HeaderFTObserver?
@@ -166,7 +169,7 @@ class HeaderFT{
          nomAuteur : String,
          nbrCouvert : Int,
          id : String = "",
-         categorie : String = "Plat",
+         categorie : String = "",
          isCalculCharge : Bool = true,
          coutMatiere : Double = 0,
          dureeTotal : Double = 0,

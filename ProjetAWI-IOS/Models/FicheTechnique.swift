@@ -58,6 +58,9 @@ class FicheTechnique {
         return progression.filter{$0.isValid}.count == progression.count && progression.count > 0
     }
     
+    /**
+                Vérifie si le modèle est valide
+     */
     var isValid : Bool {
         return header.isValid && isProgressionValid
     }

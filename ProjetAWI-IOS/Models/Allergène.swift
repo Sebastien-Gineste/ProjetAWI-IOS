@@ -29,6 +29,9 @@ class Allergène {
         self.id = id
     }
     
+    /**
+                Vérifie si le modèle est valide
+     */
     var isValid : Bool{
         return nom.count > 1 
     }

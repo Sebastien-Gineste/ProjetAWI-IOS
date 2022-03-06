@@ -35,7 +35,6 @@
 		6F3B82A827BE8F4E00428123 /* FicheTechniqueListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82A727BE8F4E00428123 /* FicheTechniqueListView.swift */; };
 		6F3B82AA27BE916400428123 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82A927BE916400428123 /* MenuView.swift */; };
 		6F3B82AC27BFB98200428123 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82AB27BFB98200428123 /* UIColor.swift */; };
-		6F3B82AE27BFBB0C00428123 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82AD27BFBB0C00428123 /* Theme.swift */; };
 		6F3B82B327BFC47600428123 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3B82B227BFC47600428123 /* Color.swift */; };
 		6F3B82B827C10DCC00428123 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F3B82B727C10DCC00428123 /* GoogleService-Info.plist */; };
 		6F3B82BB27C10F0F00428123 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 6F3B82BA27C10F0F00428123 /* FirebaseFirestore */; };
@@ -140,7 +139,6 @@
 		6F3B82A727BE8F4E00428123 /* FicheTechniqueListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FicheTechniqueListView.swift; sourceTree = "<group>"; };
 		6F3B82A927BE916400428123 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		6F3B82AB27BFB98200428123 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
-		6F3B82AD27BFBB0C00428123 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		6F3B82B227BFC47600428123 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		6F3B82B727C10DCC00428123 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6F3B82BE27C10F8300428123 /* UtilisateurDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilisateurDTO.swift; sourceTree = "<group>"; };
@@ -446,7 +444,6 @@
 			isa = PBXGroup;
 			children = (
 				6F3B82B227BFC47600428123 /* Color.swift */,
-				6F3B82AD27BFBB0C00428123 /* Theme.swift */,
 				6F3B82AB27BFB98200428123 /* UIColor.swift */,
 			);
 			path = Design;
@@ -681,7 +678,6 @@
 				6F7B5A1627CFBF9E009E59BA /* Vente.swift in Sources */,
 				6FBF527627D36D1500EB79E8 /* EtapeIntent.swift in Sources */,
 				6F124F0E27D0186900DF8BE9 /* EtiquetteDTO.swift in Sources */,
-				6F3B82AE27BFBB0C00428123 /* Theme.swift in Sources */,
 				6FB6535027C76DAD0074EC91 /* AllergèneListView.swift in Sources */,
 				6F124F0627CFD9F800DF8BE9 /* FicheTechniqueDetailView.swift in Sources */,
 				6F3B82B327BFC47600428123 /* Color.swift in Sources */,
