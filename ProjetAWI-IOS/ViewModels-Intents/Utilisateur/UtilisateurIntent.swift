@@ -68,7 +68,6 @@ struct UtilisateurIntent  {
     }
     
     func intentToUpdateDatabase(){
-        print("state send 1 SEULE FOIS")
         self.stateElement.send(UtilisateurIntentState.updateDatabase)
     }
     

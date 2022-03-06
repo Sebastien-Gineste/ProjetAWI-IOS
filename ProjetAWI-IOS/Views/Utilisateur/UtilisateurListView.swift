@@ -56,7 +56,7 @@ struct UtilisateurListView : View {
                 HStack{
                     LazyVGrid(columns: columns){
                         EditButton()
-                        NavigationLink(destination:UtilisateurDetailView(), isActive: $isActiveCreateView){
+                        NavigationLink(destination:UtilisateurDetailView(isFromList:false), isActive: $isActiveCreateView){
                             Text("Créer un compte")
                         }
                     }

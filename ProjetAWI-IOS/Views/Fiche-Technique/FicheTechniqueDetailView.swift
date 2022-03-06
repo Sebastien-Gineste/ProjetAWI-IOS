@@ -15,6 +15,7 @@ struct FicheTechniqueDetailView : View{
     @ObservedObject var ficheTechniqueVM : FicheTechniqueViewModel
     @ObservedObject var categorieRecetteVM : CategorieRecetteViewModel
     @ObservedObject var vmIngredient : IngredientListViewModel
+    @ObservedObject var user : UtilisateurService = UtilisateurService.instance
     
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
@@ -86,15 +87,23 @@ struct FicheTechniqueDetailView : View{
         }
     }
     
+    var disabledText : Bool {
+        return !user.currentUtilisateur.estConnecte() || (!isUpdate && !isCreate)
+    }
+    
+    var displayModif : Bool {
+        return user.currentUtilisateur.estConnecte() && (isCreate || isUpdate)
+    }
+    
     
     var body: some View {
         VStack {
             ScrollViewReader { p in
                 Form {
                     Section(header : HStack {
-                        Text("Informations générales").underline(isUpdate || isCreate, color: changeColor(isValid: ficheTechniqueVM.headerValid))
+                        Text("Informations générales").underline(displayModif, color: changeColor(isValid: ficheTechniqueVM.headerValid))
                         Spacer()
-                            if isCreate || isUpdate {
+                            if displayModif {
                                 Button () {
                                     ajoutCategorie = !ajoutCategorie
                                 } label : {
@@ -108,7 +117,7 @@ struct FicheTechniqueDetailView : View{
                                 TextField("Nom", text : $ficheTechniqueVM.nomPlat).onSubmit {
                                     intent.intentToChange(nomPlat: ficheTechniqueVM.nomPlat)
                                 }.textFieldStyle(.roundedBorder)
-                                .disabled(!isUpdate && !isCreate)
+                                .disabled(disabledText)
                             }
                         }
                         HStack{
@@ -116,20 +125,20 @@ struct FicheTechniqueDetailView : View{
                                 Text("Responsable :").frame(maxWidth: .infinity, alignment: .leading)
                                 TextField("Nom", text : $ficheTechniqueVM.nomAuteur).onSubmit {
                                     intent.intentToChange(nomAuteur: ficheTechniqueVM.nomAuteur)
-                                }.disabled(!isUpdate && !isCreate).textFieldStyle(.roundedBorder)
+                                }.disabled(disabledText).textFieldStyle(.roundedBorder)
                             }
                         }
                         HStack{
                             LazyVGrid(columns: columns){
                                 Text("Nombre de couvert :").frame(maxWidth: .infinity, alignment: .leading)
                                 
-                                if isUpdate || isCreate {
+                                if displayModif {
                                     Stepper("\(ficheTechniqueVM.couvert)",
                                             onIncrement: {intent.intentToChange(nbrCouvert: ficheTechniqueVM.couvert+1)},
                                             onDecrement: {intent.intentToChange(nbrCouvert: ficheTechniqueVM.couvert-1)}).textFieldStyle(.roundedBorder)
                                 }
                                 else{
-                                    TextField("Nom", value: $ficheTechniqueVM.couvert, formatter: formatter).disabled(!isUpdate && !isCreate).textFieldStyle(.roundedBorder)
+                                    TextField("Nom", value: $ficheTechniqueVM.couvert, formatter: formatter).disabled(disabledText).textFieldStyle(.roundedBorder)
                                 }
                             }
                         }
@@ -139,7 +148,7 @@ struct FicheTechniqueDetailView : View{
                                     Text("Categorie :").frame(maxWidth: .infinity, alignment: .leading)
                                     TextField("Nouvelle categorie", text: $nomNewCategorie).onSubmit(){
                                         self.intent.intentToChange(categorie: nomNewCategorie)
-                                    }
+                                    }.autocapitalization(.none)
                                 }
                             }
                             else{
@@ -152,14 +161,14 @@ struct FicheTechniqueDetailView : View{
                                     self.intent.intentToChange(categorie: self.categorieRecetteVM.tabCategorieRecette[value])
                                 })
                             }
-                        }.disabled(!isUpdate && !isCreate).textFieldStyle(.roundedBorder)
+                        }.disabled(disabledText).textFieldStyle(.roundedBorder)
                     }
                     
                     Section(header:
                         HStack {
-                            Text("Liste des étapes").underline(isUpdate || isCreate, color: changeColor(isValid: ficheTechniqueVM.progressionValid))
+                            Text("Liste des étapes").underline(displayModif, color: changeColor(isValid: ficheTechniqueVM.progressionValid))
                             Spacer()
-                            if isUpdate || isCreate {
+                            if displayModif {
                                 Button {
                                     editMode?.wrappedValue.toggle()
                                 } label : {
@@ -227,7 +236,7 @@ struct FicheTechniqueDetailView : View{
                             Text("Liste des denrées")
                         }
                     }
-                    if self.isUpdate {
+                    if self.isUpdate || !user.currentUtilisateur.estConnecte() {
                         Section(header : Text("Options")){
                             NavigationLink(destination:PrintFicheView(fiche: ficheTechniqueVM, vmIngredient: vmIngredient)){
                                 Text("Imprimer Fiche")
@@ -235,10 +244,11 @@ struct FicheTechniqueDetailView : View{
                             NavigationLink(destination:PrintEtiquetteView(fiche: ficheTechniqueVM)){
                                 Text("Imprimer Etiquette")
                             }
-                            NavigationLink(destination:VenteView(fiche: ficheTechniqueVM)){
-                                Text("Vendre")
+                            if user.currentUtilisateur.estConnecte() {
+                                NavigationLink(destination:VenteView(fiche: ficheTechniqueVM)){
+                                    Text("Vendre")
+                                }
                             }
-                            
                         }
                     }
                 }
@@ -267,32 +277,31 @@ struct FicheTechniqueDetailView : View{
                 }
             }
             
-            if isCreate {
-                Button("Enregistrer"){
-                    intent.intentToAddFicheTechnique(newCategorie: (ajoutCategorie ? nomNewCategorie : nil))
-                    self.presentationMode.wrappedValue.dismiss()
-                }.padding(20)
-            }
-            else{
-                HStack{
-                    
+            if user.currentUtilisateur.estConnecte() {
+                if isCreate {
                     Button("Enregistrer"){
-                        intent.intentToUpdateFicheTechnique(isChangeCategorie: oldCategorie != ficheTechniqueVM.categorie)
-                    }.padding(20)
-                    
-                    Button("\(isUpdate ? "Terminer" : "Modifier")"){
-                        self.isUpdate = !self.isUpdate
-                        editMode?.wrappedValue.setFalse()
-                    }.padding(20)
-                    
-                    Button("Supprimer"){
-                        intent.intentToDeleteFicheTechniqueFromDetail()
+                        intent.intentToAddFicheTechnique(newCategorie: (ajoutCategorie ? nomNewCategorie : nil))
                         self.presentationMode.wrappedValue.dismiss()
                     }.padding(20)
-                }.padding(20)
+                }
+                else{
+                    HStack{
+                        Button("Enregistrer"){
+                            intent.intentToUpdateFicheTechnique(isChangeCategorie: oldCategorie != ficheTechniqueVM.categorie)
+                        }.padding(20)
+                        
+                        Button("\(isUpdate ? "Terminer" : "Modifier")"){
+                            self.isUpdate = !self.isUpdate
+                            editMode?.wrappedValue.setFalse()
+                        }.padding(20)
+                        
+                        Button("Supprimer"){
+                            intent.intentToDeleteFicheTechniqueFromDetail()
+                            self.presentationMode.wrappedValue.dismiss()
+                        }.padding(20)
+                    }.padding(20)
+                }
             }
-            
-            
         }.onAppear(){
             self.ficheTechniqueVM.setObserverService()
         }.navigationBarTitle(Text("\(isCreate ? "Création d'une fiche technique" : "Détails de la fiche technique")"),displayMode: .inline)

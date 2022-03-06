@@ -39,21 +39,13 @@ public class UtilisateurService : ObservableObject{
     
     @Published var currentUtilisateur : Utilisateur{ // état courant de l'utilisateur
         didSet{
-            print("new value : \(currentUtilisateur.email)")
             emitCurrentUser()
-        }
-        willSet{
-            print("old value : \(currentUtilisateur.email)")
         }
     }
     
     private var utilisateurs : [Utilisateur]{
         didSet{
             emitListUser()
-            print("new value : \(utilisateurs.count)")
-        }
-        willSet{
-            print("old value : \(utilisateurs.count)")
         }
     }
     
@@ -108,9 +100,7 @@ public class UtilisateurService : ObservableObject{
                     print("Error getting document : \(err)")
                 }
                 else{
-                    print("gogogo")
                     if querySnapshot!.documents.count == 1 {
-                        print("good")
                         let user = querySnapshot!.documents[0].data()
                         if user["email"]  as? String ?? "" == email && user["motdepasse"] as? String ?? "" == mdp {
                             // good credential
@@ -124,12 +114,12 @@ public class UtilisateurService : ObservableObject{
                             self.emitCurrentUser()
                         }
                         else{
-                            print("bad password")
+                            self.sendResult(result: .failure(.connexioError))
                         }
                        
                     }
                     else{
-                        print("no response")
+                        self.sendResult(result: .failure(.connexioError))
                     }
                 }
             }
@@ -164,18 +154,50 @@ public class UtilisateurService : ObservableObject{
         }
     }
     
+    
     func updateUtilisateur(util : Utilisateur){
-        print("updat efirestore, id : \(util.id)")
-        firestore.collection("users").document("\(util.id)").updateData(
-            UtilisateurDTO.transformToDTO(util)
+        if self.currentUtilisateur.estAdmin() {
+            self.checkIfSamePassword(user : util){ same in
+                if same { // même mot de passe
+                    self.updateUtilisateurBD(user: util)
+                }
+                else{ // mauvais mot de passe
+                    self.sendResult(result: .failure(.updateError))
+                }
+            }
+        }
+        else {
+            self.updateUtilisateurBD(user: util)
+        }
+    }
+    
+    private func updateUtilisateurBD(user :Utilisateur){
+        firestore.collection("users").document("\(user.id)").updateData(
+            UtilisateurDTO.transformToDTO(user)
         ) {
             (error) in if let _ = error {
                 self.sendResult(result: .failure(.updateError))
             } else {
-                print("send success !!! ")
-                print("Observer Result : \(self.observerResult)")
                 self.sendResult(result: .success("Mise à jour effectué du compte from result"))
                 self.sendResultList(result: .success("Mise à jour effectué du compte from list"))
+            }
+        }
+    }
+    
+    func checkIfSamePassword(user : Utilisateur, action : ((Bool) -> Void)?){
+        firestore.collection("users").document(user.id).getDocument(){
+            (querySnapshot, err) in
+            if let err = err {
+                print("Error getting document : \(err)")
+                self.sendResult(result: .failure(.updateError))
+            }
+            else{
+                if let data = querySnapshot?.data() {
+                    action?(UtilisateurDTO.transformDTO(UtilisateurDTO.docToDTO(doc: data, id: querySnapshot!.documentID, withPassword: true)).motDePasse == user.motDePasse)
+                }
+                else{
+                    self.sendResult(result: .failure(.updateError))
+                }
             }
         }
     }

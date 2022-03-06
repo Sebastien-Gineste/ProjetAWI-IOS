@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 struct UtilisateurDTO : Identifiable{
     var id : String = UUID().uuidString
@@ -22,6 +23,16 @@ struct UtilisateurDTO : Identifiable{
                            type: utilisateurDTO.estAdmin ? TypeUtilisateur.Admin : TypeUtilisateur.User,
                            id: utilisateurDTO.id)
     }
+    
+    static func docToDTO(doc : [String : Any], id : String, withPassword : Bool = false) -> UtilisateurDTO {
+        return UtilisateurDTO( id : id,
+                               email: doc["email"] as? String ?? "",
+                               estAdmin: doc["estAdmin"] as? Bool ?? false,
+                               motDePasse: withPassword ? doc["motdepasse"] as? String ?? "" : "",
+                               nom: doc["nom"] as? String ?? "",
+                               prenom: doc["prenom"] as? String ?? "")
+    }
+    
     
     static func transformToDTO(_ user : Utilisateur) -> [String : Any]{
         var tab : [String : Any] = [

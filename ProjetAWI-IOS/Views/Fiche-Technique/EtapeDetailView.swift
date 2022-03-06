@@ -14,6 +14,7 @@ struct EtapeDetailView : View{
     
     @ObservedObject var etapeVM : EtapeViewModel
     @ObservedObject var ingredientLVM : IngredientListViewModel
+    @ObservedObject var user : UtilisateurService = UtilisateurService.instance
     
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
@@ -140,7 +141,7 @@ struct EtapeDetailView : View{
                 }
             }
             
-            if !isEtapeSousFicheTechnique {
+            if !isEtapeSousFicheTechnique && user.currentUtilisateur.estConnecte(){
                 HStack{
                     Button("Enregistrer l'étape"){
                         intent.intentToChange(descriptionEtape: etapeVM.descriptionEtape)

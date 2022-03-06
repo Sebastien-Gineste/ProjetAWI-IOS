@@ -11,6 +11,7 @@ struct FicheTechniqueListView: View {
     @ObservedObject var ficheTechniqueListViewModel : FicheTechniqueListViewModel
     @ObservedObject var categorieRecetteViewModel : CategorieRecetteViewModel
     @ObservedObject var ingredientLVM : IngredientListViewModel
+    @ObservedObject var user : UtilisateurService = UtilisateurService.instance
     
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
@@ -95,25 +96,29 @@ struct FicheTechniqueListView: View {
                     }.onDelete{
                         IndexSet in
                         for index in IndexSet {
-                            intent.intentToDeleteFicheTechniqueFromList(id: index)
+                            if user.currentUtilisateur.estConnecte() {
+                                intent.intentToDeleteFicheTechniqueFromList(id: index)
+                            }
                         }
                     }
                 }
                 .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
                 .navigationBarTitle(Text("Liste des fiche techniques"), displayMode: .inline)
-                HStack{
-                    LazyVGrid(columns: columns){
-                        EditButton()
-                        NavigationLink(destination: FicheTechniqueDetailView(
-                            vm: self.ficheTechniqueListViewModel,
-                            vmCategorie: self.categorieRecetteViewModel,
-                            vmIngredient: ingredientLVM,
-                            ficheService: self.ficheTechniqueListViewModel.ficheTechniqueService)){
-                            Text("Créer une fiche")
+                if user.currentUtilisateur.estConnecte() {
+                    HStack{
+                        LazyVGrid(columns: columns){
+                            EditButton()
+                            NavigationLink(destination: FicheTechniqueDetailView(
+                                vm: self.ficheTechniqueListViewModel,
+                                vmCategorie: self.categorieRecetteViewModel,
+                                vmIngredient: ingredientLVM,
+                                ficheService: self.ficheTechniqueListViewModel.ficheTechniqueService)){
+                                Text("Créer une fiche")
+                            }
+                            
                         }
-                        
-                    }
-                }.padding()
+                    }.padding()
+                }
             }
             .onChange(of: ficheTechniqueListViewModel.result){
                 result in

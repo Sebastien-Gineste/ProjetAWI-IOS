@@ -7,12 +7,14 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 enum UserError : Error, Equatable, CustomStringConvertible {
     case errorName(String)
     case errorFirstName(String)
     case emailError(String)
     case mdpError
+    case connexioError
     case noError
     case updateError
     case createError
@@ -20,10 +22,13 @@ enum UserError : Error, Equatable, CustomStringConvertible {
     var description: String {
         switch self {
         case .updateError:
-            return "Erreur de modification"
+            return "Erreur de modification (mot de passe incorrect)"
             
         case .deleteError:
             return "Erreur lors de la suppresion"
+            
+        case .connexioError:
+            return "Erreur : Email ou mot de passe erroné"
             
         case .createError:
             return "Erreur durant la création du compte"
@@ -51,6 +56,12 @@ class UtilisateurViewModel : ObservableObject, UtilisateurObserver,UserServiceRe
     var isValid : Bool {
         return model.isValid
     }
+    
+    var isValidForAdmin : Bool {
+        return model.isValidForAdmin
+    }
+    
+    @ObservedObject var user : UtilisateurService = UtilisateurService.instance
     
     @Published var nom : String
     @Published var prenom : String
@@ -81,7 +92,6 @@ class UtilisateurViewModel : ObservableObject, UtilisateurObserver,UserServiceRe
     
     func emit(to: Result<String, UserError>) {
         result = to
-        print("(name : \(model.nom)to receive : \(to)")
     }
     
     func changed(nom: String) {
@@ -150,8 +160,7 @@ class UtilisateurViewModel : ObservableObject, UtilisateurObserver,UserServiceRe
             self.model.type = type
             
         case .updateDatabase:
-            if self.model.isValid {
-                print("case updateDatabase")
+            if (user.currentUtilisateur.estAdmin() && self.model.isValidForAdmin) || self.model.isValid {
                 self.userService.updateUtilisateur(util: self.model)
             }
             else{

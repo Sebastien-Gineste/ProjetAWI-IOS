@@ -14,15 +14,18 @@ struct UtilisateurDetailView : View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @ObservedObject var utilisateurViewModel : UtilisateurViewModel
     @StateObject var user : UtilisateurService = UtilisateurService.instance
-    @State private var nomButton = "Modifier"
+    @State private var isUpdate : Bool = false
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
     @State private var isCreate : Bool
+    @State private var isFromList : Bool
+    
     var intent : UtilisateurIntent
     let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
     
-    init(model : Utilisateur = Utilisateur(email: "", nom: "", prenom: "", type: .User, id: "")){
+    init(model : Utilisateur = Utilisateur(email: "", nom: "", prenom: "", type: .User, id: ""), isFromList : Bool = true){
         self._isCreate = State(initialValue:  (model.email.count == 0))
+        self._isFromList = State(initialValue: isFromList)
         
         self.intent = UtilisateurIntent()
         self.utilisateurViewModel = UtilisateurViewModel(from: model)
@@ -31,7 +34,7 @@ struct UtilisateurDetailView : View {
     }
     
     var disabledTextField : Bool {
-        return !isCreate && nomButton == "Modifier"
+        return !isCreate && !isUpdate
     }
  
     var body : some View{
@@ -46,11 +49,11 @@ struct UtilisateurDetailView : View {
                             }
                         }
                     }
-                    if isCreate || nomButton == "Valider" {
+                    if (isCreate || isUpdate) && (!user.currentUtilisateur.estAdmin() || !isFromList) {
                         HStack{
                             LazyVGrid(columns: columns, alignment: .leading){
                                 Text("Mot de passe : ")
-                                TextField("Mot de passe", text : $utilisateurViewModel.motDePasse).disabled(disabledTextField)
+                                SecureField("Mot de passe", text : $utilisateurViewModel.motDePasse).disabled(disabledTextField)
                                     .onSubmit {
                                         intent.intentToChange(password: utilisateurViewModel.motDePasse)
                                     }
@@ -97,36 +100,33 @@ struct UtilisateurDetailView : View {
                 
                 if !isCreate {
                     Spacer()
+                    
                     Button("Supprimer"){
                         intent.intentToDeleteUser()
                         self.presentationMode.wrappedValue.dismiss()
-                    }
+                    }.padding(20)
+                    
                     Spacer()
                     
-                    Button(nomButton){
-                        if nomButton == "Modifier" {
-                            nomButton = "Valider"
-                        }
-                        else{
-                            nomButton = "Modifier"
-                            print("go udapte")
-                            intent.intentToUpdateDatabase()
-                        }
-                    }.disabled(nomButton == "Valider" && !utilisateurViewModel.isValid)
+                    Button("Enregistrer"){
+                        intent.intentToUpdateDatabase()
+                        utilisateurViewModel.motDePasse = ""
+                    }.disabled(user.currentUtilisateur.estAdmin() ? isFromList ? !utilisateurViewModel.isValidForAdmin : !utilisateurViewModel.isValid : !utilisateurViewModel.isValid).padding(20)
                     
-                    if !disabledTextField {
-                        Spacer()
-                        Button("Annuler"){
-                            nomButton = "Modifier"
-                        }
-                    }
+                    Spacer()
+                    
+                    Button(isUpdate ? "Terminer" : "Modifier"){
+                        self.isUpdate = !self.isUpdate
+                    }.padding(20)
+                    
                     Spacer()
                 }
-                
                 else {
                     Button("Créer le compte"){
                         intent.intentToCreateUser()
-                    }
+                        
+                        self.presentationMode.wrappedValue.dismiss()
+                    }.disabled(!utilisateurViewModel.isValid).padding(20)
                 }
             }
         }.navigationTitle("Détail \(utilisateurViewModel.nom)")
@@ -143,7 +143,7 @@ struct UtilisateurDetailView : View {
                     case .updateError, .createError, .deleteError, .emailError, .errorName, .mdpError, .errorFirstName:
                         self.alertMessage = "\(error)"
                         self.showingAlert = true
-                    case .noError :
+                    case .noError,.connexioError :
                         return
                     }
                 }
@@ -156,7 +156,6 @@ struct UtilisateurDetailView : View {
                 self.utilisateurViewModel.addObserverResult()
             }.onDisappear(){
                 self.utilisateurViewModel.removeObserverResult()
-                print("je disapear")
             }
         
     }

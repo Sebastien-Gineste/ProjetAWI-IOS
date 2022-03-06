@@ -24,9 +24,14 @@ class Utilisateur : ObservableObject{
     var observer : UtilisateurObserver?
     var id : String = UUID().uuidString
     
-    var isValid : Bool{
-        return email.count > 1 && motDePasse.count > 1 && nom.count > 1 && prenom.count > 1
+    var isValidForAdmin : Bool{
+        return email.isValidEmail() && nom.count > 1 && prenom.count > 1
     }
+    
+    var isValid : Bool{
+        return email.isValidEmail() && motDePasse.isValidPassword() && nom.count > 1 && prenom.count > 1
+    }
+
     
     var email : String {
         didSet {
@@ -36,7 +41,7 @@ class Utilisateur : ObservableObject{
                 } else{
                     self.email = oldValue
                 }
-            }
+            } 
         }
     }
     

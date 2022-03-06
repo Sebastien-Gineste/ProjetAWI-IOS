@@ -10,20 +10,37 @@ import SwiftUI
 
 struct GestionCompteView : View {
     
-    @StateObject var user : UtilisateurService = UtilisateurService.instance
+    @ObservedObject var user : UtilisateurService = UtilisateurService.instance
     let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
 
     var body : some View{
-        HStack{
-            LazyVGrid(columns: columns){
-                NavigationLink(destination:UtilisateurDetailView(model:user.currentUtilisateur)){
-                    Text("Mon compte")
+        if !user.currentUtilisateur.estAdmin(){
+            NavigationView{
+                HStack{
+                    LazyVGrid(columns: columns){
+                        NavigationLink(destination:UtilisateurDetailView(model:user.currentUtilisateur,isFromList:false)){
+                            Text("Mon compte")
+                        }
+                        Button("Déconnexion"){
+                            user.deconnexion()
+                            
+                        }
+                    }
+                }.padding()
+            }.navigationTitle("Gestion du compte")
+        }
+        else{
+            HStack{
+                LazyVGrid(columns: columns){
+                    NavigationLink(destination:UtilisateurDetailView(model:user.currentUtilisateur,isFromList:false)){
+                        Text("Mon compte")
+                    }
+                    Button("Déconnexion"){
+                        user.deconnexion()
+                        
+                    }
                 }
-                Button("Déconnexion"){
-                    user.deconnexion()
-                    
-                }
-            }
-        }.padding()
+            }.padding()
+        }
     }
 }
