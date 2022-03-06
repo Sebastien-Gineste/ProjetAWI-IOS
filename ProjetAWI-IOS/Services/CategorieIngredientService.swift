@@ -47,25 +47,28 @@ class CategorieIngredientService {
         }
 
     }
-    /*
-    func deleteIngredient(id : String){
-        firestore.collection("ingredients").document(id).delete() {
-            (error) in if let _ = error {
-                self.sendResultList(result: .failure(.deleteError))
-            } else{
-                self.sendResultList(result: .success("Suppresion effectué !"))
+    
+    func deleteCategorie(nom : String){
+        firestore.collection("categories-ingrédients").whereField("nomCategorie", isEqualTo: nom)
+        .getDocuments(){
+            (querySnapshot, err) in
+            if let err = err {
+                print("Error getting document : \(err)")
+            }
+            else{
+                if let data = querySnapshot {
+                    for doc in data.documents {
+                        self.firestore.collection("categories-ingrédients").document(doc.documentID).delete()
+                    }
+                }
             }
         }
     }
     
-    func addIngredient(ingredient : Ingredient){
-        firestore.collection("ingredients").addDocument(data: IngredientDTO.transformToDTO(ingredient)){
-            (error) in if let _ = error {
-                self.sendResultElement(result: .failure(.createError))
-            } else {
-                self.sendResultElement(result: .success("Création effectué"))
-            }
-        }
-    }*/
+    func addCategorie(nom : String){
+        firestore.collection("categories-ingrédients").addDocument(data: [
+            "nomCategorie" : nom,
+        ])
+    }
 }
 

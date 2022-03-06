@@ -56,7 +56,7 @@ class IngredientListViewModel : ObservableObject, Subscriber, IngredientListServ
         case .ready:
             break
         case .deleteIngredient(let id):
-            self.ingredientService.deleteIngredient(id: self.tabIngredient[id].id!)
+            self.ingredientService.deleteIngredient(ingredient: self.tabIngredient[id])
         }
         return .none
     }

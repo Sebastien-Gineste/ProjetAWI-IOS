@@ -19,6 +19,7 @@ struct IngredientCreateView: View {
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
     @State private var selectedIndex : Int = 0
+    @State var ajoutCategorie : Bool = false
     let formatter : NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
@@ -39,7 +40,15 @@ struct IngredientCreateView: View {
     var body : some View {
         VStack {
             Form{
-                Section(header: Text("Informations")) {
+                Section(header:  HStack {
+                    Text("Informations")
+                    Spacer()
+                    Button () {
+                        ajoutCategorie = !ajoutCategorie
+                    } label : {
+                        Label("Catégorie", systemImage: ajoutCategorie ? "slash.circle" : "plus.circle.fill")
+                    }
+                }) {
                     HStack{
                         LazyVGrid(columns: columns){
                             Text("Nom :").frame(maxWidth: .infinity, alignment: .leading)
@@ -77,18 +86,28 @@ struct IngredientCreateView: View {
                         }
                     }
                     HStack {
-                        Picker(selection: $selectedIndex, label: Text("Categorie :")) {
-                            ForEach(0 ..< categorieIngredientViewModel.tabCategorieIngredient.count) {
-                                if categorieIngredientViewModel.tabCategorieIngredient.indices.contains($0) {
-                                   Text(categorieIngredientViewModel.tabCategorieIngredient[$0])
-                                } else {
-                                    Text("")
-                                }
+                        if ajoutCategorie {
+                            LazyVGrid(columns: columns){
+                                Text("Categorie :").frame(maxWidth: .infinity, alignment: .leading)
+                                TextField("Categorie",text: $ingredient.categorie)
+                                    .onSubmit {
+                                        intent.intentToChange(categorie: ingredient.categorie)
+                                    }
                             }
-                        }.onChange(of: selectedIndex, perform: {
-                            value in
-                            self.intent.intentToChange(categorie: self.categorieIngredientViewModel.tabCategorieIngredient[value])
-                        })
+                        } else {
+                            Picker(selection: $selectedIndex, label: Text("Categorie :")) {
+                                ForEach(0 ..< categorieIngredientViewModel.tabCategorieIngredient.count) {
+                                    if categorieIngredientViewModel.tabCategorieIngredient.indices.contains($0) {
+                                       Text(categorieIngredientViewModel.tabCategorieIngredient[$0])
+                                    } else {
+                                        Text("")
+                                    }
+                                }
+                            }.onChange(of: selectedIndex, perform: {
+                                value in
+                                self.intent.intentToChange(categorie: self.categorieIngredientViewModel.tabCategorieIngredient[value])
+                            })
+                        }
                     }
                     HStack {
                         NavigationLink(destination: MultipleSelectionAllergène(items: self.allergèneViewModel.tabAllergène, selections: $ingredient.listAllergene)){

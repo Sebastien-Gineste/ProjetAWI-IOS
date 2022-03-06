@@ -16,6 +16,7 @@ struct IngredientDetailView: View {
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
     @State private var selectedIndex : Int
+    @State var ajoutCategorie : Bool = false
     var intent : IngredientIntent
     var intentAllergène : AllergèneIntent
     let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
@@ -44,7 +45,15 @@ struct IngredientDetailView: View {
     var body : some View {
         VStack {
             Form {
-                Section(header: Text("Informations")) {
+                Section(header: HStack {
+                    Text("Informations")
+                    Spacer()
+                    Button () {
+                        ajoutCategorie = !ajoutCategorie
+                    } label : {
+                        Label("Catégorie", systemImage: ajoutCategorie ? "slash.circle" : "plus.circle.fill")
+                    }
+                } ) {
                     HStack{
                         LazyVGrid(columns: columns){
                             Text("Nom :").frame(maxWidth: .infinity, alignment: .leading)
@@ -82,16 +91,26 @@ struct IngredientDetailView: View {
                         }
                     }
                     HStack {
-                        Picker(selection: $selectedIndex, label: Text("Categorie :")) {
-                            ForEach(0 ..< categorieIngredientViewModel.tabCategorieIngredient.count) {
-                                Text(self.categorieIngredientViewModel.tabCategorieIngredient[$0])
+                        if ajoutCategorie {
+                            LazyVGrid(columns: columns){
+                                Text("Categorie :").frame(maxWidth: .infinity, alignment: .leading)
+                                TextField("Categorie",text: $ingredient.categorie)
+                                    .onSubmit {
+                                        intent.intentToChange(categorie: ingredient.categorie)
+                                    }
                             }
-                        }.onChange(of: selectedIndex, perform: {
-                            value in
-                            self.intent.intentToChange(categorie: self.categorieIngredientViewModel.tabCategorieIngredient[value])
-                        })
+                        } else {
+                            Picker(selection: $selectedIndex, label: Text("Categorie :")) {
+                                ForEach(0 ..< categorieIngredientViewModel.tabCategorieIngredient.count) {
+                                    Text(self.categorieIngredientViewModel.tabCategorieIngredient[$0])
+                                }
+                            }.onChange(of: selectedIndex, perform: {
+                                value in
+                                self.intent.intentToChange(categorie: self.categorieIngredientViewModel.tabCategorieIngredient[value])
+                            })
+                        }
+
                     }
-                    // TO DO : Add catégorie
                     HStack {
                         NavigationLink(destination: MultipleSelectionAllergène(items: self.allergèneViewModel.tabAllergène,selections: $ingredient.listAllergene)){
                             HStack {

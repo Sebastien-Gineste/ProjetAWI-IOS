@@ -16,20 +16,20 @@ struct IngredientListView : View {
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
     @State private var searchText : String = ""
-    @State private var selectedIndex : Int = 0
+    @State private var selectedCategorie : String = "Choisir"
     let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
     var intent: IngredientIntent
     var intentAllergène: AllergèneIntent
     var ingredientsFiltre: [Ingredient] {
-        if searchText.isEmpty &&  selectedIndex <= 0 {
+        if searchText.isEmpty &&  selectedCategorie == "Choisir" {
             return ingredientListViewModel.tabIngredient
         } else {
-            if selectedIndex <= 0 {
+            if selectedCategorie == "Choisir" {
                 return ingredientListViewModel.tabIngredient.filter{ $0.nomIngredient.uppercased().contains(searchText.uppercased()) }
             } else if searchText.isEmpty {
-                return ingredientListViewModel.tabIngredient.filter{ $0.categorie.uppercased().contains(categorieIngredientViewModel.tabCategorieIngredient[selectedIndex].uppercased()) }
+                return ingredientListViewModel.tabIngredient.filter{ $0.categorie.uppercased().contains(selectedCategorie.uppercased()) }
             } else {
-                return ingredientListViewModel.tabIngredient.filter{ $0.nomIngredient.uppercased().contains(searchText.uppercased()) && $0.categorie.uppercased().contains(categorieIngredientViewModel.tabCategorieIngredient[selectedIndex].uppercased()) }
+                return ingredientListViewModel.tabIngredient.filter{ $0.nomIngredient.uppercased().contains(searchText.uppercased()) && $0.categorie.uppercased().contains(selectedCategorie.uppercased()) }
             }
         }
     }
@@ -48,11 +48,11 @@ struct IngredientListView : View {
         NavigationView {
             VStack {
                 Form {
-                    Picker(selection: $selectedIndex, label: Text("Categorie")) {
-                        ForEach(0 ..< categorieIngredientViewModel.tabCategorieIngredient.count) {
-                            Text(self.categorieIngredientViewModel.tabCategorieIngredient[$0])
+                    Picker(selection: $selectedCategorie, label: Text("Categorie")) {
+                        ForEach(self.categorieIngredientViewModel.tabCategorieIngredient, id: \.self) { categorie in
+                            Text(categorie)
                         }
-                  }
+                    }
                 }.frame(height: 100)
                 List {
                     ForEach(Array(ingredientsFiltre.enumerated()), id: \.offset) {

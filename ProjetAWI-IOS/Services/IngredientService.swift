@@ -21,6 +21,7 @@ protocol IngredientServiceObserver {
 
 class IngredientService {
     private let firestore = Firestore.firestore()
+    private var categorieIngredientService : CategorieIngredientService = CategorieIngredientService()
     private var tabListObserver : [IngredientListServiceObserver] = []
     private var tabObserver : [IngredientServiceObserver] = []
     private var tabIngredient : [Ingredient] {
@@ -66,24 +67,30 @@ class IngredientService {
     }
     
     func updateIngredient(ingredient : Ingredient){
-        let ref = firestore.collection("ingredients").document(ingredient.id!)
-        ref.updateData(IngredientDTO.transformToDTO(ingredient)) {
-            (error) in
-            if let _ = error {
-                self.sendResultElement(result: .failure(.updateError))
-            } else {
-                self.sendResultElement(result: .success("Mise a jour effectué"))
+        self.checkUpdateCategorie(ingredient: ingredient){
+            let ref = self.firestore.collection("ingredients").document(ingredient.id!)
+            ref.updateData(IngredientDTO.transformToDTO(ingredient)) {
+                (error) in
+                if let _ = error {
+                    self.sendResultElement(result: .failure(.updateError))
+                } else {
+                    self.sendResultElement(result: .success("Mise a jour effectué"))
+                }
             }
         }
     }
     
-    func deleteIngredient(id : String){
-        // TO DO : impact catégorie
-        firestore.collection("ingredients").document(id).delete() {
+    func deleteIngredient(ingredient : Ingredient){
+        firestore.collection("ingredients").document(ingredient.id!).delete() {
             (error) in if let _ = error {
                 self.sendResultList(result: .failure(.deleteError))
             } else{
-                self.sendResultList(result: .success("Suppresion effectué !"))
+                self.getIngredientsByCategorie(nom: ingredient.categorie){ ingredients in
+                    if ingredients.count == 0 {
+                        self.categorieIngredientService.deleteCategorie(nom: ingredient.categorie)
+                    }
+                    self.sendResultList(result: .success("Suppresion effectué !"))
+                }
             }
         }
     }
@@ -93,7 +100,12 @@ class IngredientService {
             (error) in if let _ = error {
                 self.sendResultElement(result: .failure(.createError))
             } else {
-                self.sendResultElement(result: .success("Création effectué"))
+                self.getIngredientsByCategorie(nom: ingredient.categorie){ ingredients in
+                    if ingredients.count == 1 {
+                        self.categorieIngredientService.addCategorie(nom: ingredient.categorie)
+                    }
+                    self.sendResultElement(result: .success("Création effectué"))
+                }
             }
         }
     }
@@ -124,6 +136,29 @@ class IngredientService {
             }
     }
     
+    private func getIngredientById(id : String, action : ((Ingredient) -> Void)?){
+        firestore.collection("ingredients").document(id).getDocument(){data,err in
+            if let err = err {
+                print("Error getting document : \(err)")
+            }
+            else{
+                guard let doc = data else {
+                    return
+                }
+                action?(IngredientDTO.transformDTO(
+                    IngredientDTO(id: doc.documentID,
+                                  nomIngredient: doc["nomIngredient"] as? String ?? "",
+                                  prixUnitaire: doc["prixUnitaire"] as? Double ?? 0,
+                                  qteIngredient: doc["qteIngredient"] as? Double ?? 0,
+                                  unite: doc["unite"] as? String ?? "",
+                                  categorie: doc["categorie"] as? String ?? "",
+                                  listAllergene: doc["listAllergene"] as? [String] ?? []))
+                )
+                
+            }
+        }
+    }
+    
     func getIngredientsByName(nomIngrédient : String, action : ((Ingredient?) -> Void)?) {
             firestore.collection("ingredients").whereField("nomIngredient", isEqualTo: nomIngrédient)
             .getDocuments(){
@@ -151,6 +186,50 @@ class IngredientService {
                     }
                 }
             }
+    }
+    
+    func getIngredientsByCategorie(nom : String, action : (([Ingredient]) -> Void)?) {
+            firestore.collection("ingredients").whereField("categorie", isEqualTo: nom)
+            .getDocuments(){
+                (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting document : \(err)")
+                }
+                else{
+                    let ingredients = querySnapshot!.documents.map{
+                        (doc) -> Ingredient in
+                        return IngredientDTO.transformDTO(
+                            IngredientDTO(id: doc.documentID,
+                                          nomIngredient: doc["nomIngredient"] as? String ?? "",
+                                          prixUnitaire: doc["prixUnitaire"] as? Double ?? 0,
+                                          qteIngredient: doc["qteIngredient"] as? Double ?? 0,
+                                          unite: doc["unite"] as? String ?? "",
+                                          categorie: doc["categorie"] as? String ?? "",
+                                          listAllergene: doc["listAllergene"] as? [String] ?? []))
+                    }
+                    action?(ingredients)
+                }
+            }
+    }
+    
+    private func checkUpdateCategorie(ingredient : Ingredient, action : (() -> Void)?){
+        self.getIngredientById(id: ingredient.id!){ ingredientOld in
+            if ingredient.categorie != ingredientOld.categorie {
+                self.getIngredientsByCategorie(nom: ingredientOld.categorie){ ingredientsOld in
+                    if ingredientsOld.count == 1 {
+                        self.categorieIngredientService.deleteCategorie(nom: ingredientOld.categorie)
+                    }
+                    self.getIngredientsByCategorie(nom: ingredient.categorie){ ingredients in
+                        if ingredients.count == 0 {
+                            self.categorieIngredientService.addCategorie(nom: ingredient.categorie)
+                        }
+                        action?()
+                    }
+                }
+            } else {
+                action?()
+            }
+        }
     }
 
     
