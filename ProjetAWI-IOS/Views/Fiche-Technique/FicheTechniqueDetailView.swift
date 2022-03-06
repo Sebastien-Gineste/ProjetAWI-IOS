@@ -22,7 +22,10 @@ struct FicheTechniqueDetailView : View{
     @State var isCreate : Bool
     @State var isUpdate : Bool = false
     @State var isEditMode : Bool = false
+    @State var ajoutCategorie : Bool = false
+    @State var nomNewCategorie : String = ""
     
+    var oldCategorie : String = ""
     var intent : FicheTechniqueIntent
     var ficheListVM : FicheTechniqueListViewModel
     
@@ -38,6 +41,7 @@ struct FicheTechniqueDetailView : View{
         
         
         self.ficheListVM = vm
+       
         let index : Int?
         
         if id != nil {
@@ -57,16 +61,18 @@ struct FicheTechniqueDetailView : View{
             indice: index)
         
         self.categorieRecetteVM = vmCategorie
+       
         
         self._isCreate = State(initialValue: id == nil)
 
         
-        if let id = id, let indexCate = vmCategorie.tabCategorieRecette.firstIndex(of:vm.tabFicheTechnique[index!].header.categorie) {
+        if let _ = id, let indexCate = vmCategorie.tabCategorieRecette.firstIndex(of:vm.tabFicheTechnique[index!].header.categorie) {
             self._selectedIndex = State(initialValue: indexCate)
         } else {
             self._selectedIndex = State(initialValue: 0)
         }
         
+        self.oldCategorie = ficheTechniqueVM.categorie
        
         self.intent.addObserver(self.ficheTechniqueVM)
     }
@@ -85,7 +91,17 @@ struct FicheTechniqueDetailView : View{
         VStack {
             ScrollViewReader { p in
                 Form {
-                    Section(header :Text("Informations générales").underline(isUpdate || isCreate, color: changeColor(isValid: ficheTechniqueVM.headerValid)) ){
+                    Section(header : HStack {
+                        Text("Informations générales").underline(isUpdate || isCreate, color: changeColor(isValid: ficheTechniqueVM.headerValid))
+                        Spacer()
+                            if isCreate || isUpdate {
+                                Button () {
+                                    ajoutCategorie = !ajoutCategorie
+                                } label : {
+                                    Label("Catégorie", systemImage: ajoutCategorie ? "slash.circle" : "plus.circle.fill")
+                                }
+                            }
+                        }){
                         HStack{
                             LazyVGrid(columns: columns){
                                 Text("Nom du plat :").frame(maxWidth: .infinity, alignment: .leading)
@@ -118,15 +134,25 @@ struct FicheTechniqueDetailView : View{
                             }
                         }
                         HStack{
-                            Picker(selection: $selectedIndex, label: Text("Categorie")) {
-                                ForEach(Array(self.categorieRecetteVM.tabCategorieRecette.enumerated()), id: \.offset) { index,categorie in
-                                    Text(categorie)
+                            if ajoutCategorie {
+                                LazyVGrid(columns: columns){
+                                    Text("Categorie :").frame(maxWidth: .infinity, alignment: .leading)
+                                    TextField("Nouvelle categorie", text: $nomNewCategorie).onSubmit(){
+                                        self.intent.intentToChange(categorie: nomNewCategorie)
+                                    }
                                 }
-                            }.onChange(of: selectedIndex, perform: {
-                                value in
-                                self.intent.intentToChange(categorie: self.categorieRecetteVM.tabCategorieRecette[value])
-                            }).disabled(!isUpdate && !isCreate).textFieldStyle(.roundedBorder)
-                        }
+                            }
+                            else{
+                                Picker(selection: $selectedIndex, label: Text("Categorie")) {
+                                    ForEach(Array(self.categorieRecetteVM.tabCategorieRecette.enumerated()), id: \.offset) { index,categorie in
+                                        Text(categorie)
+                                    }
+                                }.onChange(of: selectedIndex, perform: {
+                                    value in
+                                    self.intent.intentToChange(categorie: self.categorieRecetteVM.tabCategorieRecette[value])
+                                })
+                            }
+                        }.disabled(!isUpdate && !isCreate).textFieldStyle(.roundedBorder)
                     }
                     
                     Section(header:
@@ -243,7 +269,7 @@ struct FicheTechniqueDetailView : View{
             
             if isCreate {
                 Button("Enregistrer"){
-                    intent.intentToAddFicheTechnique()
+                    intent.intentToAddFicheTechnique(newCategorie: (ajoutCategorie ? nomNewCategorie : nil))
                     self.presentationMode.wrappedValue.dismiss()
                 }.padding(20)
             }
@@ -251,7 +277,7 @@ struct FicheTechniqueDetailView : View{
                 HStack{
                     
                     Button("Enregistrer"){
-                        intent.intentToUpdateFicheTechnique()
+                        intent.intentToUpdateFicheTechnique(isChangeCategorie: oldCategorie != ficheTechniqueVM.categorie)
                     }.padding(20)
                     
                     Button("\(isUpdate ? "Terminer" : "Modifier")"){

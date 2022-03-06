@@ -15,7 +15,7 @@ struct FicheTechniqueListView: View {
     @State var alertMessage = ""
     @State var showingAlert : Bool = false
     @State private var searchText : String = ""
-    @State private var selectedIndex : Int = 0
+    @State private var selectedCategorie : String = "Choisir"
     @State var listIngredient : [String] = []
     
     let columns : [GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
@@ -25,13 +25,11 @@ struct FicheTechniqueListView: View {
         var tabFiche : [FicheTechnique] = self.ficheTechniqueListViewModel.tabFicheTechnique
         
         if !searchText.isEmpty {
-                tabFiche = tabFiche.filter{ $0.header.nomPlat.uppercased().contains(searchText.uppercased())
-            }
+            tabFiche = tabFiche.filter{ $0.header.nomPlat.uppercased().contains(searchText.uppercased())}
         }
         
-        if selectedIndex > 0{ // erreur selection categorie : une categorie avant 
-            tabFiche = tabFiche.filter{ $0.header.categorie.uppercased().contains(categorieRecetteViewModel.tabCategorieRecette[(selectedIndex - 1)].uppercased())
-            }
+        if !selectedCategorie.isEmpty && selectedCategorie != "Choisir" {
+            tabFiche = tabFiche.filter{ $0.header.categorie.uppercased() == selectedCategorie.uppercased()}
         }
         
         if !listIngredient.isEmpty {
@@ -55,18 +53,20 @@ struct FicheTechniqueListView: View {
         NavigationView {
             VStack {
                 Form {
-                    Picker(selection: $selectedIndex, label: Text("Categorie")) {
-                        ForEach(Array(self.categorieRecetteViewModel.tabCategorieRecette.enumerated()), id: \.offset) { index,categorie in
-                            Text(categorie)
+                    Section(header :Text("Recherche")){
+                        Picker(selection: $selectedCategorie, label: Text("Categorie")) {
+                            ForEach(self.categorieRecetteViewModel.tabCategorieRecette, id: \.self) { categorie in
+                                Text(categorie)
+                            }
                         }
-                    }
-                    HStack {
-                        NavigationLink(destination: MultipleSelectionIngredient(items: self.ingredientLVM.tabIngredient, selections: $listIngredient)){
-                            HStack {
-                                Text("Liste ingrédient :")
-                                Spacer()
-                                Text("Sélectionner")
-                                    .foregroundColor(Color.gray)
+                        HStack {
+                            NavigationLink(destination: MultipleSelectionIngredient(items: self.ingredientLVM.tabIngredient, selections: $listIngredient)){
+                                HStack {
+                                    Text("Liste ingrédient :")
+                                    Spacer()
+                                    Text("Sélectionner").foregroundColor(Color.gray)
+                                        
+                                }
                             }
                         }
                     }

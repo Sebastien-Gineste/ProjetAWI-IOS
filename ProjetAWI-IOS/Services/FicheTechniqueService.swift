@@ -72,7 +72,7 @@ class FicheTechniqueService {
         }
     }
     
-    func addFicheTechnique(fiche : FicheTechnique){
+    func addFicheTechnique(fiche : FicheTechnique, newCategorie : String? ){
         if fiche.isValid {
             firestore.collection("fiche-techniques").addDocument(data: FicheTechniqueDTO.transformToDTO(fiche)){
                 (error) in
@@ -80,7 +80,10 @@ class FicheTechniqueService {
                     self.sendResultElement(result: .failure(.createError))
                 }
                 else{
-                    self.sendResultList(result: .success("Ajout effectuée : (nom : \(fiche.header.nomPlat)"))
+                    self.sendResultList(result: .success("Ajout effectué !"))
+                    if let cate = newCategorie {
+                        CategorieRecetteService().addCategorie(nom: cate)
+                    }
                 }
             }
         }
@@ -101,22 +104,40 @@ class FicheTechniqueService {
       
     }
     
-    func updateFicheTechnique(fiche : FicheTechnique){
+    func updateFicheTechnique(fiche : FicheTechnique,isChangeCategorie : Bool = false){
         if fiche.isValid {
-            firestore.collection("fiche-techniques").document("\(fiche.header.id)").updateData(FicheTechniqueDTO.transformToDTO(fiche)){
-                (error) in
-                if let _ = error {
-                    self.sendResultElement(result: .failure(.createError))
+            if isChangeCategorie { // on récupère son ancienne catégorie pour voir si on la supprime
+                var oldCategorie : String = ""
+                getFicheTechniqueBD(id: fiche.header.id){ficheGet in
+                    oldCategorie = ficheGet.header.categorie
+                    self.updateFicheTechniqueBD(fiche: fiche, oldCategorie: oldCategorie)
                 }
-                else{
-                    self.sendResultList(result: .success("Modification enregistrée (nom : \(fiche.header.nomPlat)"))
-                }
+            }
+            else{
+                self.updateFicheTechniqueBD(fiche: fiche)
             }
         }
         else{
             self.sendResultElement(result: .failure(.noValid))
         }
     }
+    
+    private func updateFicheTechniqueBD(fiche : FicheTechnique, oldCategorie : String?=nil){
+        firestore.collection("fiche-techniques").document("\(fiche.header.id)").updateData(FicheTechniqueDTO.transformToDTO(fiche)){
+            (error) in
+            if let _ = error {
+                self.sendResultElement(result: .failure(.createError))
+            }
+            else{
+                self.sendResultList(result: .success("Modification enregistrée !"))
+                if let old = oldCategorie {
+                    CategorieRecetteService().addCategorie(nom: fiche.header.categorie)
+                    self.checkIfDeleteCategorieRecette(categorie: old)
+                }
+            }
+        }
+    }
+    
     
     func getFicheTechniqueBD(id : String, action : ((FicheTechnique) -> Void)?){
         firestore.collection("fiche-techniques").document("\(id)").getDocument(){
@@ -152,6 +173,28 @@ class FicheTechniqueService {
             return nil
         }
     }
+    
+    
+    /*
+        Regarde si une catégorie est vide, si c'est le cas elle le supprime
+     */
+    
+    func checkIfDeleteCategorieRecette(categorie : String){
+        firestore.collection("fiche-techniques").whereField("header.categorie", isEqualTo: categorie)
+            .getDocuments(){
+                (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting document : \(err)")
+                }
+                else{
+                    if querySnapshot!.documents.count == 0 {
+                        // 0 fiche technique avec cette recette => on supprime
+                        CategorieRecetteService().deleteCategorie(nom:categorie)
+                    }
+                }
+            }
+    }
+    
     
     
     

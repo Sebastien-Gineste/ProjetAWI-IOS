@@ -30,7 +30,7 @@ struct MultipleSelectionIngredient: View {
                         else {
                             self.selections.append(ingredient.nomIngredient)
                         }
-                    }.foregroundColor(.white)
+                    }
                 }
             }.searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
         }

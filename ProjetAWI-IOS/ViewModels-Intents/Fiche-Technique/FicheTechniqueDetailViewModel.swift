@@ -142,20 +142,15 @@ class FicheTechniqueViewModel : ObservableObject, Subscriber, FicheTechniqueServ
         switch input {
         case .ready:
             break
-        case .addFicheTechnique:
-            // if is valid
-            self.ficheTechniqueService.addFicheTechnique(fiche: self.ficheTechnique)
-        
+        case .addFicheTechnique(let newCategorie):
+            self.ficheTechniqueService.addFicheTechnique(fiche: self.ficheTechnique, newCategorie: newCategorie)
             break
         case .deleteFicheTechnique:
-            //
             self.ficheTechniqueService.removeFicheTechnique(id: self.ficheTechnique.header.id)
             
             break
-        case .updateFicheTechnique:
-            // if is valid
-            self.ficheTechniqueService.updateFicheTechnique(fiche: self.ficheTechnique)
-            
+        case .updateFicheTechnique(let isChangeCategorie):
+            self.ficheTechniqueService.updateFicheTechnique(fiche: self.ficheTechnique, isChangeCategorie: isChangeCategorie)
             break
         case .changingNomAuteur(let nom):
             self.ficheTechnique.header.nomAuteur = nom

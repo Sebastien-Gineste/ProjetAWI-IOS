@@ -16,8 +16,8 @@ enum FicheTechniqueListIntentState : Equatable {
 
 enum FicheTechniqueIntentState : Equatable {
     case ready
-    case updateFicheTechnique
-    case addFicheTechnique
+    case updateFicheTechnique(Bool)
+    case addFicheTechnique(String?)
     case deleteFicheTechnique
     
     case changingNomPlat(String)
@@ -56,12 +56,12 @@ struct FicheTechniqueIntent {
         self.stateElement.send(FicheTechniqueIntentState.deleteFicheTechnique)
     }
     
-    func intentToAddFicheTechnique(){
-        self.stateElement.send(FicheTechniqueIntentState.addFicheTechnique)
+    func intentToAddFicheTechnique(newCategorie : String? = nil){
+        self.stateElement.send(FicheTechniqueIntentState.addFicheTechnique(newCategorie))
     }
     
-    func intentToUpdateFicheTechnique(){
-        self.stateElement.send(FicheTechniqueIntentState.updateFicheTechnique)
+    func intentToUpdateFicheTechnique(isChangeCategorie : Bool = false){
+        self.stateElement.send(FicheTechniqueIntentState.updateFicheTechnique(isChangeCategorie))
     }
     
     /* ---- Fiche technique (Header - liste étapes )--- */
